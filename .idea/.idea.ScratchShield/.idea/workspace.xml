@@ -17,21 +17,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f58719b-ee78-4a38-aa05-e916c82500b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ScratchShield/Converter/InverseBooleanConverter.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScratchShield/Helper/IViewModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScratchShield/ViewHelper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScratchShield/ViewModels/HomeViewModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScratchShield/ViewModels/SettingsViewModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScratchShield/Views/HomeView.axaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScratchShield/Views/HomeView.axaml.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScratchShield/Views/SettingsView.axaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScratchShield/Views/SettingsView.axaml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScratchShield/Helper/ThemeManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScratchShield/Models/AppSettings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScratchShield/Models/ThemeOption.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScratchShield/Services/SettingsService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScratchShield/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScratchShield/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Directory.Packages.props" beforeDir="false" afterPath="$PROJECT_DIR$/Directory.Packages.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScratchShield/App.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/App.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScratchShield/App.axaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/App.axaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScratchShield/ScratchShield.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/ScratchShield.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScratchShield/ViewModels/HomeViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/ViewModels/HomeViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScratchShield/ViewModels/MainViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/ViewModels/MainViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScratchShield/ViewModels/ViewModelBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/ViewModels/ViewModelBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScratchShield/ViewModels/SettingsViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/ViewModels/SettingsViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScratchShield/Views/HomeView.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/Views/HomeView.axaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScratchShield/Views/MainView.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/Views/MainView.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScratchShield/Views/MainWindow.axaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/Views/MainWindow.axaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScratchShield/Views/SettingsView.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/ScratchShield/Views/SettingsView.axaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,8 +47,16 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/607bbb2d17a84553ac58f2321de387feeda750/09/aac9c895/CastHelpers.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/607bbb2d17a84553ac58f2321de387feeda750/10/a837885a/ArgumentNullException.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/607bbb2d17a84553ac58f2321de387feeda750/98/9ee1e0b7/File.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b5aa3538076948f6bfda183ce4bd5e6f147a00/bc/39d1aac4/Application.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScratchShield/Converter/InverseBooleanConverter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScratchShield/Helper/ThemeManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScratchShield/Models/AppSettings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScratchShield/Models/ThemeOption.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScratchShield/Services/SettingsService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScratchShield/ViewHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///tmp/JetBrainsPerUserTemp-1000-1/SourceGeneratedDocuments/3B6865789D7870F616D11E75/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/ScratchShield.ViewModels.SettingsViewModel.g.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///tmp/JetBrainsPerUserTemp-1000-1/SourceGeneratedDocuments/3B6865789D7870F616D11E75/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.RelayCommandGenerator/ScratchShield.ViewModels.SettingsViewModel.ShowHome.g.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock:///Immediate Window" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -57,37 +66,37 @@
     </ignored-facets>
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3Jp3HsP5KuOBKiy0KVtweJ9Bkfh" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Project.ScratchShield.Desktop.executor": "Debug",
-    "Android.ScratchShield.Android.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "cidr.known.project.marker": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "AndroidSdkUpdater"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Project.ScratchShield.Desktop.executor&quot;: &quot;Debug&quot;,
+    &quot;Android.ScratchShield.Android.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Android.ScratchShield.Android">
+}</component>
+  <component name="RunManager" selected=".NET Project.ScratchShield.Desktop">
     <configuration name="ScratchShield.Desktop" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -170,7 +179,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Start" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start" />
+    <MESSAGE value="Add Home and Settings views with corresponding view models and navigation logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Home and Settings views with corresponding view models and navigation logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -6,7 +6,11 @@ namespace ScratchShield.ViewModels;
 
 public partial class HomeViewModel : ViewModelBase, IViewModel
 {
-    [ObservableProperty] public partial string Setting { get; set; } = "Settings";
+    public HomeViewModel()
+    {
+        
+    }
+    [ObservableProperty] public partial string ProtectionStatus { get; set; } = "Protection Status";
 
     private readonly MainViewModel _mainViewModel;
 

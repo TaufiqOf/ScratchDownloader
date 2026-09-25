@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using ScratchShield.Helper;
+using ScratchShield.Services;
 
 namespace ScratchShield.Views;
 

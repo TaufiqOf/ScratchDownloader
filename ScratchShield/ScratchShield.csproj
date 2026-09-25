@@ -18,6 +18,8 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm"/>
+        <PackageReference Include="FluentIcons.Avalonia.Fluent" />
+        <PackageReference Include="FluentIcons.Common" />
     </ItemGroup>
 
     <ItemGroup>

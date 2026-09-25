@@ -12,10 +12,17 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private bool isPaneOpen = true;
 
+    [ObservableProperty]
+    private bool isHomeSelected;
+
+    [ObservableProperty]
+    private bool isSettingsSelected;
+
     public MainViewModel()
     {
-        CurrentView = new HomeViewModel(this);
+        UpdateSelectedView(nameof(HomeViewModel));
     }
+
 
     [RelayCommand]
     public void TogglePane()
@@ -26,12 +33,19 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     public void ShowHome()
     {
-        CurrentView = new HomeViewModel(this);
+        UpdateSelectedView(nameof(HomeViewModel));
     }
 
     [RelayCommand]
     public void ShowSettings()
     {
-        CurrentView = new SettingsViewModel(this);
+        UpdateSelectedView(nameof(SettingsViewModel));
+    }
+    
+    private void UpdateSelectedView(string viewName)
+    {
+        CurrentView = viewName == nameof(HomeViewModel) ? new HomeViewModel(this) : new SettingsViewModel();
+        IsHomeSelected = viewName == nameof(HomeViewModel);
+        IsSettingsSelected = viewName == nameof(SettingsViewModel);
     }
 }

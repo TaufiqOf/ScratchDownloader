@@ -3,6 +3,7 @@
              xmlns:vm="clr-namespace:ScratchShield.ViewModels"
              xmlns:views="clr-namespace:ScratchShield.Views"
              xmlns:converter="clr-namespace:ScratchShield.Converter"
+             xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
              x:Class="ScratchShield.Views.MainView"
              x:DataType="vm:MainViewModel">
 
@@ -24,8 +25,8 @@
 
     <SplitView IsPaneOpen="{Binding IsPaneOpen}"
                DisplayMode="CompactInline"
-               OpenPaneLength="240"
-               CompactPaneLength="64"
+               OpenPaneLength="200"
+               CompactPaneLength="55"
                PanePlacement="Left">
 
         <!-- ========================= -->
@@ -34,14 +35,14 @@
 
         <SplitView.Pane>
 
-            <Border Background="#111827">
+            <Border>
 
                 <Grid RowDefinitions="Auto,*,Auto">
 
                     <!-- HEADER -->
 
                     <StackPanel Grid.Row="0"
-                                Margin="5,20,5,30"
+                                Margin="5,15,5,30"
                                 Spacing="12">
 
                         <Button Command="{Binding TogglePaneCommand}"
@@ -52,13 +53,11 @@
 
                             <Border Width="44"
                                     Height="44"
-                                    CornerRadius="12"
-                                    Background="#2563EB">
+                                    CornerRadius="12">
 
                                 <TextBlock Text="S"
                                            FontSize="24"
                                            FontWeight="Bold"
-                                           Foreground="White"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"/>
 
@@ -73,13 +72,11 @@
                             <TextBlock Text="ScratchShield"
                                        FontSize="20"
                                        IsVisible="{Binding IsPaneOpen}"
-                                       FontWeight="SemiBold"
-                                       Foreground="White"/>
+                                       FontWeight="SemiBold"/>
 
                             <TextBlock Text="System Protection"
                                        FontSize="11"
-                                       IsVisible="{Binding IsPaneOpen}"
-                                       Foreground="#9CA3AF"/>
+                                       IsVisible="{Binding IsPaneOpen}"/>
 
                         </StackPanel>
 
@@ -92,60 +89,58 @@
                                 Margin="5"
                                 Spacing="4">
 
-                        <Button Command="{Binding ShowHomeCommand}"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Left"
-                                Padding="12">
+                        <ToggleButton Command="{Binding ShowHomeCommand}"
+                                      IsChecked="{Binding IsHomeSelected}"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Left"
+                                      Padding="12">
 
                             <StackPanel Orientation="Horizontal"
                                         Spacing="14">
 
-                                <TextBlock Text="⌂"
+                        <fluent:FluentIcon Icon="Home"
                                            Width="22"
                                            Height="22"
-                                           FontSize="22"
-                                           Foreground="#D1D5DB"/>
+                                           FontSize="20"
+                                          />
 
                                 <TextBlock Text="Dashboard"
                                            FontSize="14"
                                            IsVisible="{Binding IsPaneOpen}"
-                                           Foreground="#D1D5DB"
                                            VerticalAlignment="Center"/>
 
                             </StackPanel>
 
-                        </Button>
+                        </ToggleButton>
 
 
-                        <Button Command="{Binding ShowSettingsCommand}"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                HorizontalAlignment="Stretch"
-
-                                HorizontalContentAlignment="Left"
-                                Padding="12">
+                        <ToggleButton Command="{Binding ShowSettingsCommand}"
+                                      IsChecked="{Binding IsSettingsSelected}"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Left"
+                                      Padding="12">
 
                             <StackPanel Orientation="Horizontal"
                                         Spacing="14">
 
-                                <TextBlock Text="⚙"
+                                <fluent:FluentIcon Icon="Settings"
                                            Width="22"
                                            Height="22"
                                            FontSize="20"
-                                           Foreground="#D1D5DB"
                                            />
 
                                 <TextBlock Text="Settings"
                                            FontSize="14"
                                            IsVisible="{Binding IsPaneOpen}"
-                                           Foreground="#D1D5DB"
                                            VerticalAlignment="Center"/>
 
                             </StackPanel>
 
-                        </Button>
+                        </ToggleButton>
 
                     </StackPanel>
 
@@ -153,16 +148,15 @@
                     <!-- FOOTER -->
 
                     <StackPanel Grid.Row="2"
+                                IsVisible="{Binding IsPaneOpen}"
                                 Margin="16"
                                 Spacing="2">
 
                         <TextBlock Text="ScratchShield"
-                                   FontSize="10"
-                                   Foreground="#6B7280"/>
+                                   FontSize="10"/>
 
                         <TextBlock Text="v1.0.0"
-                                   FontSize="10"
-                                   Foreground="#4B5563"/>
+                                   FontSize="10"/>
 
                     </StackPanel>
 
@@ -179,7 +173,7 @@
 
         <SplitView.Content>
 
-            <Grid Background="#F5F7FA">
+            <Grid >
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="64"/>
@@ -190,8 +184,6 @@
                 <!-- TOP BAR -->
 
                 <Border Grid.Row="0"
-                        Background="White"
-                        BorderBrush="#E5E7EB"
                         BorderThickness="0,0,0,1">
 
                     <Grid ColumnDefinitions="Auto,*,Auto"
@@ -208,7 +200,6 @@
 
                             <TextBlock Text="☰"
                                        FontSize="22"
-                                       Foreground="#374151"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
 
@@ -221,7 +212,6 @@
                                    Text="ScratchShield"
                                    FontSize="18"
                                    FontWeight="SemiBold"
-                                   Foreground="#111827"
                                    VerticalAlignment="Center"
                                    IsVisible="{Binding IsPaneOpen, Converter={StaticResource InverseBooleanConverter}}"
                                    Margin="12,0"/>
@@ -237,7 +227,7 @@
                               HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Auto">
 
-                    <ContentControl Content="{Binding CurrentView}"/>
+                    <ContentControl Margin="10" Content="{Binding CurrentView}"/>
 
                 </ScrollViewer>
 

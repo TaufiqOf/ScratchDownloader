@@ -1,17 +1,125 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:ScratchShield.ViewModels"
-             x:DataType="vm:SettingsViewModel"
-             x:Class="ScratchShield.Views.SettingsView">
+             x:Class="ScratchShield.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
 
-    <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Spacing="10">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
 
-        <TextBlock Text="Settings" />
+        <StackPanel Spacing="24"
+                    MaxWidth="700">
 
-        <Button Content="Back"
-                Command="{Binding ShowHomeCommand }"/>
+            <!-- HEADER -->
 
-    </StackPanel>
+            <StackPanel Spacing="5">
+
+                <TextBlock Text="Settings"
+                           FontSize="30"
+                           FontWeight="Bold"/>
+
+                <TextBlock Text="Configure ScratchShield"
+                           Opacity="0.6"/>
+
+            </StackPanel>
+
+
+            <!-- APPEARANCE -->
+
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="12"
+                    Padding="20">
+
+                <StackPanel Spacing="16">
+
+                    <TextBlock Text="Appearance"
+                               FontSize="18"
+                               FontWeight="SemiBold"/>
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock Text="Theme"
+                                   FontSize="15"/>
+
+                        <ComboBox Width="150"
+                                  HorizontalAlignment="Left"
+                                  ItemsSource="{Binding Themes}"
+                                  SelectedItem="{Binding SelectedTheme}"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Border>
+
+
+            <!-- PROTECTION -->
+
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="12"
+                    Padding="20">
+
+                <StackPanel Spacing="18">
+
+                    <TextBlock Text="Protection"
+                               FontSize="18"
+                               FontWeight="SemiBold"/>
+
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock Text="Enable protection"
+                                   FontSize="15"/>
+
+                        <ToggleSwitch IsChecked="{Binding ProtectionEnabled}"
+                                      HorizontalAlignment="Left"/>
+
+                    </StackPanel>
+
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock Text="Notifications"
+                                   FontSize="15"/>
+
+                        <ToggleSwitch IsChecked="{Binding NotificationsEnabled}"
+                                      HorizontalAlignment="Left"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Border>
+
+
+            <!-- APPLICATION -->
+
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="12"
+                    Padding="20">
+
+                <StackPanel Spacing="16">
+
+                    <TextBlock Text="Application"
+                               FontSize="18"
+                               FontWeight="SemiBold"/>
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock Text="Start with system"
+                                   FontSize="15"/>
+
+                        <ToggleSwitch IsChecked="{Binding StartWithSystem}"
+                                      HorizontalAlignment="Left"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Border>
+
+        </StackPanel>
+
+    </ScrollViewer>
+
 </UserControl>

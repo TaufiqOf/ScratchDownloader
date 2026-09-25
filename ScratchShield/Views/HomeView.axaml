@@ -1,18 +1,49 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:ScratchShield.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
              x:Class="ScratchShield.Views.HomeView"
              x:DataType="vm:HomeViewModel">
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:HomeViewModel />
-    </Design.DataContext>
-    <Grid Background="Blue">
 
-        <Button Content="Settings" Command="{Binding ShowSettingsCommand }"/>
+    <Grid>
+
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="20">
+
+            <!-- Shield -->
+
+            <Border Width="110"
+                    Height="110"
+                    CornerRadius="55"
+                    HorizontalAlignment="Center">
+
+                <fluent:FluentIcon Icon="ShieldCheckmark"
+                                   Width="60"
+                                   Height="60"
+                                   FontSize="56"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+            </Border>
+
+
+            <!-- Status -->
+
+            <TextBlock Text="ScratchShield"
+                       FontSize="30"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+
+            <TextBlock Text="{Binding ProtectionStatus}"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"/>
+
+
+
+
+        </StackPanel>
+
     </Grid>
+
 </UserControl>

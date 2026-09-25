@@ -1,23 +1,72 @@
+using System.Collections.Generic;
+using System.Linq;
+using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using ScratchShield.Helper;
+using ScratchShield.Models;
+using ScratchShield.Services;
 
 namespace ScratchShield.ViewModels;
 
-public partial class SettingsViewModel : ViewModelBase,IViewModel
+public partial class SettingsViewModel : ViewModelBase, IViewModel
 {
-    private readonly MainViewModel _mainViewModel;
+    public IReadOnlyList<ThemeOption> Themes { get; } =
+    [
+        new("System", ThemeVariant.Default),
+        new("Light", ThemeVariant.Light),
+        new("Dark", ThemeVariant.Dark)
+    ];
 
-    public SettingsViewModel(MainViewModel mainViewModel)
+    [ObservableProperty]
+    private ThemeOption? selectedTheme;
+
+    [ObservableProperty]
+    private bool protectionEnabled =
+        SettingsService.Settings.ProtectionEnabled;
+
+    [ObservableProperty]
+    private bool notificationsEnabled =
+        SettingsService.Settings.NotificationsEnabled;
+
+    [ObservableProperty]
+    private bool startWithSystem =
+        SettingsService.Settings.StartWithSystem;
+
+    public SettingsViewModel()
     {
-        _mainViewModel = mainViewModel;
+        var savedTheme = SettingsService.Settings.GetThemeVariant();
+
+        SelectedTheme = Themes.FirstOrDefault(x =>
+            x.Variant == savedTheme);
     }
 
-    [RelayCommand]
-    private void ShowHome()
+    partial void OnSelectedThemeChanged(ThemeOption? value)
     {
-        _mainViewModel.ShowHome();
+        if (value is null)
+            return;
+
+        SettingsService.Settings.Theme = value.Variant;
+
+        ThemeManager.SetTheme(value.Variant);
+
+        SettingsService.Save();
     }
-    
-    
+
+    partial void OnProtectionEnabledChanged(bool value)
+    {
+        SettingsService.Settings.ProtectionEnabled = value;
+        SettingsService.Save();
+    }
+
+    partial void OnNotificationsEnabledChanged(bool value)
+    {
+        SettingsService.Settings.NotificationsEnabled = value;
+        SettingsService.Save();
+    }
+
+    partial void OnStartWithSystemChanged(bool value)
+    {
+        SettingsService.Settings.StartWithSystem = value;
+        SettingsService.Save();
+    }
 }
