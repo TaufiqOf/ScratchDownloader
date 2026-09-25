@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:ScratchShield.ViewModels"
+             x:DataType="vm:SettingsViewModel"
+             x:Class="ScratchShield.Views.SettingsView">
+
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="10">
+
+        <TextBlock Text="Settings" />
+
+        <Button Content="Back"
+                Command="{Binding ShowHomeCommand }"/>
+
+    </StackPanel>
+</UserControl>

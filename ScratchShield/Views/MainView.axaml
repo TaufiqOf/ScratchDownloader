@@ -1,18 +1,250 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:ScratchShield.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="clr-namespace:ScratchShield.ViewModels"
+             xmlns:views="clr-namespace:ScratchShield.Views"
+             xmlns:converter="clr-namespace:ScratchShield.Converter"
              x:Class="ScratchShield.Views.MainView"
              x:DataType="vm:MainViewModel">
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
 
-    <TextBox Text="{Binding Greeting}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+    <UserControl.Resources>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </UserControl.Resources>
+    <UserControl.DataTemplates>
+
+        <DataTemplate DataType="vm:HomeViewModel">
+            <views:HomeView />
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:SettingsViewModel">
+            <views:SettingsView />
+        </DataTemplate>
+
+    </UserControl.DataTemplates>
+
+
+    <SplitView IsPaneOpen="{Binding IsPaneOpen}"
+               DisplayMode="CompactInline"
+               OpenPaneLength="240"
+               CompactPaneLength="64"
+               PanePlacement="Left">
+
+        <!-- ========================= -->
+        <!-- SIDEBAR -->
+        <!-- ========================= -->
+
+        <SplitView.Pane>
+
+            <Border Background="#111827">
+
+                <Grid RowDefinitions="Auto,*,Auto">
+
+                    <!-- HEADER -->
+
+                    <StackPanel Grid.Row="0"
+                                Margin="5,20,5,30"
+                                Spacing="12">
+
+                        <Button Command="{Binding TogglePaneCommand}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="0"
+                                HorizontalAlignment="Left">
+
+                            <Border Width="44"
+                                    Height="44"
+                                    CornerRadius="12"
+                                    Background="#2563EB">
+
+                                <TextBlock Text="S"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+
+                            </Border>
+
+                        </Button>
+
+
+                        <!-- Title -->
+                        <StackPanel Spacing="2">
+
+                            <TextBlock Text="ScratchShield"
+                                       FontSize="20"
+                                       IsVisible="{Binding IsPaneOpen}"
+                                       FontWeight="SemiBold"
+                                       Foreground="White"/>
+
+                            <TextBlock Text="System Protection"
+                                       FontSize="11"
+                                       IsVisible="{Binding IsPaneOpen}"
+                                       Foreground="#9CA3AF"/>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+
+                    <!-- MENU -->
+
+                    <StackPanel Grid.Row="1"
+                                Margin="5"
+                                Spacing="4">
+
+                        <Button Command="{Binding ShowHomeCommand}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Left"
+                                Padding="12">
+
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="14">
+
+                                <TextBlock Text="⌂"
+                                           Width="22"
+                                           Height="22"
+                                           FontSize="22"
+                                           Foreground="#D1D5DB"/>
+
+                                <TextBlock Text="Dashboard"
+                                           FontSize="14"
+                                           IsVisible="{Binding IsPaneOpen}"
+                                           Foreground="#D1D5DB"
+                                           VerticalAlignment="Center"/>
+
+                            </StackPanel>
+
+                        </Button>
+
+
+                        <Button Command="{Binding ShowSettingsCommand}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                HorizontalAlignment="Stretch"
+
+                                HorizontalContentAlignment="Left"
+                                Padding="12">
+
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="14">
+
+                                <TextBlock Text="⚙"
+                                           Width="22"
+                                           Height="22"
+                                           FontSize="20"
+                                           Foreground="#D1D5DB"
+                                           />
+
+                                <TextBlock Text="Settings"
+                                           FontSize="14"
+                                           IsVisible="{Binding IsPaneOpen}"
+                                           Foreground="#D1D5DB"
+                                           VerticalAlignment="Center"/>
+
+                            </StackPanel>
+
+                        </Button>
+
+                    </StackPanel>
+
+
+                    <!-- FOOTER -->
+
+                    <StackPanel Grid.Row="2"
+                                Margin="16"
+                                Spacing="2">
+
+                        <TextBlock Text="ScratchShield"
+                                   FontSize="10"
+                                   Foreground="#6B7280"/>
+
+                        <TextBlock Text="v1.0.0"
+                                   FontSize="10"
+                                   Foreground="#4B5563"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Border>
+
+        </SplitView.Pane>
+
+
+        <!-- ========================= -->
+        <!-- CONTENT -->
+        <!-- ========================= -->
+
+        <SplitView.Content>
+
+            <Grid Background="#F5F7FA">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="64"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+
+                <!-- TOP BAR -->
+
+                <Border Grid.Row="0"
+                        Background="White"
+                        BorderBrush="#E5E7EB"
+                        BorderThickness="0,0,0,1">
+
+                    <Grid ColumnDefinitions="Auto,*,Auto"
+                          Margin="16,0">
+
+                        <!-- MENU BUTTON -->
+
+                        <Button Grid.Column="0"
+                                Command="{Binding TogglePaneCommand}"
+                                Width="44"
+                                Height="44"
+                                Background="Transparent"
+                                BorderThickness="0">
+
+                            <TextBlock Text="☰"
+                                       FontSize="22"
+                                       Foreground="#374151"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                        </Button>
+
+
+                        <!-- TITLE -->
+
+                        <TextBlock Grid.Column="1"
+                                   Text="ScratchShield"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="#111827"
+                                   VerticalAlignment="Center"
+                                   IsVisible="{Binding IsPaneOpen, Converter={StaticResource InverseBooleanConverter}}"
+                                   Margin="12,0"/>
+
+                    </Grid>
+
+                </Border>
+
+
+                <!-- PAGE -->
+
+                <ScrollViewer Grid.Row="1"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+
+                    <ContentControl Content="{Binding CurrentView}"/>
+
+                </ScrollViewer>
+
+            </Grid>
+
+        </SplitView.Content>
+
+    </SplitView>
+
 </UserControl>
