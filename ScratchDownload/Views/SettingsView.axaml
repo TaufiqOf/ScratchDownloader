@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:ScratchDownload.ViewModels"
+             x:Class="ScratchDownload.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+
+        <StackPanel Spacing="24"
+                    MaxWidth="700">
+
+            <!-- HEADER -->
+
+            <StackPanel Spacing="5">
+
+                <TextBlock Text="Settings"
+                           FontSize="30"
+                           FontWeight="Bold"/>
+
+                <TextBlock Text="Configure ScratchDownload"
+                           Opacity="0.6"/>
+
+            </StackPanel>
+
+
+            <!-- APPEARANCE -->
+
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="12"
+                    Padding="20">
+
+                <StackPanel Spacing="16">
+
+                    <TextBlock Text="Appearance"
+                               FontSize="18"
+                               FontWeight="SemiBold"/>
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock Text="Theme"
+                                   FontSize="15"/>
+
+                        <ComboBox Width="150"
+                                  HorizontalAlignment="Left"
+                                  ItemsSource="{Binding Themes}"
+                                  SelectedItem="{Binding SelectedTheme}"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Border>
+
+
+            <!-- PROTECTION -->
+
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="12"
+                    Padding="20">
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock Text="Notifications"
+                                   FontSize="15"/>
+
+                        <ToggleSwitch IsChecked="{Binding NotificationsEnabled}"
+                                      HorizontalAlignment="Left"/>
+
+                    </StackPanel>
+
+            </Border>
+
+
+            <!-- APPLICATION -->
+
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="12"
+                    Padding="20">
+
+                <StackPanel Spacing="16">
+
+                    <TextBlock Text="Application"
+                               FontSize="18"
+                               FontWeight="SemiBold"/>
+
+                    <StackPanel Spacing="8">
+
+                        <TextBlock Text="Start with system"
+                                   FontSize="15"/>
+
+                        <ToggleSwitch IsChecked="{Binding StartWithSystem}"
+                                      HorizontalAlignment="Left"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Border>
+
+        </StackPanel>
+
+    </ScrollViewer>
+
+</UserControl>
