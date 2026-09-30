@@ -1,41 +1,75 @@
+using System;
+using System.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Humanizer;
 
 namespace ScratchDownloader.Models;
 
-public abstract partial class DownloadItemViewModel : ObservableObject
+public enum DownloadStatus
 {
-    [ObservableProperty] public partial string FileName { get; set; } = string.Empty;
+    Queued,
+    Downloading,
+    Paused,
+    Stopped,
+    Completed,
+    Failed
+}
 
+public partial class DownloadItemViewModel : ObservableObject
+{
     [ObservableProperty] public partial string Url { get; set; } = string.Empty;
 
-    [ObservableProperty] public partial string Status { get; set; } = "Queued";
+    [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
 
     [ObservableProperty] public partial double Progress { get; set; }
 
-    [ObservableProperty] public partial string ProgressText { get; set; } = "0%";
+    [ObservableProperty] public partial string ProgressText { get; set; }
 
-    [ObservableProperty] public partial string Speed { get; set; } = "0 MB/s";
+    [ObservableProperty] public partial string Speed { get; set; }
 
     [ObservableProperty] public partial double SpeedValue { get; set; }
 
-    [ObservableProperty] public partial string Size { get; set; } = "0 MB";
-
     [ObservableProperty] public partial string Eta { get; set; } = "--";
 
-    [ObservableProperty] public partial long DownloadedBytes { get; set; }
+    [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
+
+    public DownloadItemViewModel(DownloadItemInformationViewModel downloadItemInformationViewModel)
+    {
+        DownloadItemInformation = downloadItemInformationViewModel;
+        UpdateDownloadStatus();
+    }
+
+    private void UpdateDownloadStatus()
+    {
+        ProgressText = $"{Progress:0.00}%";
+        Speed = ByteSize.FromBytes(SpeedValue).Humanize("0.00") + "/s";
+        if (DownloadItemInformation?.FileSizeBytes == null || DownloadItemInformation.FileSizeBytes == 0 ||
+            SpeedValue == 0)
+        {
+            Eta = "--";
+            return;
+        }
+
+        var totalBytes = DownloadItemInformation?.FileSizeBytes ?? 0;
+        var remainingBytes = totalBytes * (100 - Progress) / 100.0;
+        Eta = Progress < 100
+            ? TimeSpan.FromSeconds(remainingBytes / (SpeedValue > 0 ? SpeedValue : 1)).Humanize(2)
+            : "--";
+    }
+
 
     public void Resume()
     {
-        Status = "Downloading";
+        Status = DownloadStatus.Downloading;
     }
 
     public void Stop()
     {
-        Status = "Stopped";
+        Status = DownloadStatus.Stopped;
     }
 
     public void Pause()
     {
-        Status = "Paused";
+        Status = DownloadStatus.Paused;
     }
 }

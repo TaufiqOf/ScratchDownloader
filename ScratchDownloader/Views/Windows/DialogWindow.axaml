@@ -17,6 +17,9 @@
         <DataTemplate DataType="dialogControlViewModel:MessageDialogControlViewModel">
             <dialogControls:MessageDialogControl />
         </DataTemplate>
+        <DataTemplate DataType="dialogControlViewModel:AddUrlDialogControlViewModel">
+            <dialogControls:AddUrlDialogControl />
+        </DataTemplate>
     </Window.DataTemplates>
 
     <Grid>

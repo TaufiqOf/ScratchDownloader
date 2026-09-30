@@ -7,6 +7,8 @@ using ScratchDownloader.Services;
 using ScratchDownloader.ViewModels;
 using ScratchDownloader.Views;
 using ScratchDownloader.Views.Windows;
+using MainPageView = ScratchDownloader.Views.PageControls.MainPageView;
+using MainPageViewModel = ScratchDownloader.ViewModels.PageViewModel.MainPageViewModel;
 
 namespace ScratchDownloader;
 
@@ -29,7 +31,7 @@ public partial class App : Application
             {
                 DataContext = new MainPageViewModel()
             };
-            DialogManager.MainWindow = desktop.MainWindow;
+            ApplicationManager.MainWindow = desktop.MainWindow;
         }
         else if (ApplicationLifetime is IActivityApplicationLifetime singleViewFactoryApplicationLifetime)
         {

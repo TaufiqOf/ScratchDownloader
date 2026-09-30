@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using ScratchDownloader.Models;
 using ScratchDownloader.ViewModels;
 
 namespace ScratchDownloader.Views.Windows;

@@ -1,8 +1,9 @@
-﻿using System.Runtime.Versioning;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
 using ScratchDownloader;
+
+namespace ScratchShield.Browser;
 
 internal sealed partial class Program
 {

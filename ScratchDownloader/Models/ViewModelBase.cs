@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace ScratchDownloader.ViewModels;
+namespace ScratchDownloader.Models;
 
 public abstract class ViewModelBase : ObservableObject
 {

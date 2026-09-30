@@ -1,8 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:ScratchDownloader.ViewModels"
-             x:Class="ScratchDownloader.Views.SettingsPageView"
-             x:DataType="vm:SettingsPageViewModel">
+             xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
+             x:Class="ScratchDownloader.Views.PageControls.SettingsPageView"
+             x:DataType="pageViewModel:SettingsPageViewModel">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Disabled">

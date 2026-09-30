@@ -1,13 +1,15 @@
 using System;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Humanizer;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Models;
 using ScratchDownloader.ViewModels.DialogControlViewModel;
 
-namespace ScratchDownloader.ViewModels;
+namespace ScratchDownloader.ViewModels.PageViewModel;
 
 public partial class HomePageViewModel : ViewModelBase, IViewModel
 {
@@ -16,33 +18,23 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     public HomePageViewModel(MainPageViewModel mainPageViewModel)
     {
         _mainPageViewModel = mainPageViewModel;
-        Downloads = DownloadManager.Downloads;
+        DownloadManager = ApplicationManager.DownloadManager;
     }
+
+    public DownloadManager DownloadManager { get; set; }
 
     [ObservableProperty] public partial Models.DownloadItemViewModel? SelectedDownload { get; set; }
 
-    [ObservableProperty] public partial ObservableCollection<Models.DownloadItemViewModel> Downloads { get; set; }
-
-    public string DownloadSummary =>
-        $"{Downloads.Count} download{(Downloads.Count == 1 ? "" : "s")}";
-
-    public string ActiveCount =>
-        $"{Downloads.Count(x => x.Status == "Downloading")} active";
-
-    public string TotalSpeed =>
-        $"{Downloads.Where(x => x.Status == "Downloading")
-            .Sum(x => x.SpeedValue):N1} MB/s";
-
-    public string TotalDownloaded =>
-        $"{Downloads.Sum(x => x.DownloadedBytes):N0} MB";
-
 
     [RelayCommand]
-    private void New()
+    private async Task NewAsync()
     {
         try
         {
-            throw new NotImplementedException("New download dialog is not implemented yet.");
+            var newDownloadDialog = new AddUrlDialogControlViewModel();
+            newDownloadDialog.OkCommand = new RelayCommand(StartDownload);
+            await DialogManager.ShowMessage(newDownloadDialog, "New Download");
+            ApplicationManager.DownloadManager.Add(newDownloadDialog.DownloadItemInformation);
         }
         catch (Exception e)
         {
@@ -53,13 +45,17 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         // Open the new download dialog.
     }
 
+    private void StartDownload()
+    {
+    }
+
     [RelayCommand]
     private void ResumeAll()
     {
         try
         {
-            foreach (var download in Downloads)
-                download.Resume();
+            foreach (var download in DownloadManager.Downloads)
+                DownloadManager.Resume(download);
         }
         catch (Exception e)
         {
@@ -74,8 +70,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            foreach (var download in Downloads)
-                download.Pause();
+            foreach (var download in DownloadManager.Downloads)
+                DownloadManager.Pause(download);
         }
         catch (Exception e)
         {
@@ -91,8 +87,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            foreach (var download in Downloads)
-                download.Stop();
+            foreach (var download in DownloadManager.Downloads)
+                DownloadManager.Stop(download);
         }
         catch (Exception e)
         {

@@ -4,20 +4,22 @@
              xmlns:views="clr-namespace:ScratchDownloader.Views"
              xmlns:converter="clr-namespace:ScratchDownloader.Converter"
              xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
-             x:Class="ScratchDownloader.Views.MainPageView"
-             x:DataType="vm:MainPageViewModel">
+             xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
+             xmlns:pageControls="clr-namespace:ScratchDownloader.Views.PageControls"
+             x:Class="ScratchDownloader.Views.PageControls.MainPageView"
+             x:DataType="pageViewModel:MainPageViewModel">
 
     <UserControl.Resources>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </UserControl.Resources>
     <UserControl.DataTemplates>
 
-        <DataTemplate DataType="vm:HomePageViewModel">
-            <views:HomePageView />
+        <DataTemplate DataType="pageViewModel:HomePageViewModel">
+            <pageControls:HomePageView />
         </DataTemplate>
 
-        <DataTemplate DataType="vm:SettingsPageViewModel">
-            <views:SettingsPageView />
+        <DataTemplate DataType="pageViewModel:SettingsPageViewModel">
+            <pageControls:SettingsPageView />
         </DataTemplate>
 
     </UserControl.DataTemplates>

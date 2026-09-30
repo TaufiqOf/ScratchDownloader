@@ -6,7 +6,7 @@ using ScratchDownloader.Helper;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
 
-namespace ScratchDownloader.ViewModels;
+namespace ScratchDownloader.ViewModels.PageViewModel;
 
 public partial class SettingsPageViewModel : ViewModelBase, IViewModel
 {

@@ -1,8 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
+using ScratchDownloader.Models;
 
-namespace ScratchDownloader.ViewModels;
+namespace ScratchDownloader.ViewModels.PageViewModel;
 
 public partial class MainPageViewModel : ViewModelBase
 {
@@ -20,7 +21,7 @@ public partial class MainPageViewModel : ViewModelBase
 
     public MainPageViewModel()
     {
-        UpdateSelectedView(nameof(HomePageViewModel));
+        UpdateSelectedView(nameof(PageViewModel.HomePageViewModel));
     }
 
 
@@ -33,7 +34,7 @@ public partial class MainPageViewModel : ViewModelBase
     [RelayCommand]
     public void ShowHome()
     {
-        UpdateSelectedView(nameof(HomePageViewModel));
+        UpdateSelectedView(nameof(PageViewModel.HomePageViewModel));
     }
 
     [RelayCommand]
@@ -44,8 +45,8 @@ public partial class MainPageViewModel : ViewModelBase
     
     private void UpdateSelectedView(string viewName)
     {
-        CurrentView = viewName == nameof(HomePageViewModel) ? new HomePageViewModel(this) : new SettingsPageViewModel();
-        IsHomeSelected = viewName == nameof(HomePageViewModel);
+        CurrentView = viewName == nameof(PageViewModel.HomePageViewModel) ? new PageViewModel.HomePageViewModel(this) : new SettingsPageViewModel();
+        IsHomeSelected = viewName == nameof(PageViewModel.HomePageViewModel);
         IsSettingsSelected = viewName == nameof(SettingsPageViewModel);
     }
 }

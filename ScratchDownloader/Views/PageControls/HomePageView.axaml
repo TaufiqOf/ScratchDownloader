@@ -3,8 +3,9 @@
              xmlns:vm="using:ScratchDownloader.ViewModels"
              xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
              xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
-             x:Class="ScratchDownloader.Views.HomePageView"
-             x:DataType="vm:HomePageViewModel">
+             xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
+             x:Class="ScratchDownloader.Views.PageControls.HomePageView"
+             x:DataType="pageViewModel:HomePageViewModel">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
@@ -80,7 +81,7 @@
         <!-- DOWNLOAD DATA GRID -->
         <dg:DataGrid Grid.Row="2"
                      Margin="0,8"
-                     ItemsSource="{Binding Downloads}"
+                     ItemsSource="{Binding DownloadManager.Downloads}"
                      SelectedItem="{Binding SelectedDownload}"
                      AutoGenerateColumns="False"
                      IsReadOnly="True"
@@ -92,7 +93,7 @@
 
                 <!-- FILE -->
                 <dg:DataGridTextColumn Header="File"
-                                       Binding="{Binding FileName}"
+                                       Binding="{Binding DownloadItemInformation.FileName}"
                                        Width="3*" />
 
                 <!-- STATUS -->
@@ -134,7 +135,7 @@
 
                 <!-- SIZE -->
                 <dg:DataGridTextColumn Header="Size"
-                                       Binding="{Binding Size}"
+                                       Binding="{Binding DownloadItemInformation.FileSizeDisplay}"
                                        Width="110" />
 
                 <!-- ETA -->
@@ -156,16 +157,16 @@
                   ColumnSpacing="20">
 
                 <TextBlock Grid.Column="0"
-                           Text="{Binding DownloadSummary}" />
+                           Text="{Binding DownloadManager.DownloadSummary}" />
 
                 <TextBlock Grid.Column="1"
-                           Text="{Binding ActiveCount}" />
+                           Text="{Binding DownloadManager.ActiveCount}" />
 
                 <TextBlock Grid.Column="2"
-                           Text="{Binding TotalSpeed}" />
+                           Text="{Binding DownloadManager.TotalSpeed}" />
 
                 <TextBlock Grid.Column="3"
-                           Text="{Binding TotalDownloaded}" />
+                           Text="{Binding DownloadManager.TotalDownloadedSize}" />
 
             </Grid>
 
