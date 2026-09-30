@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ScratchDownloader.Views.Windows"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dialogControls="clr-namespace:ScratchDownloader.Views.DialogControls"
+        xmlns:dialogControlViewModel="clr-namespace:ScratchDownloader.ViewModels.DialogControlViewModel"
+        mc:Ignorable="d"
+        CanMaximize="False"
+        CanMinimize="False"
+        ShowInTaskbar="False"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        x:Class="ScratchDownloader.Views.Windows.DialogWindow">
+
+    <Window.DataTemplates>
+        <DataTemplate DataType="dialogControlViewModel:MessageDialogControlViewModel">
+            <dialogControls:MessageDialogControl />
+        </DataTemplate>
+    </Window.DataTemplates>
+
+    <Grid>
+        <!-- Bind Content to DataContext to activate DataTemplate lookup -->
+        <ContentControl x:Name="DialogContentControl" />
+    </Grid>
+</Window>

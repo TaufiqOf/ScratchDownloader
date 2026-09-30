@@ -12,6 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ScratchDownload\ScratchDownload.csproj" />
+        <ProjectReference Include="..\ScratchDownloader\ScratchDownloader.csproj" />
     </ItemGroup>
 </Project>

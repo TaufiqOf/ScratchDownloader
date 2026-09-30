@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
-using ScratchDownload;
+using ScratchDownloader;
 
 internal sealed partial class Program
 {

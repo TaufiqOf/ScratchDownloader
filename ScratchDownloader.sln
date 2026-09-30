@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScratchDownloader", "ScratchDownloader\ScratchDownloader.csproj", "{BD9AA017-032D-404E-92E5-CD1EEF00E295}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScratchDownloader.Android", "ScratchDownloader.Android\ScratchDownloader.Android.csproj", "{5936FB81-C682-40AB-9EA8-1242AF6BE52F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScratchDownloader.Desktop", "ScratchDownloader.Desktop\ScratchDownloader.Desktop.csproj", "{7C8F490C-CE42-41B6-8489-58A1C33922B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScratchDownload.Browser", "ScratchDownload.Browser\ScratchDownload.Browser.csproj", "{30140033-57D1-4D40-A14F-1693DC8F8C4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BD9AA017-032D-404E-92E5-CD1EEF00E295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD9AA017-032D-404E-92E5-CD1EEF00E295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD9AA017-032D-404E-92E5-CD1EEF00E295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD9AA017-032D-404E-92E5-CD1EEF00E295}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5936FB81-C682-40AB-9EA8-1242AF6BE52F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5936FB81-C682-40AB-9EA8-1242AF6BE52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5936FB81-C682-40AB-9EA8-1242AF6BE52F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5936FB81-C682-40AB-9EA8-1242AF6BE52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5936FB81-C682-40AB-9EA8-1242AF6BE52F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5936FB81-C682-40AB-9EA8-1242AF6BE52F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7C8F490C-CE42-41B6-8489-58A1C33922B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C8F490C-CE42-41B6-8489-58A1C33922B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C8F490C-CE42-41B6-8489-58A1C33922B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C8F490C-CE42-41B6-8489-58A1C33922B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30140033-57D1-4D40-A14F-1693DC8F8C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30140033-57D1-4D40-A14F-1693DC8F8C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30140033-57D1-4D40-A14F-1693DC8F8C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30140033-57D1-4D40-A14F-1693DC8F8C4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,198 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:ScratchDownloader.ViewModels"
+             xmlns:views="clr-namespace:ScratchDownloader.Views"
+             xmlns:converter="clr-namespace:ScratchDownloader.Converter"
+             xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
+             x:Class="ScratchDownloader.Views.MainPageView"
+             x:DataType="vm:MainPageViewModel">
+
+    <UserControl.Resources>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </UserControl.Resources>
+    <UserControl.DataTemplates>
+
+        <DataTemplate DataType="vm:HomePageViewModel">
+            <views:HomePageView />
+        </DataTemplate>
+
+        <DataTemplate DataType="vm:SettingsPageViewModel">
+            <views:SettingsPageView />
+        </DataTemplate>
+
+    </UserControl.DataTemplates>
+
+
+    <SplitView IsPaneOpen="{Binding IsPaneOpen}"
+               DisplayMode="CompactInline"
+               OpenPaneLength="200"
+               CompactPaneLength="55"
+               PanePlacement="Left">
+
+        <!-- ========================= -->
+        <!-- SIDEBAR -->
+        <!-- ========================= -->
+
+        <SplitView.Pane>
+
+            <Border>
+
+                <Grid RowDefinitions="Auto,*,Auto">
+
+                    <!-- HEADER -->
+
+                    <StackPanel Grid.Row="0"
+                                Margin="5,15,5,30"
+                                Spacing="12">
+
+                        <Button Command="{Binding TogglePaneCommand}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="0"
+                                HorizontalAlignment="Left">
+
+                            <Border Width="44"
+                                    Height="44"
+                                    CornerRadius="12">
+
+                                <TextBlock Text="S"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+
+                            </Border>
+
+                        </Button>
+
+
+                        <!-- Title -->
+                        <StackPanel Spacing="2">
+
+                            <TextBlock Text="ScratchDownloader"
+                                       FontSize="20"
+                                       IsVisible="{Binding IsPaneOpen}"
+                                       FontWeight="SemiBold"/>
+
+                            <TextBlock Text="System Protection"
+                                       FontSize="11"
+                                       IsVisible="{Binding IsPaneOpen}"/>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+
+                    <!-- MENU -->
+
+                    <StackPanel Grid.Row="1"
+                                Margin="5"
+                                Spacing="4">
+
+                        <ToggleButton Command="{Binding ShowHomeCommand}"
+                                      IsChecked="{Binding IsHomeSelected}"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Left"
+                                      Padding="12">
+
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="14">
+
+                        <fluent:FluentIcon Icon="Home"
+                                           Width="22"
+                                           Height="22"
+                                           FontSize="20"
+                                          />
+
+                                <TextBlock Text="Dashboard"
+                                           FontSize="14"
+                                           IsVisible="{Binding IsPaneOpen}"
+                                           VerticalAlignment="Center"/>
+
+                            </StackPanel>
+
+                        </ToggleButton>
+
+
+                        <ToggleButton Command="{Binding ShowSettingsCommand}"
+                                      IsChecked="{Binding IsSettingsSelected}"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Left"
+                                      Padding="12">
+
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="14">
+
+                                <fluent:FluentIcon Icon="Settings"
+                                           Width="22"
+                                           Height="22"
+                                           FontSize="20"
+                                           />
+
+                                <TextBlock Text="Settings"
+                                           FontSize="14"
+                                           IsVisible="{Binding IsPaneOpen}"
+                                           VerticalAlignment="Center"/>
+
+                            </StackPanel>
+
+                        </ToggleButton>
+
+                    </StackPanel>
+
+
+                    <!-- FOOTER -->
+
+                    <StackPanel Grid.Row="2"
+                                IsVisible="{Binding IsPaneOpen}"
+                                Margin="16"
+                                Spacing="2">
+
+                        <TextBlock Text="ScratchDownloader"
+                                   FontSize="10"/>
+
+                        <TextBlock Text="v1.0.0"
+                                   FontSize="10"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Border>
+
+        </SplitView.Pane>
+
+
+        <!-- ========================= -->
+        <!-- CONTENT -->
+        <!-- ========================= -->
+
+        <SplitView.Content>
+
+            <Grid >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- PAGE -->
+
+                <ScrollViewer Grid.Row="0"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+
+                    <ContentControl Margin="2" Content="{Binding CurrentView}"/>
+
+                </ScrollViewer>
+
+            </Grid>
+
+        </SplitView.Content>
+
+    </SplitView>
+
+</UserControl>
