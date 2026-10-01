@@ -13,7 +13,7 @@ public class StatusToIconConverter : IValueConverter
         {
             return status switch
             {
-                DownloadStatus.Downloading => FluentIcons.Common.Icon.DocumentArrowDown,
+                DownloadStatus.Downloading or DownloadStatus.Initializing => FluentIcons.Common.Icon.ArrowDownload,
                 DownloadStatus.Completed => FluentIcons.Common.Icon.CheckmarkCircle,
                 DownloadStatus.Failed => FluentIcons.Common.Icon.ErrorCircle,
                 DownloadStatus.Paused => FluentIcons.Common.Icon.PauseCircle,

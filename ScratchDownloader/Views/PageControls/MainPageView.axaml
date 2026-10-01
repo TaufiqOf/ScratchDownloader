@@ -35,7 +35,7 @@
 
     <SplitView IsPaneOpen="{Binding IsPaneOpen}"
                DisplayMode="CompactInline"
-               OpenPaneLength="200"
+               OpenPaneLength="220"
                CompactPaneLength="55"
                PanePlacement="Left">
 
@@ -173,7 +173,7 @@
                         <TextBlock Text="ScratchDownloader"
                                    FontSize="10" />
 
-                        <TextBlock Text="v1.0.0"
+                        <TextBlock Text="{Binding Version}"
                                    FontSize="10" />
 
                     </StackPanel>

@@ -54,6 +54,7 @@ public partial class DownloadItemViewModel : ObservableObject
         _downloadService.Uri = downloadItemInformationViewModel.Uri;
         _downloadService.DestinationFilePath = downloadItemInformationViewModel.SavePath;
         DownloadItemInformation = downloadItemInformationViewModel;
+        Progress.TotalBytes = downloadItemInformationViewModel.FileSizeBytes;
     }
 
     private void DownloadServiceOnErrorOccurred(object? sender, string e)

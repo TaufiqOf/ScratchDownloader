@@ -14,7 +14,8 @@ public partial class MainPageViewModel : ViewModelBase
 
     [ObservableProperty] 
     private bool _isPaneOpen;
-
+    [ObservableProperty]
+    private string _version = "v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3);
     private readonly Dictionary<string, IViewModel> _views = new();
 
     public MainPageViewModel()

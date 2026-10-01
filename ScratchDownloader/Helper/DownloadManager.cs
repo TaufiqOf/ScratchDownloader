@@ -65,8 +65,17 @@ public partial class DownloadManager : ViewModelBase
 
     private void DownloadItemViewModelOnStatusChanged(object? sender, DownloadStatus e)
     {
-        NotificationManager.Info($"Downloaded {e}",
-            $"Download {e}: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+        if(e == DownloadStatus.Completed)
+        {
+            NotificationManager.Success($"Downloaded {e}",
+                $"Download {e}: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+        }
+        if(e == DownloadStatus.Failed)
+        {
+            NotificationManager.Error($"Downloaded {e}",
+                $"Download {e}: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+        }
+        
 
         UpdateStatus();
     }

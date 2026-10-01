@@ -27,6 +27,7 @@ public partial class DownloadProgress : ViewModelBase
     [ObservableProperty] public partial long BytesDownloaded { get; set; }
     [ObservableProperty] public partial string ProgressText { get; set; } = "0.00%";
     [ObservableProperty] public partial string Speed { get; set; } = "0.00 B/s";
+    [ObservableProperty] public partial string FileSizeDisplay { get; set; } = "0/0 MB";
     [ObservableProperty] public partial string Eta { get; set; }
     [ObservableProperty] public partial ConcurrentDictionary<int, SegmentProgress> SegmentProgress { get; set; } = new ConcurrentDictionary<int, SegmentProgress>();
 
@@ -39,9 +40,14 @@ public partial class DownloadProgress : ViewModelBase
     {
         Speed = ByteSize.FromBytes(value).Humanize("0.00") + "/s";
     }
+    partial void OnTotalBytesChanged(long value)
+    {
+        FileSizeDisplay = $"{ByteSize.FromBytes(BytesDownloaded).Humanize("0.0")}/{ByteSize.FromBytes(value).Humanize("0.00")}";
+    }
 
     partial void OnBytesDownloadedChanged(long value)
     {
+        FileSizeDisplay = $"{ByteSize.FromBytes(value).Humanize("0.0")}/{ByteSize.FromBytes(TotalBytes).Humanize("0.00")}";
         UpdateEta();
     }
     private void UpdateEta()

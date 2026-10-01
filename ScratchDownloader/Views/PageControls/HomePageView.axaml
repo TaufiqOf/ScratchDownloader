@@ -66,6 +66,7 @@
                     <fluent:FluentIcon Icon="Play"
                                        VerticalAlignment="Center" />
                     <TextBlock Text="Resume All"
+                               IsVisible="False"
                                VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
@@ -82,6 +83,7 @@
                     <fluent:FluentIcon Icon="Pause"
                                        VerticalAlignment="Center" />
                     <TextBlock Text="Pause All"
+                               IsVisible="False"
                                VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
@@ -98,6 +100,7 @@
                     <fluent:FluentIcon Icon="Stop"
                                        VerticalAlignment="Center" />
                     <TextBlock Text="Stop All"
+                               IsVisible="False"
                                VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
@@ -229,8 +232,8 @@
 
                 <!-- SIZE -->
                 <dg:DataGridTextColumn Header="Size"
-                                       Binding="{Binding DownloadItemInformation.FileSizeDisplay}"
-                                       Width="110" />
+                                       Binding="{Binding Progress.FileSizeDisplay}"
+                                       Width="170" />
 
                 <!-- ETA -->
                 <dg:DataGridTextColumn Header="ETA"
