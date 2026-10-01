@@ -1,22 +1,37 @@
+using System;
+using System.ComponentModel;
+using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FluentIcons.Common;
+using ScratchDownloader.Services;
 
 namespace ScratchDownloader.Models;
 
 public partial class Category : ObservableObject
 {
-    public string Id { get; set; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public bool IsActive { get; set; } = true;
-    public string Extension { get; set; } = string.Empty;
-    public Icon Icon { get; set; } = Icon.Document;
-    public string Folder { get; set; } = string.Empty;
-    
-    [ObservableProperty] private bool isExpanded;
+    [ObservableProperty] public partial string Id { get; set; } = string.Empty;
+    [ObservableProperty] public partial string Name { get; set; } = string.Empty;
+    [ObservableProperty] public partial string Description { get; set; } = string.Empty;
+    [ObservableProperty] public partial bool IsActive { get; set; } = true;
+    [ObservableProperty] public partial string Extension { get; set; } = string.Empty;
+    [ObservableProperty] public partial Icon Icon { get; set; } = Icon.Document;
+    [ObservableProperty] public partial string Folder { get; set; } = string.Empty;
+    [ObservableProperty] public partial string? QueueId { get; set; }
 
-    public override bool Equals(object? obj)
+    [JsonIgnore]
+    [ObservableProperty]
+    public partial Queue? SelectedQueue { get; set; }
+
+    [ObservableProperty] public partial bool IsExpanded { get; set; }
+
+    public Category()
     {
-        return Id == (obj as Category)?.Id;
+    }
+
+
+    partial void OnQueueIdChanged(string? value)
+    {
+        Console.WriteLine(
+            $"QueueId changed to: {value}");
     }
 }

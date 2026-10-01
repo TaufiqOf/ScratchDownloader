@@ -16,8 +16,9 @@
                        FontSize="30"
                        FontWeight="Bold" />
 
-            <TextBlock Text="Categories auto-sort downloads by file extension. Each one owns the folder its files land in."
-                       Opacity="0.6" />
+            <TextBlock
+                Text="Categories auto-sort downloads by file extension. Each one owns the folder its files land in."
+                Opacity="0.6" />
         </StackPanel>
 
         <Border BorderThickness="2"
@@ -26,7 +27,7 @@
 
         <!-- CATEGORIES -->
         <StackPanel Spacing="16">
-            
+
             <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                     CornerRadius="12"
                     Padding="20">
@@ -100,9 +101,18 @@
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
                                                    Opacity="0.5" />
-                                        <ComboBox HorizontalAlignment="Stretch"
-                                                  SelectedItem="Main">
-                                            <ComboBoxItem Content="Main" />
+                                        <ComboBox
+                                            ItemsSource="{Binding $parent[UserControl].((pageViewModel:CategoryPageViewModel)DataContext).Queues}"
+                                            SelectedItem="{Binding SelectedQueue, Mode=TwoWay}"
+                                            HorizontalAlignment="Stretch">
+
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate x:DataType="models:Queue">
+                                                    <TextBlock Text="{Binding Name}"
+                                                               VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+
                                         </ComboBox>
                                     </StackPanel>
 

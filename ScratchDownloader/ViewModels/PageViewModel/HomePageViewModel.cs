@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using Humanizer;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Models;
+using ScratchDownloader.Services;
 using ScratchDownloader.ViewModels.DialogControlViewModel;
 
 namespace ScratchDownloader.ViewModels.PageViewModel;
@@ -23,7 +24,18 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
 
     public DownloadManager DownloadManager { get; set; }
 
-    [ObservableProperty] public partial Models.DownloadItemViewModel? SelectedDownload { get; set; }
+    [ObservableProperty]
+    public partial ObservableCollection<DownloadItemViewModel> FilteredDownloads { get; set; } =
+        new ObservableCollection<DownloadItemViewModel>();
+
+
+    [ObservableProperty] public partial DownloadItemViewModel? SelectedDownload { get; set; }
+    [ObservableProperty] public partial ObservableCollection<Queue> Queues { get; set; }
+    [ObservableProperty] public partial ObservableCollection<Category> Categories { get; set; }
+
+    [ObservableProperty] public partial Queue SelectedQueue { get; set; }
+    [ObservableProperty] public partial Category SelectedCategory { get; set; }
+    [ObservableProperty] public partial string SearchText { get; set; }
 
 
     [RelayCommand]
@@ -34,8 +46,6 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
             var newDownloadDialog = new AddUrlDialogControlViewModel();
             var okCommand = new RelayCommand(() => StartDownload(newDownloadDialog));
             await DialogManager.ShowMessage(newDownloadDialog, "New Download", okCommand, null);
-
-            
         }
         catch (Exception e)
         {
@@ -49,6 +59,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     private void StartDownload(AddUrlDialogControlViewModel newDownloadDialog)
     {
         ApplicationManager.DownloadManager.Add(newDownloadDialog.DownloadItemInformation);
+        UpdateFilter();
     }
 
     [RelayCommand]
@@ -57,7 +68,10 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         try
         {
             foreach (var download in DownloadManager.Downloads)
-                DownloadManager.Resume(download);
+                if (download.Status == DownloadStatus.Paused)
+                    DownloadManager.Resume(download);
+                else if(download.Status == DownloadStatus.Queued)
+                    DownloadManager.Start(download);
         }
         catch (Exception e)
         {
@@ -72,7 +86,6 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            throw new NotImplementedException("Pause all downloads is not implemented yet.");
             foreach (var download in DownloadManager.Downloads)
                 DownloadManager.Pause(download);
         }
@@ -99,7 +112,6 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
                         DownloadManager.Stop(download);
                 }),
                 "No");
-
         }
         catch (Exception e)
         {
@@ -110,4 +122,45 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     }
 
 
+    partial void OnSelectedQueueChanged(Queue value)
+    {
+        UpdateFilter();
+    }
+
+    partial void OnSelectedCategoryChanged(Category value)
+    {
+        UpdateFilter();
+    }
+
+    partial void OnSearchTextChanged(string value)
+    {
+        UpdateFilter();
+    }
+
+    private void UpdateFilter()
+    {
+        FilteredDownloads = new ObservableCollection<DownloadItemViewModel>(
+            DownloadManager.Downloads.Where(d =>
+                d.DownloadItemInformation != null &&
+                (SelectedCategory.Id == "all" ||
+                 d.DownloadItemInformation.Category.Id == SelectedCategory.Id) &&
+                (SelectedQueue.Id == "all" ||
+                 d.DownloadItemInformation.Queue.Id == SelectedQueue.Id)
+                && (string.IsNullOrWhiteSpace(SearchText) ||
+                    d.DownloadItemInformation.FileName.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
+            )
+        );
+    }
+
+    public override void OnNavigatedTo()
+    {
+        Categories = new ObservableCollection<Category>(SettingsService.Settings.Categories.Values);
+        Queues = new ObservableCollection<Queue>(SettingsService.Settings.Queues.Values);
+        Categories.Insert(0, new Category { Name = "All Category", Id = "all" });
+        Queues.Insert(0, new Queue { Name = "All Queue", Id = "all" });
+        SelectedCategory = Categories.FirstOrDefault();
+        SelectedQueue = Queues.FirstOrDefault();
+        UpdateFilter();
+        base.OnNavigatedTo();
+    }
 }

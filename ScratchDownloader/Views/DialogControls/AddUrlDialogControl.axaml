@@ -220,11 +220,19 @@
 
                         <ComboBox ItemsSource="{Binding Queues}"
                                   SelectedItem="{Binding DownloadItemInformation.Queue}"
-                                  HorizontalAlignment="Stretch" />
+                                  HorizontalAlignment="Stretch" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="models:Queue">
+                                    <Grid ColumnDefinitions="Auto,*">
+                                        <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
 
 
-                    <!-- Segments -->
+                    <!-- Max Concurrent Downloads -->
                     <StackPanel Grid.Column="2"
                                 Spacing="6">
 

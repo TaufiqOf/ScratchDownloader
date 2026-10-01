@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using Avalonia.Styling;
 using ScratchDownloader.Models;
@@ -39,6 +40,11 @@ public static class SettingsService
             });
 
         File.WriteAllText(_settingsPath, json);
+        Settings.Categories.Values.ToList().ForEach(category =>
+        {
+            Console.WriteLine($" Saving QueueId: {category.QueueId} CategoryId: {category.Id} Name: {category.Name} Folder: {category.Folder} Extension: {category.Extension}");
+        });
+
     }
 
     private static AppSettings Load()

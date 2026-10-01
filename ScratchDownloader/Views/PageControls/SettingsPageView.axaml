@@ -120,12 +120,6 @@
                 </StackPanel>
             </StackPanel>
 
-            <Border BorderThickness="2"
-                    BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    Margin="5,5" />
-
-           
-
         </StackPanel>
 
     </ScrollViewer>

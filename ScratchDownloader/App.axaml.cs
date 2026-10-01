@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -55,6 +56,10 @@ public partial class App : Application
                     (sender, args) => { _mainWindow.Hide(); };
                 
             }
+            SettingsService.Settings.Categories.Values.ToList().ForEach(category =>
+            {
+                Console.WriteLine($" Loading QueueId: {category.QueueId} CategoryId: {category.Id} Name: {category.Name} Folder: {category.Folder} Extension: {category.Extension}");
+            });
 
             ApplicationManager.MainWindow = desktop.MainWindow;
         }

@@ -43,5 +43,9 @@
       <Compile Update="Views\DialogControls\MessageDialogControl.axaml.cs">
         <DependentUpon>MessageDialogControl.axaml.axaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\PageControls\QueuePageView.axaml.cs">
+        <DependentUpon>QueuePageView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

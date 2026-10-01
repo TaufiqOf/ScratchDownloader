@@ -4,35 +4,51 @@
              xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
              xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
+             xmlns:models="clr-namespace:System.Collections;assembly=System.Collections.NonGeneric"
+             xmlns:models1="clr-namespace:ScratchDownloader.Models"
              x:Class="ScratchDownloader.Views.PageControls.HomePageView"
              x:DataType="pageViewModel:HomePageViewModel">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
 
         <!-- TOOLBAR -->
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal"
-                    Spacing="2">
+        <Grid Grid.Row="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <Button ToolTip.Tip="New"
+            <Button Grid.Column="0"
+                    ToolTip.Tip="New"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
-                    Background="{DynamicResource AccentButtonBackground }"
+                    Background="{DynamicResource AccentButtonBackground}"
                     Command="{Binding NewCommand}">
                 <StackPanel Orientation="Horizontal"
                             Spacing="5"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-                    <fluent:FluentIcon Icon="AddCircle" VerticalAlignment="Center" />
-                    <TextBlock Text="New Download" VerticalAlignment="Center" />
+                    <fluent:FluentIcon Icon="AddCircle"
+                                       VerticalAlignment="Center" />
+                    <TextBlock Text="New Download"
+                               VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
-            <Border BorderThickness="1"
+            <Border Grid.Column="1"
+                    BorderThickness="1"
                     BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                     Margin="5,5" />
 
-            <Button ToolTip.Tip="Resume"
+            <Button Grid.Column="2"
+                    ToolTip.Tip="Resume"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Command="{Binding ResumeAllCommand}">
@@ -40,12 +56,15 @@
                             Spacing="5"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-                    <fluent:FluentIcon Icon="Play" VerticalAlignment="Center" />
-                    <TextBlock Text="Resume All" VerticalAlignment="Center" />
+                    <fluent:FluentIcon Icon="Play"
+                                       VerticalAlignment="Center" />
+                    <TextBlock Text="Resume All"
+                               VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
-            <Button ToolTip.Tip="Pause All"
+            <Button Grid.Column="3"
+                    ToolTip.Tip="Pause All"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Command="{Binding PauseAllCommand}">
@@ -53,12 +72,15 @@
                             Spacing="5"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-                    <fluent:FluentIcon Icon="Pause" VerticalAlignment="Center" />
-                    <TextBlock Text="Pause All" VerticalAlignment="Center" />
+                    <fluent:FluentIcon Icon="Pause"
+                                       VerticalAlignment="Center" />
+                    <TextBlock Text="Pause All"
+                               VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
-            <Button ToolTip.Tip="Stop All"
+            <Button Grid.Column="4"
+                    ToolTip.Tip="Stop All"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Command="{Binding StopAllCommand}">
@@ -68,12 +90,57 @@
                             VerticalAlignment="Center">
                     <fluent:FluentIcon Icon="Stop"
                                        VerticalAlignment="Center" />
-                    <TextBlock Text="Stop All" VerticalAlignment="Center" />
+                    <TextBlock Text="Stop All"
+                               VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
-        </StackPanel>
+            <Border Grid.Column="5"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Margin="5,5" />
 
+            <ComboBox Grid.Column="6"
+                      ItemsSource="{Binding Categories}"
+                      Width="200"
+                      VerticalAlignment="Center"
+                      SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="models1:Category">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <fluent:FluentIcon Icon="{Binding Icon}" VerticalAlignment="Center" />
+                            <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate> 
+            </ComboBox>
+
+            <ComboBox Grid.Column="6"
+                      ItemsSource="{Binding Queues}"
+                      Width="200"
+                      Margin="205,0,0,0"
+                      VerticalAlignment="Center"
+                      SelectedItem="{Binding SelectedQueue, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="models1:Queue">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Border Grid.Column="6"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Margin="5,5" />
+            <!-- Search -->
+            <TextBox Grid.Column="8"
+                     Width="250"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Center"
+                     PlaceholderText="Search..."
+                     Text="{Binding SearchText, Mode=TwoWay}" />
+        </Grid>
         <Border Grid.Row="1"
                 BorderThickness="2"
                 BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
@@ -82,7 +149,7 @@
         <!-- DOWNLOAD DATA GRID -->
         <dg:DataGrid Grid.Row="2"
                      Margin="0,8"
-                     ItemsSource="{Binding DownloadManager.Downloads}"
+                     ItemsSource="{Binding FilteredDownloads}"
                      SelectedItem="{Binding SelectedDownload}"
                      AutoGenerateColumns="False"
                      IsReadOnly="True"

@@ -8,7 +8,7 @@ using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Humanizer;
 using ScratchDownloader.Models;
-using DownloadItemViewModel = ScratchDownloader.Models.DownloadItemViewModel;
+using ScratchDownloader.Services;
 
 namespace ScratchDownloader.Helper;
 
@@ -56,8 +56,9 @@ public partial class DownloadManager : ViewModelBase
             throw new ArgumentNullException(nameof(downloadItemInformationViewModel));
         }
 
-        var downloadItemViewModel = new DownloadItemViewModel(downloadItemInformationViewModel);
+        var downloadItemViewModel = new DownloadItemViewModel(downloadItemInformationViewModel, new DirectDownloadService());
         Downloads.Add(downloadItemViewModel);
+        downloadItemViewModel.Start();
         UpdateStatus();
     }
 
@@ -90,5 +91,10 @@ public partial class DownloadManager : ViewModelBase
     public void Stop(DownloadItemViewModel download)
     {
         download.Stop();
+    }
+
+    public void Start(DownloadItemViewModel download)
+    {
+        download.Start();
     }
 }

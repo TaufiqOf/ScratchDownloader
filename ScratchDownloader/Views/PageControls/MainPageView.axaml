@@ -18,12 +18,17 @@
         <DataTemplate DataType="pageViewModel:HomePageViewModel">
             <pageControls:HomePageView />
         </DataTemplate>
+        
+        <DataTemplate DataType="pageViewModel:CategoryPageViewModel">
+            <pageControls:CategoryPageView />
+        </DataTemplate>
+        
+        <DataTemplate DataType="pageViewModel:QueuePageViewModel">
+            <pageControls:QueuePageView />
+        </DataTemplate>
 
         <DataTemplate DataType="pageViewModel:SettingsPageViewModel">
             <pageControls:SettingsPageView />
-        </DataTemplate>
-        <DataTemplate DataType="pageViewModel:CategoryPageViewModel">
-            <pageControls:CategoryPageView />
         </DataTemplate>
     </UserControl.DataTemplates>
 
@@ -125,7 +130,21 @@
                                            VerticalAlignment="Center" />
                             </StackPanel>
                         </ToggleButton>
-
+                        <!-- Queue -->
+                        <ToggleButton Command="{Binding ShowPageCommand}"
+                                      CommandParameter="QueuePageViewModel"
+                                      IsChecked="{Binding CurrentView, Converter={StaticResource TypeMatchConverter}, ConverterParameter=QueuePageViewModel, Mode=OneWay}"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Left"
+                                      Padding="12">
+                            <StackPanel Orientation="Horizontal" Spacing="14">
+                                <fluent:FluentIcon Icon="DocumentQueue" Width="22" Height="22" FontSize="20" />
+                                <TextBlock Text="Queue" FontSize="14" IsVisible="{Binding IsPaneOpen}"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ToggleButton>
                         <!-- Settings -->
                         <ToggleButton Command="{Binding ShowPageCommand}"
                                       CommandParameter="SettingsPageViewModel"

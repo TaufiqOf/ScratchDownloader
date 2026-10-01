@@ -1,0 +1,215 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:ScratchDownloader.Models"
+             xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
+             xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
+             xmlns:converter="clr-namespace:ScratchDownloader.Converter"
+             mc:Ignorable="d"
+             x:DataType="pageViewModel:QueuePageViewModel"
+             x:Class="ScratchDownloader.Views.PageControls.QueuePageView">
+
+    <UserControl.Resources>
+        <converter:QueueDayToggleArgsConverter x:Key="QueueDayToggleArgsConverter" />
+        <converter:DayIsCheckedConverter x:Key="DayIsCheckedConverter" />
+    </UserControl.Resources>
+
+    <StackPanel MaxWidth="800" Spacing="16" Margin="10">
+
+        <!-- HEADER WITH ADD QUEUE BUTTON -->
+        <Grid ColumnDefinitions="*,Auto">
+            <StackPanel Grid.Column="0" Spacing="5">
+                <TextBlock Text="Queue"
+                           FontSize="30"
+                           FontWeight="Bold" />
+
+                <TextBlock Text="Manage how your downloads use the internet, when they start, what happens when they finish, and more."
+                           Opacity="0.6" />
+            </StackPanel>
+
+            <!-- Add Queue Button -->
+
+        </Grid>
+
+        <Border BorderThickness="2"
+                BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                Margin="5,5" />
+
+        <!-- QUEUES LIST -->
+        <StackPanel Spacing="16">
+            <Button Grid.Column="1"
+                    Command="{Binding AddQueueCommand}"
+                    VerticalAlignment="Center"
+                    Padding="12,8">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <fluent:FluentIcon Icon="Add" FontSize="16" />
+                    <TextBlock Text="New Queue" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    CornerRadius="12"
+                    Padding="20">
+
+                <ItemsControl ItemsSource="{Binding Queues}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="models:Queue">
+                            <Expander HorizontalAlignment="Stretch"
+                                      IsExpanded="{Binding IsExpanded, Mode=TwoWay}"
+                                      Margin="0,0,0,12"
+                                      CornerRadius="12"
+                                      Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
+
+                                <!-- CARD HEADER WITH DELETE BUTTON -->
+                                <Expander.Header>
+                                    <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center" Margin="0,5">
+
+                                        <!-- Icon Container -->
+                                        <Border Grid.Column="0"
+                                                CornerRadius="8"
+                                                Padding="10"
+                                                Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                                                Margin="0,0,12,0">
+                                            <fluent:FluentIcon Icon="DocumentQueue" FontSize="20" />
+                                        </Border>
+
+                                        <!-- Title / Editable Name -->
+                                        <TextBox Grid.Column="1"
+                                                 Text="{Binding Name}"
+                                                 FontSize="15"
+                                                 FontWeight="SemiBold"
+                                                 BorderThickness="0"
+                                                 Background="Transparent"
+                                                 VerticalAlignment="Center" />
+
+                                        <!-- Delete Queue Button (Header) -->
+                                        <Button Grid.Column="2"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Padding="8"
+                                                Margin="8,0,0,0"
+                                                Command="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).DeleteQueueCommand}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip.Tip="Delete Queue">
+                                            <fluent:FluentIcon Icon="Delete" FontSize="18" Foreground="#E53935" />
+                                        </Button>
+                                    </Grid>
+                                </Expander.Header>
+
+                                <!-- EXPANDED CARD BODY -->
+                                <StackPanel Spacing="16" Margin="10">
+
+                                    <!-- MAX CONCURRENT DOWNLOADS & SPEED LIMIT -->
+                                    <Grid ColumnDefinitions="*,16,*,16,*">
+                                        <StackPanel Grid.Column="0" Spacing="6">
+                                            <TextBlock Text="SEGMENTS"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"
+                                                       Opacity="0.5" />
+                                            <ComboBox ItemsSource="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).SegmentOptions}"
+                                                      SelectedItem="{Binding Segments}"
+                                                      HorizontalAlignment="Stretch" />
+                                        </StackPanel>
+                     
+                                        <StackPanel Grid.Column="2" Spacing="6">
+                                            <TextBlock Text="MAX SPEED LIMIT (KB/s, 0 = UNLIMITED)"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"
+                                                       Opacity="0.5" />
+                                            <NumericUpDown Value="{Binding MaxSpeedLimit}"
+                                                           Minimum="0"
+                                                           Increment="50"
+                                                           FormatString="0 KB/s" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="4" Spacing="6">
+                                            <TextBlock Text="MAX CONCURRENT DOWNLOADS"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"
+                                                       Opacity="0.5" />
+                                            <NumericUpDown Value="{Binding MaxConcurrentDownloads}"
+                                                           HorizontalAlignment="Stretch" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <!-- START TIME -->
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="START TIME"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Opacity="0.5" />
+                                        <TimePicker SelectedTime="{Binding StartTime}"
+                                                    HorizontalAlignment="Left" />
+                                    </StackPanel>
+
+                                    <!-- SCHEDULE DAYS -->
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="SCHEDULE DAYS"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Opacity="0.5" />
+                                        <ItemsControl ItemsSource="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).QueueDays}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" Spacing="6" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <ToggleButton Content="{Binding}"
+                                                                  Padding="10,6"
+                                                                  Command="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).ToggleDayCommand}">
+
+                                                        <!-- MultiBinding for IsChecked -->
+                                                        <ToggleButton.IsChecked>
+                                                            <MultiBinding Converter="{StaticResource DayIsCheckedConverter}" Mode="OneWay">
+                                                                <!-- 1. The Queue's DaysOfWeek collection -->
+                                                                <Binding Path="$parent[ItemsControl].((models:Queue)DataContext).DaysOfWeek" />
+                                                                <!-- 2. The current day enum value in this item -->
+                                                                <Binding />
+                                                            </MultiBinding>
+                                                        </ToggleButton.IsChecked>
+
+                                                        <!-- Command parameter to trigger toggle -->
+                                                        <ToggleButton.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource QueueDayToggleArgsConverter}">
+                                                                <Binding Path="$parent[ItemsControl].DataContext" />
+                                                                <Binding />
+                                                            </MultiBinding>
+                                                        </ToggleButton.CommandParameter>
+                                                    </ToggleButton>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+
+                                    <!-- AFTER COMPLETE -->
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="ON COMPLETION ACTION"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Opacity="0.5" />
+                                        <ComboBox HorizontalAlignment="Stretch"
+                                                  ItemsSource="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).OperationModes}"
+                                                  SelectedItem="{Binding AfterComplete}" />
+                                    </StackPanel>
+
+                                    <!-- FOOTER ACTIONS -->
+                                    <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+                                        <Button Grid.Column="1"
+                                                Content="Reset Parameters"
+                                                BorderThickness="0"
+                                                Command="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).ResetQueueCommand}"
+                                                CommandParameter="{Binding}" />
+                                    </Grid>
+
+                                </StackPanel>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </Border>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

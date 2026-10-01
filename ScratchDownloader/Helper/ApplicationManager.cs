@@ -115,6 +115,13 @@ public static class ApplicationManager
         }
     }
 
+    public static Dictionary<string, Queue> Queues { get; set; } = new Dictionary<string, Queue>
+    {
+        { "Main", new Queue() { Id = "Main", Name = "Main" } },
+        { "Secondary", new Queue() { Id = "Secondary", Name = "Secondary" } },
+
+    };
+
     public static TopLevel? GetTopLevel()
     {
         return TopLevel.GetTopLevel(MainWindow);

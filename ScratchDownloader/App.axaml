@@ -41,7 +41,16 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
         <Style Selector="ComboBox">
-            <Setter Property="Height" Value="36"/>
+            <Setter Property="Height" Value="31"/>
+        </Style>
+        <Style Selector="TimePicker">
+            <Setter Property="Height" Value="31"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Height" Value="31"/>
+        </Style>
+        <Style Selector="NumericUpDown">
+            <Setter Property="Height" Value="31"/>
         </Style>
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
         <FluentTheme />

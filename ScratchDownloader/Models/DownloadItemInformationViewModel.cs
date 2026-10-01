@@ -25,10 +25,10 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     [ObservableProperty] public partial string FileSizeDisplay { get; set; } = "0 MB";
 
     [ObservableProperty] public partial string? SavePath { get; set; } = string.Empty;
-    [ObservableProperty] public partial Category Category { get; set; } = ApplicationManager.Categories["Other"];
-    [ObservableProperty] public partial string Queue { get; set; } = "Main";
+    [ObservableProperty] public partial Category Category { get; set; } = SettingsService.Settings.Categories["Other"];
+    [ObservableProperty] public partial Queue Queue { get; set; } = SettingsService.Settings.Queues["Main"];
     [ObservableProperty] public partial int Segments { get; set; } = 8;
-
+    public Uri Uri { get; set; }
     public async Task GetDataFromUrl(string uri, CancellationToken cancellationToken = default)
     {
         
@@ -44,7 +44,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
         response.EnsureSuccessStatusCode();
 
         var finalUri = response.RequestMessage?.RequestUri ?? new Uri(uri);
-
+        Uri = finalUri;
         var fileName = GetFileName(response, finalUri);
 
         FileName = fileName;
@@ -64,13 +64,11 @@ public partial class DownloadItemInformationViewModel : ObservableObject
             FileSizeDisplay = "Unknown size";
         }
         var category = SettingsService.Settings.Categories.Values.FirstOrDefault(q => q.Extension.Contains(FileExtension,StringComparison.OrdinalIgnoreCase));
-        Category = category ?? ApplicationManager.Categories["Other"];
-        SavePath = Path.Combine(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.UserProfile),
-            "Downloads",
-            fileName);
+        Category = category ?? SettingsService.Settings.Categories["Other"];
+        Queue = SettingsService.Settings.Queues[Category.QueueId];
+        SavePath = Path.Combine(Category.Folder,FileName);
     }
+
 
 
 
@@ -110,5 +108,17 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     private static string FormatFileSize(long bytes)
     {
         return ByteSize.FromBytes(bytes).Humanize("#.##");
-    }   
+    }
+
+    partial void OnCategoryChanged(Category value)
+    {
+        SavePath = Path.Combine(Category.Folder,FileName);
+        Queue = SettingsService.Settings.Queues[Category.QueueId];
+    }
+    
+
+    partial void OnQueueChanged(Queue value)
+    {
+        Segments = Queue.MaxConcurrentDownloads;
+    }
 }

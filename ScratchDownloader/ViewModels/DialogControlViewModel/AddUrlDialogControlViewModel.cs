@@ -12,6 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Models;
 using Humanizer;
+using ScratchDownloader.Services;
 
 namespace ScratchDownloader.ViewModels.DialogControlViewModel;
 
@@ -43,14 +44,9 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
         !IsDetecting;
 
 
-    public ObservableCollection<Category> Categories { get; } = new(ApplicationManager.Categories.Values);
+    public ObservableCollection<Category> Categories { get; } = new(SettingsService.Settings.Categories.Values);
 
-    public ObservableCollection<string> Queues { get; } =
-    [
-        "Main",
-        "Queue 1",
-        "Queue 2"
-    ];
+    public ObservableCollection<Queue> Queues { get; } = new(SettingsService.Settings.Queues.Values);
 
     public ObservableCollection<int> SegmentOptions { get; } =
     [
@@ -65,10 +61,12 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
 
     public AddUrlDialogControlViewModel()
     {
-        DownloadItemInformation.Category = ApplicationManager.Categories["Other"];
-        DownloadItemInformation.Queue = "Main";
+        DownloadItemInformation.Category = SettingsService.Settings.Categories["Other"];
+        DownloadItemInformation.Queue = SettingsService.Settings.Queues["Main"];
         DownloadItemInformation.Segments = 8;
+        
     }
+
 
 
     partial void OnUrlChanged(string? value)
