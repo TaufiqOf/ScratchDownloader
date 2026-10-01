@@ -33,11 +33,11 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Margin="10">
-                <Button Content="{Binding CancelButtonText}"
+                <Button Content="{Binding NegativeButtonText}"
                         Command="{Binding NegativeCommand}"
                         MinWidth="75"
                         IsVisible="{Binding IsCancelButtonVisible}" />
-                <Button Content="{Binding OkButtonText}"
+                <Button Content="{Binding PositiveButtonText}"
                         Command="{Binding PositiveCommand}"
                         MinWidth="75"
                         Margin="5,0,0,0" />

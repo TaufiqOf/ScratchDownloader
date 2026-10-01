@@ -72,6 +72,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
+            throw new NotImplementedException("Pause all downloads is not implemented yet.");
             foreach (var download in DownloadManager.Downloads)
                 DownloadManager.Pause(download);
         }
@@ -89,8 +90,16 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            foreach (var download in DownloadManager.Downloads)
-                DownloadManager.Stop(download);
+            DialogManager.ShowMessage(MessageDialogType.Warning, "Stop All Downloads",
+                "Are you sure you want to stop all downloads? This action cannot be undone.",
+                "Yes",
+                new RelayCommand(() =>
+                {
+                    foreach (var download in DownloadManager.Downloads)
+                        DownloadManager.Stop(download);
+                }),
+                "No");
+
         }
         catch (Exception e)
         {

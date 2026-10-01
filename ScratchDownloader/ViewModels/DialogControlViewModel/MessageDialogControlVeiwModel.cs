@@ -10,20 +10,20 @@ public partial class MessageDialogControlViewModel : ADialogViewModel
 {
     [ObservableProperty] public partial Icon Icon { get; set; }
     [ObservableProperty] public partial string? Message { get; set; }
-    [ObservableProperty] public partial string? CancelButtonText { get; set; }
-    [ObservableProperty] public partial string? OkButtonText { get; set; }
+    [ObservableProperty] public partial string? NegativeButtonText { get; set; }
+    [ObservableProperty] public partial string? PositiveButtonText { get; set; }
     [ObservableProperty] public partial bool IsCancelButtonVisible { get; set; }
 
 
     public MessageDialogControlViewModel(MessageDialogType messageDialogType, 
         string? message,
-        string? cancelButtonText = "Cancel", 
-        string? okButtonText = "OK", 
+        string? positiveButtonText = "OK", 
+        string? negativeButtonText = "Cancel", 
         bool isCancelButtonVisible = false)
     {
         Message = message;
-        CancelButtonText = cancelButtonText;
-        OkButtonText = okButtonText;
+        NegativeButtonText = negativeButtonText;
+        PositiveButtonText = positiveButtonText;
         IsCancelButtonVisible = isCancelButtonVisible;
 
         switch (messageDialogType)

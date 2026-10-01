@@ -21,11 +21,12 @@ public static class DialogManager
         MessageDialogType type, 
         string title, 
         string message,
+        string positiveText = "OK",
         IRelayCommand? positiveCommand = null, 
+        string negativeText = "",
         IRelayCommand? negativeCommand = null)
     {
-        var dialogControlViewModel = new MessageDialogControlViewModel(type, message);
-
+        var dialogControlViewModel = new MessageDialogControlViewModel(type, message, positiveText, negativeText, !string.IsNullOrWhiteSpace(negativeText));
         var dialog = new DialogWindow()
         {
             Title = title,
