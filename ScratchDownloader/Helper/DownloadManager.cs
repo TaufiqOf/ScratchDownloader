@@ -15,7 +15,7 @@ namespace ScratchDownloader.Helper;
 public partial class DownloadManager : ViewModelBase
 {
     public ObservableCollection<DownloadItemViewModel> Downloads { get; } = new();
-    
+
     [ObservableProperty] public partial string DownloadSummary { get; set; }
 
     [ObservableProperty] public partial string ActiveCount { get; set; }
@@ -46,7 +46,6 @@ public partial class DownloadManager : ViewModelBase
         var newDownloadItemInformationViewModel = new DownloadItemInformationViewModel();
         await newDownloadItemInformationViewModel.GetDataFromUrl(url, cancellationToken);
         return newDownloadItemInformationViewModel;
-        
     }
 
     public void Add(DownloadItemInformationViewModel downloadItemInformationViewModel)
@@ -56,9 +55,19 @@ public partial class DownloadManager : ViewModelBase
             throw new ArgumentNullException(nameof(downloadItemInformationViewModel));
         }
 
-        var downloadItemViewModel = new DownloadItemViewModel(downloadItemInformationViewModel, new DirectDownloadService());
+        var downloadItemViewModel =
+            new DownloadItemViewModel(downloadItemInformationViewModel, new DirectDownloadService());
         Downloads.Add(downloadItemViewModel);
         downloadItemViewModel.Start();
+        downloadItemViewModel.StatusChanged += DownloadItemViewModelOnStatusChanged;
+        UpdateStatus();
+    }
+
+    private void DownloadItemViewModelOnStatusChanged(object? sender, DownloadStatus e)
+    {
+        NotificationManager.Info($"Downloaded {e}",
+            $"Download {e}: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+
         UpdateStatus();
     }
 
@@ -68,7 +77,7 @@ public partial class DownloadManager : ViewModelBase
                           $"| Paused: {Downloads.Count(d => d.Status == DownloadStatus.Paused)} " +
                           $"| Completed: {Downloads.Count(d => d.Status == DownloadStatus.Completed)} " +
                           $"| Failed: {Downloads.Count(d => d.Status == DownloadStatus.Failed)}";
-        
+
         ActiveCount = $"Active: {Downloads.Count(d => d.Status == DownloadStatus.Downloading)}";
         TotalSpeed =
             $"Total Speed: {ByteSize.FromBytes(Downloads.Sum(d => d.Progress.BytesPerSecond))

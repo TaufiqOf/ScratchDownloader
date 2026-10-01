@@ -15,6 +15,7 @@ namespace ScratchDownloader.Services;
 public class DirectDownloadService : IDownloadService
 {
     public DownloadProgress Progress { get; set; } = new DownloadProgress();
+    public event EventHandler<string>? ErrorOccurred;
 
     private readonly HttpClient _httpClient;
     private CancellationTokenSource? _cts;
@@ -37,45 +38,59 @@ public class DirectDownloadService : IDownloadService
 
     public async Task StartAsync(CancellationToken cancellationToken = default)
     {
-        ValidateInputs();
-        _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        try
+        {
+            ValidateInputs();
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-        string? directory = Path.GetDirectoryName(DestinationFilePath);
-        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
-
-        DownloadMetadata metadata;
-        Initializing?.Invoke(this, EventArgs.Empty);
-        if (File.Exists(MetadataFilePath))
-        {
-            metadata = LoadMetadata();
-        }
-        else
-        {
-            if (File.Exists(DestinationFilePath))
+            string? directory = Path.GetDirectoryName(DestinationFilePath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
-                File.Delete(DestinationFilePath);
+                Directory.CreateDirectory(directory);
             }
 
-            metadata = await InitializeMetadataAsync(_cts.Token);
-        }
+            DownloadMetadata metadata;
+            Initializing?.Invoke(this, EventArgs.Empty);
+            if (File.Exists(MetadataFilePath))
+            {
+                metadata = LoadMetadata();
+            }
+            else
+            {
+                if (File.Exists(DestinationFilePath))
+                {
+                    File.Delete(DestinationFilePath);
+                }
 
-        Downloading?.Invoke(this, EventArgs.Empty);
-        await ProcessDownloadAsync(metadata, _cts.Token);
+                metadata = await InitializeMetadataAsync(_cts.Token);
+            }
+
+            Downloading?.Invoke(this, EventArgs.Empty);
+            await ProcessDownloadAsync(metadata, _cts.Token);
+        }
+        catch (Exception e)
+        {
+            ErrorOccurred?.Invoke(this, e.Message);
+        }
     }
 
     public async Task ResumeAsync(CancellationToken cancellationToken = default)
     {
-        if (!File.Exists(MetadataFilePath))
+        try
         {
-            throw new FileNotFoundException("No saved state found to resume from.", MetadataFilePath);
-        }
+            if (!File.Exists(MetadataFilePath))
+            {
+                throw new FileNotFoundException("No saved state found to resume from.", MetadataFilePath);
+            }
 
-        _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        DownloadMetadata metadata = LoadMetadata();
-        await ProcessDownloadAsync(metadata, _cts.Token);
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            DownloadMetadata metadata = LoadMetadata();
+            await ProcessDownloadAsync(metadata, _cts.Token);
+        }
+        catch (Exception e)
+        {
+            ErrorOccurred?.Invoke(this, e.Message);
+        }
     }
 
     private async Task ProcessDownloadAsync(DownloadMetadata metadata, CancellationToken token)
@@ -126,7 +141,11 @@ public class DirectDownloadService : IDownloadService
         }
         catch (OperationCanceledException)
         {
-            throw;
+            //throw;
+        }
+        catch (Exception e)
+        {
+            ErrorOccurred?.Invoke(this, e.Message);
         }
     }
 

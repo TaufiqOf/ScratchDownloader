@@ -42,6 +42,7 @@ public partial class App : Application
             };
             desktop.MainWindow = desktopMainWindow;
             _mainWindow = desktopMainWindow;
+            NotificationManager.Initialize(desktop.MainWindow);
             desktop.ShutdownMode =
                 ShutdownMode.OnExplicitShutdown;
 

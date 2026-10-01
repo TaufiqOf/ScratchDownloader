@@ -23,6 +23,8 @@ public enum DownloadStatus
 
 public partial class DownloadItemViewModel : ObservableObject
 {
+    public event EventHandler<DownloadStatus>? StatusChanged;
+    
     CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
 
@@ -31,9 +33,6 @@ public partial class DownloadItemViewModel : ObservableObject
         new Dictionary<int, SegmentProgress>();
 
     [ObservableProperty] public partial DownloadProgress Progress { get; set; }  = new DownloadProgress();
-
-   
-
   
 
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
@@ -50,25 +49,36 @@ public partial class DownloadItemViewModel : ObservableObject
         _downloadService.Initializing += DownloadServiceOnInitializing;
         _downloadService.Downloading += DownloadServiceOnDownloading;
         _downloadService.Completed += DownloadServiceOnCompleted;
+        _downloadService.ErrorOccurred += DownloadServiceOnErrorOccurred;
         _downloadService.SegmentCount = downloadItemInformationViewModel.Segments;
         _downloadService.Uri = downloadItemInformationViewModel.Uri;
         _downloadService.DestinationFilePath = downloadItemInformationViewModel.SavePath;
         DownloadItemInformation = downloadItemInformationViewModel;
     }
 
+    private void DownloadServiceOnErrorOccurred(object? sender, string e)
+    {
+        Progress.BytesPerSecond = 0;
+        StatusChanged?.Invoke(this, DownloadStatus.Failed);
+        Status = DownloadStatus.Failed;
+    }
+
     private void DownloadServiceOnDownloading(object? sender, EventArgs e)
     {
+        StatusChanged?.Invoke(this, DownloadStatus.Downloading);
         Status = DownloadStatus.Downloading;
     }
 
     private void DownloadServiceOnInitializing(object? sender, EventArgs e)
     {
+        StatusChanged?.Invoke(this, DownloadStatus.Initializing);
         Status = DownloadStatus.Initializing;
     }
 
     private void DownloadServiceOnCompleted(object? sender, EventArgs e)
     {
         Progress.BytesPerSecond = 0;
+        StatusChanged?.Invoke(this, DownloadStatus.Completed);
         Status = DownloadStatus.Completed;
     }
 

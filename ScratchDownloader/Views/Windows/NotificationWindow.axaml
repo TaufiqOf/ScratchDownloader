@@ -1,0 +1,59 @@
+<Window xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ScratchDownloader.Views.Windows"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Width="400"
+             SizeToContent="Height"
+             WindowStartupLocation="Manual"
+             ShowInTaskbar="False"
+             Topmost="True"
+             ShowActivated="False"
+             CanMinimize="False"
+             CanMaximize="False"
+             WindowDecorations="None"
+             Title="ScratchDownloader"
+             Background="Transparent"
+             xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
+             x:Class="ScratchDownloader.Views.Windows.NotificationWindow">
+
+    <Border
+        PointerPressed="OnPointerPressed"
+        Padding="15"
+        BorderThickness="2"
+        BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+        CornerRadius="8">
+
+        <Grid
+            ColumnDefinitions="Auto,*"
+            RowDefinitions="Auto,Auto">
+
+            <fluent:FluentIcon
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="0"
+                x:Name="Icon"
+                Width="48"
+                Height="48"
+                FontSize="48"
+                Margin="0,0,12,0" />
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                x:Name="TitleTextBlock"
+                FontWeight="Bold" />
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                x:Name="MessageTextBlock"
+                TextWrapping="Wrap"
+                Margin="0,5,0,0" />
+
+        </Grid>
+
+    </Border>
+
+</Window>

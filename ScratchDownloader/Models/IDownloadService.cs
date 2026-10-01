@@ -8,6 +8,7 @@ namespace ScratchDownloader.Models;
 public interface IDownloadService
 { 
     DownloadProgress Progress { get; set; }
+    event EventHandler<string> ErrorOccurred;
     event EventHandler Completed;
     event EventHandler Initializing;
     event EventHandler? Downloading;
