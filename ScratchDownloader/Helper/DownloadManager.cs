@@ -71,7 +71,7 @@ public partial class DownloadManager : ViewModelBase
         
         ActiveCount = $"Active: {Downloads.Count(d => d.Status == DownloadStatus.Downloading)}";
         TotalSpeed =
-            $"Total Speed: {ByteSize.FromBytes(Downloads.Sum(d => d.SpeedValue))
+            $"Total Speed: {ByteSize.FromBytes(Downloads.Sum(d => d.Progress.BytesPerSecond))
                 .Humanize("0.00")}/s";
         TotalDownloadedSize =
             $"Total Size: {ByteSize.FromBytes(Downloads.Sum(d => d.DownloadItemInformation?.FileSizeBytes ?? 0))

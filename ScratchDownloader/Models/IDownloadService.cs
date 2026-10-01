@@ -7,8 +7,10 @@ namespace ScratchDownloader.Models;
 
 public interface IDownloadService
 { 
-    event EventHandler<DownloadProgress> ProgressChanged;
+    DownloadProgress Progress { get; set; }
     event EventHandler Completed;
+    event EventHandler Initializing;
+    event EventHandler? Downloading;
     int SegmentCount { get; set; }
     Uri Uri { get; set; }
     string? DestinationFilePath { get; set; }

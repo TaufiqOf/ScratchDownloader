@@ -6,13 +6,17 @@
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
              xmlns:models="clr-namespace:System.Collections;assembly=System.Collections.NonGeneric"
              xmlns:models1="clr-namespace:ScratchDownloader.Models"
+             xmlns:converter="clr-namespace:ScratchDownloader.Converter"
+             xmlns:control="clr-namespace:ScratchDownloader.Views.Control"
              x:Class="ScratchDownloader.Views.PageControls.HomePageView"
              x:DataType="pageViewModel:HomePageViewModel">
-
+    <UserControl.Resources>
+        <converter:IndexToGradientBrushConverter x:Key="IndexToBrushConverter" TotalSegments="8" />
+    </UserControl.Resources>
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
 
         <!-- TOOLBAR -->
-        <Grid Grid.Row="0" >
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -109,10 +113,11 @@
                     <DataTemplate x:DataType="models1:Category">
                         <Grid ColumnDefinitions="Auto,*">
                             <fluent:FluentIcon Icon="{Binding Icon}" VerticalAlignment="Center" />
-                            <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                            <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}"
+                                       VerticalAlignment="Center" />
                         </Grid>
                     </DataTemplate>
-                </ComboBox.ItemTemplate> 
+                </ComboBox.ItemTemplate>
             </ComboBox>
 
             <ComboBox Grid.Column="6"
@@ -124,7 +129,8 @@
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="models1:Queue">
                         <Grid ColumnDefinitions="Auto,*">
-                            <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                            <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}"
+                                       VerticalAlignment="Center" />
                         </Grid>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
@@ -170,35 +176,38 @@
                                        Width="120" />
 
                 <!-- PROGRESS -->
-                <dg:DataGridTemplateColumn Header="Progress"
-                                           Width="250">
-
-                    <dg:DataGridTemplateColumn.CellTemplate>
+                <DataGridTemplateColumn Header="Progress" Width="300">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-
                             <Grid RowDefinitions="Auto,Auto"
                                   Margin="4">
 
+                                <!-- Overall Progress -->
                                 <ProgressBar Grid.Row="0"
                                              Minimum="0"
                                              Maximum="100"
-                                             Value="{Binding Progress}" />
+                                             Height="6"
+                                             Value="{Binding Progress.Progress}" />
 
+                                <!-- Segment Progress -->
+                                <control:SegmentProgressControl Grid.Row="1"
+                                                                Margin="0,6,0,0"
+                                                                Segments="{Binding Progress.SegmentProgress}" />
+
+                                <!-- Status Text -->
                                 <TextBlock Grid.Row="1"
-                                           Text="{Binding ProgressText}"
+                                           Text="{Binding Progress.ProgressText}"
                                            FontSize="11"
-                                           Margin="0,3,0,0" />
+                                           Margin="0,5,0,0" />
 
                             </Grid>
-
                         </DataTemplate>
-                    </dg:DataGridTemplateColumn.CellTemplate>
-
-                </dg:DataGridTemplateColumn>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <!-- SPEED -->
                 <dg:DataGridTextColumn Header="Speed"
-                                       Binding="{Binding Speed}"
+                                       Binding="{Binding Progress.Speed}"
                                        Width="120" />
 
                 <!-- SIZE -->
@@ -208,7 +217,7 @@
 
                 <!-- ETA -->
                 <dg:DataGridTextColumn Header="ETA"
-                                       Binding="{Binding Eta}"
+                                       Binding="{Binding Progress.Eta}"
                                        Width="100" />
 
             </dg:DataGrid.Columns>
