@@ -7,75 +7,76 @@
              x:Class="ScratchDownloader.Views.PageControls.HomePageView"
              x:DataType="pageViewModel:HomePageViewModel">
 
-    <Grid RowDefinitions="Auto,Auto,*,Auto">
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
 
         <!-- TOOLBAR -->
-      <StackPanel Grid.Row="0"
-            Orientation="Horizontal"
-            Spacing="2">
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    Spacing="2">
 
-    <Button ToolTip.Tip="New"
-            VerticalContentAlignment="Center"
-            HorizontalContentAlignment="Center"
-            Command="{Binding NewCommand}">
-        <StackPanel Orientation="Horizontal" 
-                    Spacing="5" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center">
-            <fluent:FluentIcon Icon="New" VerticalAlignment="Center" />
-            <TextBlock Text="New Url" VerticalAlignment="Center" />
+            <Button ToolTip.Tip="New"
+                    VerticalContentAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Background="{DynamicResource AccentButtonBackground }"
+                    Command="{Binding NewCommand}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="5"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <fluent:FluentIcon Icon="AddCircle" VerticalAlignment="Center" />
+                    <TextBlock Text="New Download" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <Border BorderThickness="1"
+                    BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Margin="5,5" />
+
+            <Button ToolTip.Tip="Resume"
+                    VerticalContentAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding ResumeAllCommand}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="5"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <fluent:FluentIcon Icon="Play" VerticalAlignment="Center" />
+                    <TextBlock Text="Resume All" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <Button ToolTip.Tip="Pause All"
+                    VerticalContentAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding PauseAllCommand}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="5"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <fluent:FluentIcon Icon="Pause" VerticalAlignment="Center" />
+                    <TextBlock Text="Pause All" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <Button ToolTip.Tip="Stop All"
+                    VerticalContentAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding StopAllCommand}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="5"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <fluent:FluentIcon Icon="Stop"
+                                       VerticalAlignment="Center" />
+                    <TextBlock Text="Stop All" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
         </StackPanel>
-    </Button>
-
-    <Border BorderThickness="1"
-            BorderBrush="Gray"
-            Margin="5,0" />
-
-    <Button ToolTip.Tip="Resume"
-            VerticalContentAlignment="Center"
-            HorizontalContentAlignment="Center"
-            Command="{Binding ResumeAllCommand}">
-        <StackPanel Orientation="Horizontal" 
-                    Spacing="5" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center">
-            <fluent:FluentIcon Icon="Play" VerticalAlignment="Center" />
-            <TextBlock Text="Resume All" VerticalAlignment="Center" />
-        </StackPanel>
-    </Button>
-
-    <Button ToolTip.Tip="Pause All"
-            VerticalContentAlignment="Center"
-            HorizontalContentAlignment="Center"
-            Command="{Binding PauseAllCommand}">
-        <StackPanel Orientation="Horizontal" 
-                    Spacing="5" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center">
-            <fluent:FluentIcon Icon="Pause" VerticalAlignment="Center" />
-            <TextBlock Text="Pause All" VerticalAlignment="Center" />
-        </StackPanel>
-    </Button>
-
-    <Button ToolTip.Tip="Stop All"
-            VerticalContentAlignment="Center"
-            HorizontalContentAlignment="Center"
-            Command="{Binding StopAllCommand}">
-        <StackPanel Orientation="Horizontal" 
-                    Spacing="5" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center">
-            <fluent:FluentIcon Icon="RecordStop" 
-                               VerticalAlignment="Center" />
-            <TextBlock Text="Stop All" VerticalAlignment="Center" />
-        </StackPanel>
-    </Button>
-
-</StackPanel>
 
         <Border Grid.Row="1"
-                BorderThickness="1"
-                BorderBrush="Gray"
+                BorderThickness="2"
+                BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                 Margin="0,5,0,0" />
 
         <!-- DOWNLOAD DATA GRID -->
@@ -103,7 +104,7 @@
 
                 <!-- PROGRESS -->
                 <dg:DataGridTemplateColumn Header="Progress"
-                                           Width="180">
+                                           Width="250">
 
                     <dg:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -149,9 +150,9 @@
 
         <!-- STATUS BAR -->
         <Border Grid.Row="3"
-                BorderThickness="0,1,0,0"
-                BorderBrush="Gray"
-                Padding="10,6">
+                BorderThickness="2"
+                BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                Margin="0,5,0,0">
 
             <Grid ColumnDefinitions="*,Auto,Auto,Auto"
                   ColumnSpacing="20">
@@ -169,7 +170,6 @@
                            Text="{Binding DownloadManager.TotalDownloadedSize}" />
 
             </Grid>
-
         </Border>
 
     </Grid>

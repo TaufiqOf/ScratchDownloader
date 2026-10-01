@@ -1,10 +1,13 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Humanizer;
+using ScratchDownloader.Helper;
+using ScratchDownloader.Services;
 
 namespace ScratchDownloader.Models;
 
@@ -22,9 +25,9 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     [ObservableProperty] public partial string FileSizeDisplay { get; set; } = "0 MB";
 
     [ObservableProperty] public partial string? SavePath { get; set; } = string.Empty;
-    [ObservableProperty] public partial string Category { get; set; } = "Other";
+    [ObservableProperty] public partial Category Category { get; set; } = ApplicationManager.Categories["Other"];
     [ObservableProperty] public partial string Queue { get; set; } = "Main";
-    [ObservableProperty] public partial string Segments { get; set; } = "8 connections";
+    [ObservableProperty] public partial int Segments { get; set; } = 8;
 
     public async Task GetDataFromUrl(string uri, CancellationToken cancellationToken = default)
     {
@@ -60,7 +63,8 @@ public partial class DownloadItemInformationViewModel : ObservableObject
             FileSizeBytes = 0;
             FileSizeDisplay = "Unknown size";
         }
-
+        var category = SettingsService.Settings.Categories.Values.FirstOrDefault(q => q.Extension.Contains(FileExtension,StringComparison.OrdinalIgnoreCase));
+        Category = category ?? ApplicationManager.Categories["Other"];
         SavePath = Path.Combine(
             Environment.GetFolderPath(
                 Environment.SpecialFolder.UserProfile),

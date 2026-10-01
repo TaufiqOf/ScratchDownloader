@@ -11,6 +11,7 @@
 
     <UserControl.Resources>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converter:TypeMatchConverter x:Key="TypeMatchConverter" />
     </UserControl.Resources>
     <UserControl.DataTemplates>
 
@@ -21,7 +22,9 @@
         <DataTemplate DataType="pageViewModel:SettingsPageViewModel">
             <pageControls:SettingsPageView />
         </DataTemplate>
-
+        <DataTemplate DataType="pageViewModel:CategoryPageViewModel">
+            <pageControls:CategoryPageView />
+        </DataTemplate>
     </UserControl.DataTemplates>
 
 
@@ -61,7 +64,7 @@
                                            FontSize="24"
                                            FontWeight="Bold"
                                            HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"/>
+                                           VerticalAlignment="Center" />
 
                             </Border>
 
@@ -74,11 +77,11 @@
                             <TextBlock Text="ScratchDownloader"
                                        FontSize="20"
                                        IsVisible="{Binding IsPaneOpen}"
-                                       FontWeight="SemiBold"/>
+                                       FontWeight="SemiBold" />
 
                             <TextBlock Text="System Protection"
                                        FontSize="11"
-                                       IsVisible="{Binding IsPaneOpen}"/>
+                                       IsVisible="{Binding IsPaneOpen}" />
 
                         </StackPanel>
 
@@ -91,59 +94,53 @@
                                 Margin="5"
                                 Spacing="4">
 
-                        <ToggleButton Command="{Binding ShowHomeCommand}"
-                                      IsChecked="{Binding IsHomeSelected}"
+                        <!-- Home / Dashboard -->
+                        <ToggleButton Command="{Binding ShowPageCommand}"
+                                      CommandParameter="HomePageViewModel"
+                                      IsChecked="{Binding CurrentView, Converter={StaticResource TypeMatchConverter}, ConverterParameter=HomePageViewModel, Mode=OneWay}"
                                       Background="Transparent"
                                       BorderThickness="0"
                                       HorizontalAlignment="Stretch"
                                       HorizontalContentAlignment="Left"
                                       Padding="12">
-
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="14">
-
-                        <fluent:FluentIcon Icon="Home"
-                                           Width="22"
-                                           Height="22"
-                                           FontSize="20"
-                                          />
-
-                                <TextBlock Text="Dashboard"
-                                           FontSize="14"
-                                           IsVisible="{Binding IsPaneOpen}"
-                                           VerticalAlignment="Center"/>
-
+                            <StackPanel Orientation="Horizontal" Spacing="14">
+                                <fluent:FluentIcon Icon="Home" Width="22" Height="22" FontSize="20" />
+                                <TextBlock Text="Dashboard" FontSize="14" IsVisible="{Binding IsPaneOpen}"
+                                           VerticalAlignment="Center" />
                             </StackPanel>
-
                         </ToggleButton>
 
-
-                        <ToggleButton Command="{Binding ShowSettingsCommand}"
-                                      IsChecked="{Binding IsSettingsSelected}"
+                        <!-- Category -->
+                        <ToggleButton Command="{Binding ShowPageCommand}"
+                                      CommandParameter="CategoryPageViewModel"
+                                      IsChecked="{Binding CurrentView, Converter={StaticResource TypeMatchConverter}, ConverterParameter=CategoryPageViewModel, Mode=OneWay}"
                                       Background="Transparent"
                                       BorderThickness="0"
                                       HorizontalAlignment="Stretch"
                                       HorizontalContentAlignment="Left"
                                       Padding="12">
-
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="14">
-
-                                <fluent:FluentIcon Icon="Settings"
-                                           Width="22"
-                                           Height="22"
-                                           FontSize="20"
-                                           />
-
-                                <TextBlock Text="Settings"
-                                           FontSize="14"
-                                           IsVisible="{Binding IsPaneOpen}"
-                                           VerticalAlignment="Center"/>
-
+                            <StackPanel Orientation="Horizontal" Spacing="14">
+                                <fluent:FluentIcon Icon="Folder" Width="22" Height="22" FontSize="20" />
+                                <TextBlock Text="Category" FontSize="14" IsVisible="{Binding IsPaneOpen}"
+                                           VerticalAlignment="Center" />
                             </StackPanel>
-
                         </ToggleButton>
 
+                        <!-- Settings -->
+                        <ToggleButton Command="{Binding ShowPageCommand}"
+                                      CommandParameter="SettingsPageViewModel"
+                                      IsChecked="{Binding CurrentView, Converter={StaticResource TypeMatchConverter}, ConverterParameter=SettingsPageViewModel, Mode=OneWay}"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      HorizontalAlignment="Stretch"
+                                      HorizontalContentAlignment="Left"
+                                      Padding="12">
+                            <StackPanel Orientation="Horizontal" Spacing="14">
+                                <fluent:FluentIcon Icon="Settings" Width="22" Height="22" FontSize="20" />
+                                <TextBlock Text="Settings" FontSize="14" IsVisible="{Binding IsPaneOpen}"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </ToggleButton>
                     </StackPanel>
 
 
@@ -155,10 +152,10 @@
                                 Spacing="2">
 
                         <TextBlock Text="ScratchDownloader"
-                                   FontSize="10"/>
+                                   FontSize="10" />
 
                         <TextBlock Text="v1.0.0"
-                                   FontSize="10"/>
+                                   FontSize="10" />
 
                     </StackPanel>
 
@@ -175,10 +172,10 @@
 
         <SplitView.Content>
 
-            <Grid >
+            <Grid>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <!-- PAGE -->
@@ -187,7 +184,7 @@
                               HorizontalScrollBarVisibility="Disabled"
                               VerticalScrollBarVisibility="Auto">
 
-                    <ContentControl Margin="2" Content="{Binding CurrentView}"/>
+                    <ContentControl Margin="2" Content="{Binding CurrentView}" />
 
                 </ScrollViewer>
 

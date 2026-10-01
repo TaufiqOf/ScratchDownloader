@@ -1,7 +1,11 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
@@ -17,17 +21,18 @@ public partial class SettingsPageViewModel : ViewModelBase, IViewModel
         new("Dark", ThemeVariant.Dark)
     ];
 
-    [ObservableProperty]
-    private ThemeOption? selectedTheme;
-    
+    [ObservableProperty] private bool _startMinimized =
+        SettingsService.Settings.StartMinimized;
 
-    [ObservableProperty]
-    private bool notificationsEnabled =
+    [ObservableProperty] private ThemeOption? _selectedTheme;
+
+    [ObservableProperty] private bool _notificationsEnabled =
         SettingsService.Settings.NotificationsEnabled;
 
-    [ObservableProperty]
-    private bool startWithSystem =
+    [ObservableProperty] private bool _startWithSystem =
         SettingsService.Settings.StartWithSystem;
+
+
 
     public SettingsPageViewModel()
     {
@@ -37,15 +42,18 @@ public partial class SettingsPageViewModel : ViewModelBase, IViewModel
             x.Variant == savedTheme);
     }
 
+
+
+
+   
+
     partial void OnSelectedThemeChanged(ThemeOption? value)
     {
         if (value is null)
             return;
 
         SettingsService.Settings.Theme = value.Variant;
-
         ThemeManager.SetTheme(value.Variant);
-
         SettingsService.Save();
     }
 
@@ -59,6 +67,12 @@ public partial class SettingsPageViewModel : ViewModelBase, IViewModel
     {
         SettingsService.Settings.StartWithSystem = value;
         AutoStartManager.SetEnabled(value);
+        SettingsService.Save();
+    }
+
+    partial void OnStartMinimizedChanged(bool value)
+    {
+        SettingsService.Settings.StartMinimized = value;
         SettingsService.Save();
     }
 }

@@ -63,12 +63,18 @@ public partial class DownloadManager : ViewModelBase
 
     private void UpdateStatus()
     {
-        DownloadSummary = $"Downloads: {Downloads.Count} | Active: {Downloads.Count(d => d.Status == DownloadStatus.Downloading)} | Paused: {Downloads.Count(d => d.Status == DownloadStatus.Paused)} | Completed: {Downloads.Count(d => d.Status == DownloadStatus.Completed)} | Failed: {Downloads.Count(d => d.Status == DownloadStatus.Failed)}";
+        DownloadSummary = $"Downloads: {Downloads.Count} " +
+                          $"| Paused: {Downloads.Count(d => d.Status == DownloadStatus.Paused)} " +
+                          $"| Completed: {Downloads.Count(d => d.Status == DownloadStatus.Completed)} " +
+                          $"| Failed: {Downloads.Count(d => d.Status == DownloadStatus.Failed)}";
+        
         ActiveCount = $"Active: {Downloads.Count(d => d.Status == DownloadStatus.Downloading)}";
         TotalSpeed =
-            $"Total Speed: {ByteSize.FromBytes(Downloads.Sum(d => d.SpeedValue)).Humanize("0.00")}/s";
+            $"Total Speed: {ByteSize.FromBytes(Downloads.Sum(d => d.SpeedValue))
+                .Humanize("0.00")}/s";
         TotalDownloadedSize =
-            $"Total Size: {ByteSize.FromBytes(Downloads.Sum(d => d.DownloadItemInformation?.FileSizeBytes ?? 0)).Humanize("0.00")}";
+            $"Total Size: {ByteSize.FromBytes(Downloads.Sum(d => d.DownloadItemInformation?.FileSizeBytes ?? 0))
+                .Humanize("0.00")}";
     }
 
     public void Resume(DownloadItemViewModel download)

@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
              xmlns:dialogControlViewModel="clr-namespace:ScratchDownloader.ViewModels.DialogControlViewModel"
+             xmlns:models="clr-namespace:ScratchDownloader.Models"
              Width="550"
              x:DataType="dialogControlViewModel:AddUrlDialogControlViewModel"
              x:Class="ScratchDownloader.Views.DialogControls.AddUrlDialogControl">
@@ -130,12 +131,12 @@
                                        FontWeight="SemiBold" />
                             <StackPanel Orientation="Horizontal">
 
-                                <TextBlock 
-                                           FontSize="12"
-                                           Opacity="0.6" >
+                                <TextBlock
+                                    FontSize="12"
+                                    Opacity="0.6">
                                     <Run Text="{Binding DownloadItemInformation.FileHost}" />
                                     <Run> Size:</Run>
-                                    <Run Text="{Binding DownloadItemInformation.FileSizeDisplay}"/>
+                                    <Run Text="{Binding DownloadItemInformation.FileSizeDisplay}" />
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>
@@ -196,7 +197,16 @@
 
                         <ComboBox ItemsSource="{Binding Categories}"
                                   SelectedItem="{Binding DownloadItemInformation.Category}"
-                                  HorizontalAlignment="Stretch" />
+                                  HorizontalAlignment="Stretch">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="models:Category">
+                                    <Grid ColumnDefinitions="Auto,*">
+                                        <fluent:FluentIcon Icon="{Binding Icon}" VerticalAlignment="Center" />
+                                        <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
 
 
@@ -265,10 +275,10 @@
                         VerticalContentAlignment="Center"
                         HorizontalContentAlignment="Center"
 
-                        Command="{Binding CancelCommand}"
+                        Command="{Binding NegativeCommand}"
                         MinWidth="75" />
                 <Button
-                    Command="{Binding OkCommand}"
+                    Command="{Binding PositiveCommand}"
                     MinWidth="75"
                     IsEnabled="{Binding HasFileInfo}"
                     IsDefault="True"

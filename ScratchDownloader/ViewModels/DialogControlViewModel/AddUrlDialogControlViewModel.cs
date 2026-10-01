@@ -43,15 +43,7 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
         !IsDetecting;
 
 
-    public ObservableCollection<string> Categories { get; } =
-    [
-        "Other",
-        "Documents",
-        "Videos",
-        "Music",
-        "Images",
-        "Archives"
-    ];
+    public ObservableCollection<Category> Categories { get; } = new(ApplicationManager.Categories.Values);
 
     public ObservableCollection<string> Queues { get; } =
     [
@@ -60,20 +52,22 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
         "Queue 2"
     ];
 
-    public ObservableCollection<string> SegmentOptions { get; } =
+    public ObservableCollection<int> SegmentOptions { get; } =
     [
-        "1 connection",
-        "4 connections",
-        "8 connections",
-        "16 connections"
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
     ];
 
 
     public AddUrlDialogControlViewModel()
     {
-        DownloadItemInformation.Category = "Other";
+        DownloadItemInformation.Category = ApplicationManager.Categories["Other"];
         DownloadItemInformation.Queue = "Main";
-        DownloadItemInformation.Segments = "8 connections";
+        DownloadItemInformation.Segments = 8;
     }
 
 
@@ -145,7 +139,7 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
     [RelayCommand]
     private async Task Browse()
     {
-        DownloadItemInformation.SavePath = await ApplicationManager.SaveStorageProvider(
+        DownloadItemInformation.SavePath = await ApplicationManager.SaveFileDialog(
             title: "Select Save Location",
             startPath: Path.GetDirectoryName(DownloadItemInformation.SavePath) ?? Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
             suggestedFileName: DownloadItemInformation.SavePath ?? "download",

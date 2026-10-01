@@ -2,102 +2,129 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:ScratchDownloader.ViewModels"
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
+             xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
+             xmlns:models="clr-namespace:ScratchDownloader.Models"
              x:Class="ScratchDownloader.Views.PageControls.SettingsPageView"
              x:DataType="pageViewModel:SettingsPageViewModel">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Disabled">
 
-        <StackPanel Spacing="24"
-                    MaxWidth="700">
+        <StackPanel MaxWidth="800" Spacing="16" Margin="10">
 
             <!-- HEADER -->
-
             <StackPanel Spacing="5">
-
                 <TextBlock Text="Settings"
                            FontSize="30"
-                           FontWeight="Bold"/>
+                           FontWeight="Bold" />
 
                 <TextBlock Text="Configure ScratchDownloader"
-                           Opacity="0.6"/>
-
+                           Opacity="0.6" />
             </StackPanel>
 
+            <Border BorderThickness="2"
+                    BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Margin="5,5" />
 
             <!-- APPEARANCE -->
-
-            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                    CornerRadius="12"
-                    Padding="20">
-
-                <StackPanel Spacing="16">
-
+            <StackPanel Spacing="16">
+                <StackPanel Spacing="4">
                     <TextBlock Text="Appearance"
                                FontSize="18"
-                               FontWeight="SemiBold"/>
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="Change the appearance of the application, including theme and accent color."
+                               Opacity="0.6"
+                               FontSize="13" />
+                </StackPanel>
 
-                    <StackPanel Spacing="8">
-
-                        <TextBlock Text="Theme"
-                                   FontSize="15"/>
-
-                        <ComboBox Width="150"
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                        CornerRadius="12"
+                        Padding="20">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Grid RowDefinitions="Auto,Auto">
+                            <TextBlock Text="Theme"
+                                       FontSize="15" />
+                            <TextBlock Grid.Row="1" Text="Select the theme for the application."
+                                       FontSize="12" />
+                        </Grid>
+                        <ComboBox Grid.Column="1" Width="150"
                                   HorizontalAlignment="Left"
                                   ItemsSource="{Binding Themes}"
-                                  SelectedItem="{Binding SelectedTheme}"/>
+                                  SelectedItem="{Binding SelectedTheme}" />
+                    </Grid>
+                </Border>
+            </StackPanel>
 
-                    </StackPanel>
-
-                </StackPanel>
-
-            </Border>
-
-
-            <!-- PROTECTION -->
-
-            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                    CornerRadius="12"
-                    Padding="20">
-
-                    <StackPanel Spacing="8">
-
-                        <TextBlock Text="Notifications"
-                                   FontSize="15"/>
-
-                        <ToggleSwitch IsChecked="{Binding NotificationsEnabled}"
-                                      HorizontalAlignment="Left"/>
-
-                    </StackPanel>
-
-            </Border>
-
+            <Border BorderThickness="2"
+                    BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Margin="5,5" />
 
             <!-- APPLICATION -->
-
-            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                    CornerRadius="12"
-                    Padding="20">
-
-                <StackPanel Spacing="16">
-
+            <StackPanel Spacing="16">
+                <StackPanel Spacing="4">
                     <TextBlock Text="Application"
                                FontSize="18"
-                               FontWeight="SemiBold"/>
-
-                    <StackPanel Spacing="8">
-
-                        <TextBlock Text="Start with system"
-                                   FontSize="15"/>
-
-                        <ToggleSwitch IsChecked="{Binding StartWithSystem}"
-                                      HorizontalAlignment="Left"/>
-
-                    </StackPanel>
-
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="Application settings allow you to customize the behavior of the application."
+                               Opacity="0.6"
+                               FontSize="13" />
                 </StackPanel>
+                <StackPanel Spacing="8">
+                    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                            CornerRadius="12"
+                            Padding="20">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Grid RowDefinitions="Auto,Auto">
+                                <TextBlock Text="Start at Login"
+                                           FontSize="15" />
+                                <TextBlock Grid.Row="1" Text="Start the application when you log in."
+                                           FontSize="12" />
+                            </Grid>
 
-            </Border>
+                            <ToggleSwitch Grid.Column="1" IsChecked="{Binding StartWithSystem}"
+                                          HorizontalAlignment="Left" />
+                        </Grid>
+                    </Border>
+
+                    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                            CornerRadius="12"
+                            Padding="20">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Grid RowDefinitions="Auto,Auto">
+                                <TextBlock Text="Start Minimized"
+                                           FontSize="15" />
+                                <TextBlock Grid.Row="1" Text="Start the application minimized in the system tray."
+                                           FontSize="12" />
+                            </Grid>
+
+                            <ToggleSwitch Grid.Column="1" IsChecked="{Binding StartMinimized}"
+                                          HorizontalAlignment="Left" />
+                        </Grid>
+                    </Border>
+
+                    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                            CornerRadius="12"
+                            Padding="20">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Grid RowDefinitions="Auto,Auto">
+                                <TextBlock Text="Notifications"
+                                           FontSize="15" />
+                                <TextBlock Grid.Row="1" Text="Enable or disable notifications."
+                                           FontSize="12" />
+                            </Grid>
+
+                            <ToggleSwitch Grid.Column="1" IsChecked="{Binding NotificationsEnabled}"
+                                          HorizontalAlignment="Left" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+
+            <Border BorderThickness="2"
+                    BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Margin="5,5" />
+
+           
 
         </StackPanel>
 

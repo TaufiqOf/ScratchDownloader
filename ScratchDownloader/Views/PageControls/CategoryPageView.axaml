@@ -1,0 +1,126 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:ScratchDownloader.Models"
+             xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
+             xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
+             mc:Ignorable="d"
+             x:DataType="pageViewModel:CategoryPageViewModel"
+             x:Class="ScratchDownloader.Views.PageControls.CategoryPageView">
+    <StackPanel MaxWidth="800" Spacing="16" Margin="10">
+
+        <!-- HEADER -->
+        <StackPanel Spacing="5">
+            <TextBlock Text="Categories"
+                       FontSize="30"
+                       FontWeight="Bold" />
+
+            <TextBlock Text="Categories auto-sort downloads by file extension. Each one owns the folder its files land in."
+                       Opacity="0.6" />
+        </StackPanel>
+
+        <Border BorderThickness="2"
+                BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                Margin="5,5" />
+
+        <!-- CATEGORIES -->
+        <StackPanel Spacing="16">
+            
+            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    CornerRadius="12"
+                    Padding="20">
+                <!-- List of Category Cards -->
+                <ItemsControl ItemsSource="{Binding Categories}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="models:Category">
+                            <Expander HorizontalAlignment="Stretch"
+                                      IsExpanded="{Binding IsExpanded, Mode=TwoWay}"
+                                      Margin="0,0,0,12"
+                                      CornerRadius="12"
+                                      Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
+
+                                <!-- CARD HEADER -->
+                                <Expander.Header>
+                                    <Grid ColumnDefinitions="Auto,*" VerticalAlignment="Center" Margin="0,5">
+                                        <!-- Category Icon Container -->
+                                        <Border Grid.Column="0"
+                                                CornerRadius="8"
+                                                Padding="10"
+                                                Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                                                Margin="0,0,12,0">
+                                            <fluent:FluentIcon Icon="{Binding Icon}"
+                                                               FontSize="20" />
+                                        </Border>
+
+                                        <!-- Title & Subtitle / Extensions -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold" />
+                                            <TextBlock Text="{Binding Description}"
+                                                       FontSize="12"
+                                                       Opacity="0.6" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Expander.Header>
+
+                                <!-- EXPANDED CARD BODY -->
+                                <StackPanel Spacing="16" Margin="10">
+
+                                    <!-- Extensions Input -->
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="EXTENSIONS, COMMA-SEPARATED, NO DOTS"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Opacity="0.5" />
+                                        <TextBox Text="{Binding Extension}" />
+                                    </StackPanel>
+
+                                    <!-- Save Folder Input -->
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="SAVE FOLDER"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Opacity="0.5" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <TextBox Grid.Column="0" Text="{Binding Folder}" />
+                                            <Button Grid.Column="1"
+                                                    Margin="8,0,0,0"
+                                                    Command="{Binding $parent[UserControl].((pageViewModel:CategoryPageViewModel)DataContext).BrowseFolderCommand}"
+                                                    CommandParameter="{Binding}">
+                                                <fluent:SymbolIcon Symbol="Folder" FontSize="16" />
+                                            </Button>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <!-- Default Queue Dropdown -->
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="DEFAULT QUEUE"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Opacity="0.5" />
+                                        <ComboBox HorizontalAlignment="Stretch"
+                                                  SelectedItem="Main">
+                                            <ComboBoxItem Content="Main" />
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Action Buttons -->
+                                    <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,8,0,0">
+                                        <Button Grid.Column="2"
+                                                Content="Reset extensions"
+                                                BorderThickness="0"
+                                                Command="{Binding $parent[UserControl].((pageViewModel:CategoryPageViewModel)DataContext).ResetExtensionsCommand}"
+                                                CommandParameter="{Binding}" />
+                                    </Grid>
+
+                                </StackPanel>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
@@ -7,23 +8,21 @@ namespace ScratchDownloader.ViewModels.PageViewModel;
 
 public partial class MainPageViewModel : ViewModelBase
 {
-    [ObservableProperty]
+    [ObservableProperty] 
     private IViewModel? currentView;
 
-    [ObservableProperty]
+    [ObservableProperty] 
     private bool isPaneOpen = false;
 
-    [ObservableProperty]
-    private bool isHomeSelected;
-
-    [ObservableProperty]
-    private bool isSettingsSelected;
+    private readonly Dictionary<string, IViewModel> _views = new();
 
     public MainPageViewModel()
     {
-        UpdateSelectedView(nameof(PageViewModel.HomePageViewModel));
+        _views.Add(nameof(HomePageViewModel), new HomePageViewModel(this));
+        _views.Add(nameof(CategoryPageViewModel), new CategoryPageViewModel());
+        _views.Add(nameof(SettingsPageViewModel), new SettingsPageViewModel());
+        UpdateSelectedView(nameof(HomePageViewModel));
     }
-
 
     [RelayCommand]
     public void TogglePane()
@@ -32,21 +31,16 @@ public partial class MainPageViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public void ShowHome()
+    public void ShowPage(string viewName)
     {
-        UpdateSelectedView(nameof(PageViewModel.HomePageViewModel));
+        UpdateSelectedView(viewName);
     }
 
-    [RelayCommand]
-    public void ShowSettings()
-    {
-        UpdateSelectedView(nameof(SettingsPageViewModel));
-    }
-    
     private void UpdateSelectedView(string viewName)
     {
-        CurrentView = viewName == nameof(PageViewModel.HomePageViewModel) ? new PageViewModel.HomePageViewModel(this) : new SettingsPageViewModel();
-        IsHomeSelected = viewName == nameof(PageViewModel.HomePageViewModel);
-        IsSettingsSelected = viewName == nameof(SettingsPageViewModel);
+        if (_views.TryGetValue(viewName, out var view))
+        {
+            CurrentView = view;
+        }
     }
 }

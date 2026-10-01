@@ -34,11 +34,11 @@
                         HorizontalAlignment="Right"
                         Margin="10">
                 <Button Content="{Binding CancelButtonText}"
-                        Command="{Binding CancelCommand}"
+                        Command="{Binding NegativeCommand}"
                         MinWidth="75"
                         IsVisible="{Binding IsCancelButtonVisible}" />
                 <Button Content="{Binding OkButtonText}"
-                        Command="{Binding OkCommand}"
+                        Command="{Binding PositiveCommand}"
                         MinWidth="75"
                         Margin="5,0,0,0" />
             </StackPanel>

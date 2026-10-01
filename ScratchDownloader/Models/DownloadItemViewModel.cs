@@ -56,8 +56,12 @@ public partial class DownloadItemViewModel : ObservableObject
             ? TimeSpan.FromSeconds(remainingBytes / (SpeedValue > 0 ? SpeedValue : 1)).Humanize(2)
             : "--";
     }
-
-
+    
+    partial void OnProgressChanged(double value)
+    {
+        ProgressText = $"{value:0.00}%";
+    }
+    
     public void Resume()
     {
         Status = DownloadStatus.Downloading;

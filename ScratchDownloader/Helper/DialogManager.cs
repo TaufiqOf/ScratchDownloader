@@ -10,14 +10,19 @@ namespace ScratchDownloader.Helper;
 
 public static class DialogManager
 {
-    private static Window MainWindow { get; set; } 
-    
+    private static Window MainWindow { get; set; }
+
     public static void Initialize(Window mainWindow)
     {
         MainWindow = mainWindow;
     }
-    
-    public static void ShowMessage(MessageDialogType type, string title, string message)
+
+    public static void ShowMessage(
+        MessageDialogType type, 
+        string title, 
+        string message,
+        IRelayCommand? positiveCommand = null, 
+        IRelayCommand? negativeCommand = null)
     {
         var dialogControlViewModel = new MessageDialogControlViewModel(type, message);
 
@@ -28,13 +33,33 @@ public static class DialogManager
             DialogControl = dialogControlViewModel
         };
         // Wire up commands to close the dialog window
-        dialogControlViewModel.OkCommand = new RelayCommand(() => dialog.Close());
-        dialogControlViewModel.CancelCommand = new RelayCommand(() => dialog.Close());
+        dialogControlViewModel.PositiveCommand = new RelayCommand(() =>
+        {
+            if (positiveCommand?.CanExecute(null) == true)
+            {
+                positiveCommand.Execute(null);
+            }
+
+            dialog.Close();
+        });
+        dialogControlViewModel.NegativeCommand = new RelayCommand(() =>
+        {
+            if (negativeCommand?.CanExecute(null) == true)
+            {
+                negativeCommand.Execute(null);
+            }
+
+            dialog.Close();
+        });
 
         dialog.ShowDialog(MainWindow);
     }
-    
-    public static async Task ShowMessage(ADialogViewModel viewModel, string title)
+
+    public static async Task ShowMessage(
+        ADialogViewModel viewModel, 
+        string title, 
+        IRelayCommand? positiveCommand = null,
+        IRelayCommand? negativeCommand = null)
     {
         var dialogControlViewModel = viewModel;
 
@@ -44,10 +69,27 @@ public static class DialogManager
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             DialogControl = dialogControlViewModel
         };
-        // Wire up commands to close the dialog window
-        dialogControlViewModel.OkCommand = new RelayCommand(() => dialog.Close());
-        dialogControlViewModel.CancelCommand = new RelayCommand(() => dialog.Close());
 
+        // Wire up commands to close the dialog and execute the passed RelayCommand
+        dialogControlViewModel.PositiveCommand = new RelayCommand(() =>
+        {
+            if (positiveCommand?.CanExecute(null) == true)
+            {
+                positiveCommand.Execute(null);
+            }
+
+            dialog.Close();
+        });
+
+        dialogControlViewModel.NegativeCommand = new RelayCommand(() =>
+        {
+            if (negativeCommand?.CanExecute(null) == true)
+            {
+                negativeCommand.Execute(null);
+            }
+
+            dialog.Close();
+        });
         await dialog.ShowDialog(MainWindow);
     }
 }

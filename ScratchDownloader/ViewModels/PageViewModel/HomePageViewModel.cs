@@ -32,9 +32,10 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         try
         {
             var newDownloadDialog = new AddUrlDialogControlViewModel();
-            newDownloadDialog.OkCommand = new RelayCommand(StartDownload);
-            await DialogManager.ShowMessage(newDownloadDialog, "New Download");
-            ApplicationManager.DownloadManager.Add(newDownloadDialog.DownloadItemInformation);
+            var okCommand = new RelayCommand(() => StartDownload(newDownloadDialog));
+            await DialogManager.ShowMessage(newDownloadDialog, "New Download", okCommand, null);
+
+            
         }
         catch (Exception e)
         {
@@ -45,8 +46,9 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         // Open the new download dialog.
     }
 
-    private void StartDownload()
+    private void StartDownload(AddUrlDialogControlViewModel newDownloadDialog)
     {
+        ApplicationManager.DownloadManager.Add(newDownloadDialog.DownloadItemInformation);
     }
 
     [RelayCommand]
@@ -98,9 +100,5 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         }
     }
 
-    [RelayCommand]
-    public void ShowSettings()
-    {
-        _mainPageViewModel.ShowSettings();
-    }
+
 }
