@@ -56,8 +56,8 @@ public class App : Application
             desktop.MainWindow = desktopMainWindow;
             _mainWindow = desktopMainWindow;
             NotificationManager.Initialize(desktop.MainWindow);
+            WidgetManager.Initialize(desktop.MainWindow);
             ApplicationManager.MainWindow = desktop.MainWindow;
-                
             _mainWindow.Closing +=
                 MainWindow_OnClosing;
             if (SettingsService.Settings.StartMinimized)

@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Services;
+using ScratchDownloader.Views.Windows;
 
 namespace ScratchDownloader.Models;
 
@@ -16,6 +17,7 @@ public partial class DownloadItemViewModel : ObservableObject
     private ICheckSumService _checkSumService;
 
     private IDownloadService _downloadService;
+    private DownloadWidgetWindow? _widgetWindow;
 
     public DownloadItemViewModel()
     {
@@ -39,16 +41,19 @@ public partial class DownloadItemViewModel : ObservableObject
         Progress?.TotalBytes = downloadItemInformationViewModel.FileSizeBytes;
         _checkSumService = new CheckSumService();
     }
+
     public bool CanOpen =>
         Status == DownloadStatus.Completed &&
         !string.IsNullOrWhiteSpace(DownloadItemInformation?.SavePath) &&
         File.Exists(DownloadItemInformation.SavePath);
-    
+
+
     [ObservableProperty] public partial DateTime? AddedDateTime { get; set; }
     [ObservableProperty] public partial string AddedDateTimeText { get; set; }
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
     [ObservableProperty] public partial DownloadProgress Progress { get; set; } = new();
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
+
     public event EventHandler<DownloadStatus>? StatusChanged;
 
     partial void OnAddedDateTimeChanged(DateTime? value)
@@ -136,6 +141,20 @@ public partial class DownloadItemViewModel : ObservableObject
         StatusChanged?.Invoke(this, DownloadStatus.Completed);
     }
 
+    [RelayCommand]
+    public void ShowWidget()
+    {
+        if (_widgetWindow != null && _widgetWindow.IsVisible)
+        {
+            _widgetWindow.Activate();
+            _widgetWindow.Topmost = true;
+            _widgetWindow.Topmost = false;
+            return;
+        }
+
+        _widgetWindow = WidgetManager.ShowWidget(this);
+        _widgetWindow?.Closed += (s, e) => _widgetWindow = null;
+    }
 
     [RelayCommand]
     public void Resume()
@@ -157,6 +176,7 @@ public partial class DownloadItemViewModel : ObservableObject
         Progress.BytesPerSecond = 0;
         _downloadService.Stop();
         Status = DownloadStatus.Stopped;
+        _widgetWindow?.Close();
     }
 
     [RelayCommand]
@@ -175,10 +195,12 @@ public partial class DownloadItemViewModel : ObservableObject
     {
         _downloadService.Start(_cancellationTokenSource.Token);
     }
+
     [RelayCommand]
     private void Remove()
     {
         ApplicationManager.DownloadManager.Remove(this);
+        _widgetWindow?.Close();
     }
 
     [RelayCommand]
@@ -189,7 +211,7 @@ public partial class DownloadItemViewModel : ObservableObject
         File.Delete(DownloadItemInformation?.SavePath + ".meta.json" ?? string.Empty);
         Start();
     }
-    
+
     [RelayCommand]
     private void CopyUrl()
     {
@@ -274,5 +296,4 @@ public partial class DownloadItemViewModel : ObservableObject
     {
         // Show properties
     }
-
 }

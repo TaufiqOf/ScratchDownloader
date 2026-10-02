@@ -12,18 +12,14 @@ using ScratchDownloader.Models;
 
 namespace ScratchDownloader.Services;
 
-public class DirectDownloadService : IDownloadService
+public class DirectDownloadService(HttpClient? httpClient = null) : IDownloadService
 {
-    private readonly HttpClient _httpClient;
+    private readonly HttpClient _httpClient = httpClient ?? new HttpClient();
     private CancellationTokenSource? _cts;
 
     private double _lastProgressReported;
-
-
-    public DirectDownloadService(HttpClient? httpClient = null)
-    {
-        _httpClient = httpClient ?? new HttpClient();
-    }
+    private long _lastReportedMs = 0; 
+    private const int BufferSize = 81920; // 80 KB buffer size for reading/writing
 
     private string MetadataFilePath => $"{DestinationFilePath}.meta.json";
     public DownloadProgress Progress { get; set; } = new();
@@ -60,7 +56,7 @@ public class DirectDownloadService : IDownloadService
             File.Delete(MetadataFilePath);
     }
 
-    public async Task StartAsync(CancellationToken cancellationToken = default)
+    private async Task StartAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -92,7 +88,7 @@ public class DirectDownloadService : IDownloadService
         }
     }
 
-    public async Task ResumeAsync(CancellationToken cancellationToken = default)
+    private async Task ResumeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -161,7 +157,6 @@ public class DirectDownloadService : IDownloadService
             ErrorOccurred?.Invoke(this, e.Message);
         }
     }
-    long _lastReportedMs = 0; 
     private async Task DownloadSegmentAsync(
         SegmentState segment,
         DownloadMetadata metadata,
@@ -194,12 +189,12 @@ public class DirectDownloadService : IDownloadService
                 FileMode.Open,
                 FileAccess.Write,
                 FileShare.ReadWrite,
-                81920,
+                BufferSize,
                 true);
 
             fileStream.Seek(currentStart, SeekOrigin.Begin);
 
-            var buffer = new byte[81920];
+            var buffer = new byte[BufferSize];
             int read;
 
 
@@ -210,7 +205,7 @@ public class DirectDownloadService : IDownloadService
                 segment.BytesDownloaded += read;
                 sessionBytesDownloadedForSegment += read;
                 SaveMetadata(metadata);
-                //update progress after 200 milliseconds
+                //update progress after 100 milliseconds
                 if (segmentStopwatch.ElapsedMilliseconds - _lastReportedMs >= 100)
                 {
                     UpdateProgress(

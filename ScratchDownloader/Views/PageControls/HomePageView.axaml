@@ -269,9 +269,7 @@
                                     <!-- Queues go here -->
 
                                 </MenuItem>
-
-
-                                <Separator />
+             
 
 
                                 <!-- REMOVE -->
@@ -305,7 +303,19 @@
 
 
                                 <Separator />
+                   
+                                <!-- Show Widget -->
+                                <MenuItem Header="Show Widget"
+                                          Command="{Binding ShowWidgetCommand}"
+                                          IsVisible="{Binding Status,
+                                  Converter={StaticResource StatusEqualsConverter},
+                                  ConverterParameter=Downloading}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Window" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
 
+                                <Separator />
 
                                 <!-- PROPERTIES -->
                                 <MenuItem Header="Show Properties"
