@@ -257,6 +257,7 @@
 
                     <StackPanel Spacing="10"
                                 Margin="5,8,5,5">
+                        <TextBox PlaceholderText="Checksum" Text="{Binding DownloadItemInformation.Checksum}"></TextBox>
 
                         <CheckBox Content="Start download automatically"
                                   IsChecked="{Binding StartImmediately}" />

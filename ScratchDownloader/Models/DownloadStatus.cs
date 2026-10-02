@@ -8,5 +8,7 @@ public enum DownloadStatus
     Paused=3,
     Stopped=4,
     Completed=5,
-    Failed=6
+    Failed=6,
+    CheckingChecksum=7,
+    ChecksumFailed=8,
 }

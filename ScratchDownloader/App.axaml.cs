@@ -43,6 +43,9 @@ public class App : Application
 
             foreach (var downloadItemViewModel in SettingsService.HistorySettings.DownloadItems)
             {
+                if(downloadItemViewModel.DownloadItemInformation == null)
+                    continue;
+                downloadItemViewModel.DownloadItemInformation.Loading = false;
                 ApplicationManager.DownloadManager.Add(downloadItemViewModel,false,true);
             }
 

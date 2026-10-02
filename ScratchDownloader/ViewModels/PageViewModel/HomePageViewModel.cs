@@ -117,8 +117,15 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            DownloadManager.Clear();
-            UpdateFilter();
+            DialogManager.ShowMessage(MessageDialogType.Warning, "Clear all Downloads",
+                "Are you sure you want to stop and remove all completed stopped and failed all downloads? This action cannot be undone.",
+                "Yes",
+                new RelayCommand(() =>
+                {
+                    DownloadManager.Clear();
+                    UpdateFilter();
+                }),
+                "No");
         }
         catch (Exception e)
         {

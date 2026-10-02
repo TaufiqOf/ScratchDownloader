@@ -97,6 +97,12 @@ public partial class DownloadManager : ViewModelBase
         if (e == DownloadStatus.Failed)
             NotificationManager.Error($"Downloaded {e}",
                 $"Download {e}: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+        if (e == DownloadStatus.ChecksumFailed)
+        {
+            NotificationManager.Error($"Downloaded Completed but Checksum Failed",
+                $"Downloaded Completed but Checksum Failed: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+        }
+        
         ((DownloadItemViewModel)sender)?.Status = e;
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
@@ -155,10 +161,10 @@ public partial class DownloadManager : ViewModelBase
             if (_startAfterLoad && (download.Status == DownloadStatus.Downloading
                                     || download.Status == DownloadStatus.Initializing))
             {
-                _startAfterLoad = false;
                 download.Start();
             }
         }
+        _startAfterLoad = false;
 
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
@@ -166,13 +172,18 @@ public partial class DownloadManager : ViewModelBase
 
     public void Clear()
     {
-        foreach (var download in Downloads)
+        var downloadItemViewModels = Downloads.Where(d => 
+            d.Status == DownloadStatus.Completed
+            || d.Status == DownloadStatus.Failed 
+            || d.Status == DownloadStatus.ChecksumFailed
+            || d.Status == DownloadStatus.Stopped).ToList();
+        foreach (var download in downloadItemViewModels)
         {
             download.Stop();
             download.StatusChanged -= DownloadItemViewModelOnStatusChanged;
+            Downloads.Remove(download);
         }
 
-        Downloads.Clear();
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
     }

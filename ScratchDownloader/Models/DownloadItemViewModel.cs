@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ScratchDownloader.Services;
 
@@ -9,6 +10,7 @@ namespace ScratchDownloader.Models;
 public partial class DownloadItemViewModel : ObservableObject
 {
     private CancellationTokenSource _cancellationTokenSource = new();
+    private ICheckSumService _checkSumService;
 
     private IDownloadService _downloadService;
     private readonly Timer _timer;
@@ -34,6 +36,7 @@ public partial class DownloadItemViewModel : ObservableObject
         _downloadService.DestinationFilePath = downloadItemInformationViewModel.SavePath;
         _downloadService.Progress = Progress;
         Progress?.TotalBytes = downloadItemInformationViewModel.FileSizeBytes;
+        _checkSumService = new CheckSumService();
     }
 
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
@@ -60,11 +63,25 @@ public partial class DownloadItemViewModel : ObservableObject
         Status = DownloadStatus.Initializing;
     }
 
-    private void DownloadServiceOnCompleted(object? sender, EventArgs e)
+    private async void DownloadServiceOnCompleted(object? sender, EventArgs e)
     {
         Progress.BytesPerSecond = 0;
-        StatusChanged?.Invoke(this, DownloadStatus.Completed);
+        if(DownloadItemInformation?.SavePath ==null)
+            return;
+        if(!string.IsNullOrEmpty(DownloadItemInformation?.Checksum))
+        {
+            Status = DownloadStatus.CheckingChecksum;
+            StatusChanged?.Invoke(this, DownloadStatus.CheckingChecksum);
+            var match = await _checkSumService.Check(DownloadItemInformation.SavePath, DownloadItemInformation.Checksum);
+            if(!match)
+            {
+                Status = DownloadStatus.ChecksumFailed;
+                StatusChanged?.Invoke(this, DownloadStatus.ChecksumFailed);
+                return;
+            }
+        }
         Status = DownloadStatus.Completed;
+        StatusChanged?.Invoke(this, DownloadStatus.Completed);
     }
 
 

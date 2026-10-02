@@ -12,8 +12,16 @@ namespace ScratchDownloader.Models;
 
 public partial class DownloadItemInformationViewModel : ObservableObject
 {
+    [ObservableProperty] private bool _loading = false;
+
+    public DownloadItemInformationViewModel()
+    {
+        Loading = true;
+    }
+
     private readonly HttpClient _httpClient = new();
     [ObservableProperty] public partial string FileName { get; set; } = string.Empty;
+    [ObservableProperty] public partial string SavedFileName { get; set; } = string.Empty;
     [ObservableProperty] public partial string FileExtension { get; set; } = string.Empty;
     [ObservableProperty] public partial string FileHost { get; set; } = string.Empty;
     [ObservableProperty] public partial long FileSizeBytes { get; set; }
@@ -22,12 +30,14 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     [ObservableProperty] public partial Category Category { get; set; } = SettingsService.Settings.Categories["Other"];
     [ObservableProperty] public partial Queue Queue { get; set; } = SettingsService.Settings.Queues["Main"];
     [ObservableProperty] public partial int Segments { get; set; } = 8;
+    [ObservableProperty] public partial string? Checksum { get; set; } = string.Empty;
     public Uri Uri { get; set; }
 
     public async Task GetDataFromUrl(string uri, CancellationToken cancellationToken = default)
     {
         try
         {
+            Loading = false;
             using var request = new HttpRequestMessage(
                 HttpMethod.Head,
                 uri);
@@ -116,6 +126,8 @@ public partial class DownloadItemInformationViewModel : ObservableObject
 
     partial void OnCategoryChanged(Category value)
     {
+        if (Loading)
+            return;
         SavePath = Path.Combine(Category.Folder, FileName);
         var settingsQueue = SettingsService.Settings.Queues["Main"];
         Queue = Category.QueueId is not null ? SettingsService.Settings.Queues[Category.QueueId] : settingsQueue;
@@ -124,6 +136,17 @@ public partial class DownloadItemInformationViewModel : ObservableObject
 
     partial void OnQueueChanged(Queue value)
     {
+        if (Loading)
+            return;
         Segments = Queue.MaxConcurrentDownloads;
+    }
+
+    partial void OnSavePathChanged(string? value)
+    {
+        if (Loading)
+            return;
+        if (string.IsNullOrWhiteSpace(value))
+            return;
+        SavedFileName = Path.GetFileName(value);
     }
 }

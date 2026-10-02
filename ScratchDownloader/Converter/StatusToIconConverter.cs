@@ -18,6 +18,8 @@ public class StatusToIconConverter : IValueConverter
                 DownloadStatus.Failed => Icon.ErrorCircle,
                 DownloadStatus.Paused => Icon.PauseCircle,
                 DownloadStatus.Stopped => Icon.Stop,
+                DownloadStatus.CheckingChecksum => Icon.MatchAppLayout,
+                DownloadStatus.ChecksumFailed => Icon.Warning,
                 _ => Icon.Document
             };
         return Icon.Document;

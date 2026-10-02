@@ -10,6 +10,7 @@
              x:DataType="pageViewModel:HomePageViewModel">
     <UserControl.Resources>
         <converter:StatusToIconConverter x:Key="StatusToIconConverter" />
+        <converter:StatusToIndeterminateConverter x:Key="StatusToIndeterminateConverter" />
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
 
@@ -109,7 +110,7 @@
                     Margin="5,5" />
 
             <Button Grid.Column="6"
-                    ToolTip.Tip="Clear All"
+                    ToolTip.Tip="Clear All Completed Downloads"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Command="{Binding ClearAllCommand}">
@@ -117,9 +118,9 @@
                             Spacing="5"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-                    <fluent:FluentIcon Icon="Delete"
+                    <fluent:FluentIcon Icon="PaintBrush"
                                        VerticalAlignment="Center" />
-                    <TextBlock Text="Clear All"
+                    <TextBlock Text="Clear All Completed Downloads"
                                IsVisible="False"
                                VerticalAlignment="Center" />
                 </StackPanel>
@@ -207,13 +208,13 @@
                 </dg:DataGridTemplateColumn>
                 <!-- FILE -->
                 <dg:DataGridTextColumn Header="File"
-                                       Binding="{Binding DownloadItemInformation.FileName}"
+                                       Binding="{Binding DownloadItemInformation.SavedFileName}"
                                        Width="3*" />
 
                 <!-- STATUS -->
                 <dg:DataGridTextColumn Header="Status"
                                        Binding="{Binding Status}"
-                                       Width="120" />
+                                       Width="160" />
 
                 <!-- PROGRESS -->
                 <DataGridTemplateColumn Header="Progress" Width="300">
@@ -227,6 +228,7 @@
                                              Minimum="0"
                                              Maximum="100"
                                              Height="6"
+                                             IsIndeterminate="{Binding Status, Converter={StaticResource StatusToIndeterminateConverter}}"
                                              Value="{Binding Progress.Progress}" />
 
                                 <!-- Segment Progress -->
