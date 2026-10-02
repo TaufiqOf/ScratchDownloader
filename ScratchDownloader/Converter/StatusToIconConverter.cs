@@ -13,7 +13,7 @@ public class StatusToIconConverter : IValueConverter
         if (value is DownloadStatus status)
             return status switch
             {
-                DownloadStatus.Downloading or DownloadStatus.Initializing => Icon.ArrowDownload,
+                DownloadStatus.Downloading or DownloadStatus.Initializing => Icon.ArrowCircleDown,
                 DownloadStatus.Completed => Icon.CheckmarkCircle,
                 DownloadStatus.Failed => Icon.ErrorCircle,
                 DownloadStatus.Paused => Icon.PauseCircle,

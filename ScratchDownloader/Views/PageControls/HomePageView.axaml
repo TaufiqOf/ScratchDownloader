@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <converter:StatusToIconConverter x:Key="StatusToIconConverter" />
         <converter:StatusToIndeterminateConverter x:Key="StatusToIndeterminateConverter" />
+        <converter:StatusEqualsConverter x:Key="StatusEqualsConverter" />
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
 
@@ -110,7 +111,7 @@
                     Margin="5,5" />
 
             <Button Grid.Column="6"
-                    ToolTip.Tip="Clear All Completed Downloads"
+                    ToolTip.Tip="Clear Download History"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Command="{Binding ClearAllCommand}">
@@ -118,9 +119,9 @@
                             Spacing="5"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
-                    <fluent:FluentIcon Icon="PaintBrush"
+                    <fluent:FluentIcon Icon="Delete"
                                        VerticalAlignment="Center" />
-                    <TextBlock Text="Clear All Completed Downloads"
+                    <TextBlock Text="Clear Download History"
                                IsVisible="False"
                                VerticalAlignment="Center" />
                 </StackPanel>
@@ -189,6 +190,136 @@
                      CanUserSortColumns="True"
                      GridLinesVisibility="Horizontal">
 
+            <dg:DataGrid.Styles>
+
+                <Style Selector="DataGridRow">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu x:DataType="models1:DownloadItemViewModel">
+
+                                <!-- Resume when paused -->
+                                <MenuItem Header="Resume"
+                                          Command="{Binding ResumeCommand}"
+                                          IsVisible="{Binding Status,
+                                  Converter={StaticResource StatusEqualsConverter},
+                                  ConverterParameter=Paused}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Play" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <!-- Start when queued -->
+                                <MenuItem Header="Start"
+                                          Command="{Binding StartCommand}"
+                                          IsVisible="{Binding Status,
+                                  Converter={StaticResource StatusEqualsConverter},
+                                  ConverterParameter=Queued}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Play" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <!-- Stop when downloading -->
+                                <MenuItem Header="Pause"
+                                          Command="{Binding PauseCommand}"
+                                          IsVisible="{Binding Status,
+                                  Converter={StaticResource StatusEqualsConverter},
+                                  ConverterParameter=Downloading}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Pause" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <!-- OPEN -->
+                                <MenuItem Header="Open"
+                                          Command="{Binding OpenCommand}"
+                                          IsEnabled="{Binding CanOpen}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Document" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+
+                                <!-- OPEN CONTAINING FOLDER -->
+                                <MenuItem Header="Open Containing Folder"
+                                          Command="{Binding OpenContainingFolderCommand}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="FolderOpen" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+
+                                <!-- MOVE TO CATEGORY -->
+                                <MenuItem Header="Move to Category...">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Folder" />
+                                    </MenuItem.Icon>
+
+                                    <!-- Categories go here -->
+
+                                </MenuItem>
+
+
+                                <!-- MOVE TO QUEUE -->
+                                <MenuItem Header="Move to Queue...">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Layer" />
+                                    </MenuItem.Icon>
+
+                                    <!-- Queues go here -->
+
+                                </MenuItem>
+
+
+                                <Separator />
+
+
+                                <!-- REMOVE -->
+                                <MenuItem Header="Remove from list"
+                                          Command="{Binding RemoveCommand}" InputGesture="Delete">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Delete" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+
+                                <!-- RESTART -->
+                                <MenuItem Header="Restart Download"
+                                          Command="{Binding RestartCommand}"
+                                          IsVisible="{Binding Status,
+                                  Converter={StaticResource StatusEqualsConverter},
+                                  ConverterParameter=Failed}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="ArrowClockwise" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+
+                                <!-- COPY URL -->
+                                <MenuItem Header="Copy URL"
+                                          Command="{Binding CopyUrlCommand}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Copy" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+
+                                <Separator />
+
+
+                                <!-- PROPERTIES -->
+                                <MenuItem Header="Show Properties"
+                                          Command="{Binding ShowPropertiesCommand}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Info" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+            </dg:DataGrid.Styles>
             <dg:DataGrid.Columns>
                 <!-- ICON -->
                 <dg:DataGridTemplateColumn Header=""

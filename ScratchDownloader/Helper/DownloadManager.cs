@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using System.Timers;
 using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Humanizer;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
+using ScratchDownloader.ViewModels.PageViewModel;
 using Timer = System.Timers.Timer;
 
 namespace ScratchDownloader.Helper;
@@ -17,7 +19,7 @@ public partial class DownloadManager : ViewModelBase
 {
     private readonly Timer _timer;
     private bool _startAfterLoad;
-
+    public Action? ItemUpdated { get; set; }
     public DownloadManager()
     {
         _timer = new Timer(700);
@@ -88,6 +90,7 @@ public partial class DownloadManager : ViewModelBase
         UpdateStatus();
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
+        ItemUpdated?.Invoke();
     }
 
 
@@ -128,12 +131,14 @@ public partial class DownloadManager : ViewModelBase
                 .Humanize("0.00")}";
     }
 
+
     public void Resume(DownloadItemViewModel download)
     {
         download.Resume();
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
     }
+    
 
     public void Pause(DownloadItemViewModel download)
     {
@@ -155,7 +160,17 @@ public partial class DownloadManager : ViewModelBase
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
     }
+    public void Remove(DownloadItemViewModel downloadItemViewModel)
+    {
+        downloadItemViewModel.Stop();
+        downloadItemViewModel.StatusChanged -= DownloadItemViewModelOnStatusChanged;
+        Downloads.Remove(downloadItemViewModel);
 
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
+        ItemUpdated?.Invoke();
+
+    }
     public void StartPendingDownloads()
     {
         foreach (var download in Downloads)
@@ -187,7 +202,12 @@ public partial class DownloadManager : ViewModelBase
             Downloads.Remove(download);
         }
 
+        ItemUpdated?.Invoke();
+
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
     }
+
+
+
 }

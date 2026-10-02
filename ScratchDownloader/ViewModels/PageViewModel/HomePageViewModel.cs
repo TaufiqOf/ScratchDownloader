@@ -23,6 +23,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         _mainPageViewModel = mainPageViewModel;
         DownloadManager = ApplicationManager.DownloadManager;
+        DownloadManager.ItemUpdated += UpdateFilter;
         _loadTimer = new Timer(1000);
         _loadTimer.Elapsed += (sender, args) =>
         {
@@ -36,6 +37,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         };
         _loadTimer.Start();
     }
+
 
     public DownloadManager DownloadManager { get; set; }
 
@@ -117,8 +119,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            DialogManager.ShowMessage(MessageDialogType.Warning, "Clear all Downloads",
-                "Are you sure you want to stop and remove all completed, stopped and failed downloads? This action cannot be undone.",
+            DialogManager.ShowMessage(MessageDialogType.Warning, "Clear Download History",
+                "Are you sure you want to remove all completed, stopped and failed downloads? This action cannot be undone.",
                 "Yes",
                 new RelayCommand(() =>
                 {
@@ -158,8 +160,34 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
                 "Failed to stop all downloads. Please try again.");
         }
     }
+    [RelayCommand]
+    private void ResumeDownload(DownloadItemViewModel? download)
+    {
+        if (download is null)
+            return;
 
+        DownloadManager.Resume(download);
+    }
 
+    [RelayCommand]
+    private void StartDownload(DownloadItemViewModel? download)
+    {
+        if (download is null)
+            return;
+
+        DownloadManager.Start(download);
+    }
+
+    [RelayCommand]
+    private void StopDownload(DownloadItemViewModel? download)
+    {
+        if (download is null)
+            return;
+
+        DownloadManager.Stop(download);
+    }
+    
+   
     partial void OnSelectedQueueChanged(Queue? value)
     {
         if (SelectedQueue == null || SelectedCategory == null)
