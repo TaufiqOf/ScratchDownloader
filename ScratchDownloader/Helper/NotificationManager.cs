@@ -12,12 +12,11 @@ namespace ScratchDownloader.Helper;
 
 public static class NotificationManager
 {
+    private const int Margin = 20;
+    private const int Spacing = 10;
     private static readonly List<NotificationWindow> _notifications = new();
 
     private static Window? _mainWindow;
-
-    private const int Margin = 20;
-    private const int Spacing = 10;
 
     public static void Initialize(Window window)
     {

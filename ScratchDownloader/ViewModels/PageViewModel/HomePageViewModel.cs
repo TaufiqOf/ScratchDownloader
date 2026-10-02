@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Humanizer;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
@@ -26,7 +25,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
 
     [ObservableProperty]
     public partial ObservableCollection<DownloadItemViewModel> FilteredDownloads { get; set; } =
-        new ObservableCollection<DownloadItemViewModel>();
+        new();
 
 
     [ObservableProperty] public partial DownloadItemViewModel? SelectedDownload { get; set; }
@@ -45,7 +44,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         {
             var newDownloadDialog = new AddUrlDialogControlViewModel();
             var okCommand = new RelayCommand(() => StartDownload(newDownloadDialog));
-            await DialogManager.ShowMessage(newDownloadDialog, "New Download", okCommand, null);
+            await DialogManager.ShowMessage(newDownloadDialog, "New Download", okCommand);
         }
         catch (Exception e)
         {
@@ -70,7 +69,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
             foreach (var download in DownloadManager.Downloads)
                 if (download.Status == DownloadStatus.Paused)
                     DownloadManager.Resume(download);
-                else if(download.Status == DownloadStatus.Queued)
+                else if (download.Status == DownloadStatus.Queued)
                     DownloadManager.Start(download);
         }
         catch (Exception e)

@@ -47,10 +47,7 @@ public partial class NotificationWindow : Window
 
         _timer = new Timer(durationInSeconds * 1000);
         _timer.AutoReset = false;
-        _timer.Elapsed += (_, _) =>
-        {
-            Dispatcher.Post(Close);
-        };
+        _timer.Elapsed += (_, _) => { Dispatcher.Post(Close); };
     }
 
     protected override void OnOpened(EventArgs e)

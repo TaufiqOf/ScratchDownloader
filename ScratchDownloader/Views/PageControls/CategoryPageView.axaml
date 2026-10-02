@@ -109,7 +109,7 @@
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate x:DataType="models:Queue">
                                                     <TextBlock Text="{Binding Name}"
-                                                               VerticalAlignment="Center"/>
+                                                               VerticalAlignment="Center" />
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
 

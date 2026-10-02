@@ -1,9 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:ScratchDownloader.ViewModels"
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
-             xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
-             xmlns:models="clr-namespace:ScratchDownloader.Models"
              x:Class="ScratchDownloader.Views.PageControls.SettingsPageView"
              x:DataType="pageViewModel:SettingsPageViewModel">
 

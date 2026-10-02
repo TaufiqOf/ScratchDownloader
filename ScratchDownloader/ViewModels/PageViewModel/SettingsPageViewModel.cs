@@ -1,11 +1,7 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
@@ -14,24 +10,16 @@ namespace ScratchDownloader.ViewModels.PageViewModel;
 
 public partial class SettingsPageViewModel : ViewModelBase, IViewModel
 {
-    public IReadOnlyList<ThemeOption> Themes { get; } =
-    [
-        new("System", ThemeVariant.Default),
-        new("Light", ThemeVariant.Light),
-        new("Dark", ThemeVariant.Dark)
-    ];
+    [ObservableProperty] private bool _notificationsEnabled =
+        SettingsService.Settings.NotificationsEnabled;
+
+    [ObservableProperty] private ThemeOption? _selectedTheme;
 
     [ObservableProperty] private bool _startMinimized =
         SettingsService.Settings.StartMinimized;
 
-    [ObservableProperty] private ThemeOption? _selectedTheme;
-
-    [ObservableProperty] private bool _notificationsEnabled =
-        SettingsService.Settings.NotificationsEnabled;
-
     [ObservableProperty] private bool _startWithSystem =
         SettingsService.Settings.StartWithSystem;
-
 
 
     public SettingsPageViewModel()
@@ -42,10 +30,13 @@ public partial class SettingsPageViewModel : ViewModelBase, IViewModel
             x.Variant == savedTheme);
     }
 
+    public IReadOnlyList<ThemeOption> Themes { get; } =
+    [
+        new("System", ThemeVariant.Default),
+        new("Light", ThemeVariant.Light),
+        new("Dark", ThemeVariant.Dark)
+    ];
 
-
-
-   
 
     partial void OnSelectedThemeChanged(ThemeOption? value)
     {

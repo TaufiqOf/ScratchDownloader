@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Models;
-using ScratchDownloader.ViewModels;
 using ScratchDownloader.ViewModels.DialogControlViewModel;
 using ScratchDownloader.Views.Windows;
 
@@ -18,16 +17,17 @@ public static class DialogManager
     }
 
     public static void ShowMessage(
-        MessageDialogType type, 
-        string title, 
+        MessageDialogType type,
+        string title,
         string message,
         string positiveText = "OK",
-        IRelayCommand? positiveCommand = null, 
+        IRelayCommand? positiveCommand = null,
         string negativeText = "",
         IRelayCommand? negativeCommand = null)
     {
-        var dialogControlViewModel = new MessageDialogControlViewModel(type, message, positiveText, negativeText, !string.IsNullOrWhiteSpace(negativeText));
-        var dialog = new DialogWindow()
+        var dialogControlViewModel = new MessageDialogControlViewModel(type, message, positiveText, negativeText,
+            !string.IsNullOrWhiteSpace(negativeText));
+        var dialog = new DialogWindow
         {
             Title = title,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
@@ -36,19 +36,13 @@ public static class DialogManager
         // Wire up commands to close the dialog window
         dialogControlViewModel.PositiveCommand = new RelayCommand(() =>
         {
-            if (positiveCommand?.CanExecute(null) == true)
-            {
-                positiveCommand.Execute(null);
-            }
+            if (positiveCommand?.CanExecute(null) == true) positiveCommand.Execute(null);
 
             dialog.Close();
         });
         dialogControlViewModel.NegativeCommand = new RelayCommand(() =>
         {
-            if (negativeCommand?.CanExecute(null) == true)
-            {
-                negativeCommand.Execute(null);
-            }
+            if (negativeCommand?.CanExecute(null) == true) negativeCommand.Execute(null);
 
             dialog.Close();
         });
@@ -57,14 +51,14 @@ public static class DialogManager
     }
 
     public static async Task ShowMessage(
-        ADialogViewModel viewModel, 
-        string title, 
+        ADialogViewModel viewModel,
+        string title,
         IRelayCommand? positiveCommand = null,
         IRelayCommand? negativeCommand = null)
     {
         var dialogControlViewModel = viewModel;
 
-        var dialog = new DialogWindow()
+        var dialog = new DialogWindow
         {
             Title = title,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
@@ -74,20 +68,14 @@ public static class DialogManager
         // Wire up commands to close the dialog and execute the passed RelayCommand
         dialogControlViewModel.PositiveCommand = new RelayCommand(() =>
         {
-            if (positiveCommand?.CanExecute(null) == true)
-            {
-                positiveCommand.Execute(null);
-            }
+            if (positiveCommand?.CanExecute(null) == true) positiveCommand.Execute(null);
 
             dialog.Close();
         });
 
         dialogControlViewModel.NegativeCommand = new RelayCommand(() =>
         {
-            if (negativeCommand?.CanExecute(null) == true)
-            {
-                negativeCommand.Execute(null);
-            }
+            if (negativeCommand?.CanExecute(null) == true) negativeCommand.Execute(null);
 
             dialog.Close();
         });

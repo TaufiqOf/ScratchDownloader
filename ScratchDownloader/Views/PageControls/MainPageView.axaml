@@ -1,7 +1,5 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:ScratchDownloader.ViewModels"
-             xmlns:views="clr-namespace:ScratchDownloader.Views"
              xmlns:converter="clr-namespace:ScratchDownloader.Converter"
              xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
@@ -10,7 +8,6 @@
              x:DataType="pageViewModel:MainPageViewModel">
 
     <UserControl.Resources>
-        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <converter:TypeMatchConverter x:Key="TypeMatchConverter" />
     </UserControl.Resources>
     <UserControl.DataTemplates>
@@ -18,11 +15,11 @@
         <DataTemplate DataType="pageViewModel:HomePageViewModel">
             <pageControls:HomePageView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="pageViewModel:CategoryPageViewModel">
             <pageControls:CategoryPageView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="pageViewModel:QueuePageViewModel">
             <pageControls:QueuePageView />
         </DataTemplate>

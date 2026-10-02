@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ScratchDownloader.Models;
+
 public enum QueueDaysOfWeek
 {
     Sunday = 0,
@@ -13,6 +14,7 @@ public enum QueueDaysOfWeek
     Friday = 5,
     Saturday = 6
 }
+
 public enum OperationMode
 {
     Nothing,
@@ -21,7 +23,8 @@ public enum OperationMode
     Shutdown,
     RunScript
 }
-public partial class Queue: ObservableObject
+
+public partial class Queue : ObservableObject
 {
     [ObservableProperty] public partial string Id { get; set; }
     [ObservableProperty] public partial string Name { get; set; }
@@ -29,10 +32,10 @@ public partial class Queue: ObservableObject
     [ObservableProperty] public partial int Segments { get; set; } = 8;
     [ObservableProperty] public partial double MaxSpeedLimit { get; set; } = 0; // 0 means no limit
     [ObservableProperty] public partial TimeSpan? StartTime { get; set; }
-    [ObservableProperty] public partial List<QueueDaysOfWeek> DaysOfWeek { get; set; } = new List<QueueDaysOfWeek>();
+    [ObservableProperty] public partial List<QueueDaysOfWeek> DaysOfWeek { get; set; } = new();
     [ObservableProperty] public partial OperationMode AfterComplete { get; set; } = OperationMode.Nothing;
-    [ObservableProperty] public partial bool IsExpanded{ get; set; }
-    
+    [ObservableProperty] public partial bool IsExpanded { get; set; }
+
     public override bool Equals(object? obj)
     {
         return Id == (obj as Queue)?.Id;

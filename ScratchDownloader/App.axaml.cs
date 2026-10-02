@@ -4,24 +4,20 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Styling;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Services;
-using ScratchDownloader.ViewModels;
-using ScratchDownloader.Views;
 using ScratchDownloader.Views.Windows;
 using MainPageView = ScratchDownloader.Views.PageControls.MainPageView;
 using MainPageViewModel = ScratchDownloader.ViewModels.PageViewModel.MainPageViewModel;
 
 namespace ScratchDownloader;
 
-public partial class App : Application
+public class App : Application
 {
-    private MainWindow? _mainWindow;
-    private TrayIcon? _trayIcon;
-
     private bool _isExiting;
+    private MainWindow? _mainWindow;
     private bool _startedFromAutostart;
+    private TrayIcon? _trayIcon;
 
     public override void Initialize()
     {
@@ -52,14 +48,12 @@ public partial class App : Application
             _mainWindow.Closing +=
                 MainWindow_OnClosing;
             if (SettingsService.Settings.StartMinimized)
-            {
                 _mainWindow.Loaded +=
                     (sender, args) => { _mainWindow.Hide(); };
-                
-            }
             SettingsService.Settings.Categories.Values.ToList().ForEach(category =>
             {
-                Console.WriteLine($" Loading QueueId: {category.QueueId} CategoryId: {category.Id} Name: {category.Name} Folder: {category.Folder} Extension: {category.Extension}");
+                Console.WriteLine(
+                    $" Loading QueueId: {category.QueueId} CategoryId: {category.Id} Name: {category.Name} Folder: {category.Folder} Extension: {category.Extension}");
             });
 
             ApplicationManager.MainWindow = desktop.MainWindow;
@@ -110,10 +104,8 @@ public partial class App : Application
         // --------------------------------------------------------
 
         if (_isExiting)
-        {
             // Allow the window/application to close.
             return;
-        }
 
         // --------------------------------------------------------
         // Normal X button
@@ -130,10 +122,7 @@ public partial class App : Application
 
     private void RebuildTrayMenu()
     {
-        if (_trayIcon == null)
-        {
-            return;
-        }
+        if (_trayIcon == null) return;
 
         var rootMenu = new NativeMenu();
 
@@ -185,10 +174,7 @@ public partial class App : Application
 
     private void ShowMainWindow()
     {
-        if (_mainWindow == null)
-        {
-            return;
-        }
+        if (_mainWindow == null) return;
 
         _mainWindow.Show();
 
@@ -211,9 +197,7 @@ public partial class App : Application
 
         if (ApplicationLifetime
             is IClassicDesktopStyleApplicationLifetime desktop)
-        {
             desktop.Shutdown();
-        }
     }
 
     private void TrayIconOnClicked(

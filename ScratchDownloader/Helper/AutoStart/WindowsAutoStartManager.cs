@@ -6,9 +6,9 @@ namespace ScratchDownloader.Helper.AutoStart;
 
 public sealed class WindowsAutoStartManager(string appName, string scratchshieldDesktop) : IAutoStartManager
 {
-    private string AppName = appName;
+    private readonly string AppName = appName;
 
-    private string RunKey =
+    private readonly string RunKey =
         @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
 
 
@@ -17,7 +17,7 @@ public sealed class WindowsAutoStartManager(string appName, string scratchshield
         using var key =
             Registry.CurrentUser.OpenSubKey(
                 RunKey,
-                writable: false);
+                false);
 
         return key?.GetValue(AppName) != null;
     }
@@ -35,23 +35,19 @@ public sealed class WindowsAutoStartManager(string appName, string scratchshield
         using var key =
             Registry.CurrentUser.OpenSubKey(
                 RunKey,
-                writable: true);
+                true);
 
         if (key == null)
             return;
 
 
         if (enable)
-        {
             key.SetValue(
                 AppName,
                 $"\"{exePath}\" --autostart");
-        }
         else
-        {
             key.DeleteValue(
                 AppName,
-                throwOnMissingValue: false);
-        }
+                false);
     }
 }

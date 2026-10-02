@@ -16,10 +16,6 @@ public partial class CategoryPageViewModel : ViewModelBase, IViewModel
 
     public ObservableCollection<Queue> Queues { get; } = new();
 
-    public CategoryPageViewModel()
-    {
-    }
-
 
     [RelayCommand]
     private async Task BrowseFolderAsync(Category? category)
@@ -67,10 +63,7 @@ public partial class CategoryPageViewModel : ViewModelBase, IViewModel
 
     public override void OnNavigatedFrom()
     {
-        foreach (var category in Categories)
-        {
-            category.PropertyChanged -= OnCategoryPropertyChanged;
-        }
+        foreach (var category in Categories) category.PropertyChanged -= OnCategoryPropertyChanged;
 
         SettingsService.Save();
 
@@ -81,10 +74,7 @@ public partial class CategoryPageViewModel : ViewModelBase, IViewModel
     {
         Queues.Clear();
 
-        foreach (var queue in SettingsService.Settings.Queues.Values)
-        {
-            Queues.Add(queue);
-        }
+        foreach (var queue in SettingsService.Settings.Queues.Values) Queues.Add(queue);
     }
 
     private void InitializeCategories()
@@ -115,23 +105,13 @@ public partial class CategoryPageViewModel : ViewModelBase, IViewModel
         if (e.PropertyName == nameof(Category.IsExpanded))
         {
             if (category.IsExpanded)
-            {
                 foreach (var other in Categories)
-                {
                     if (other != category)
                         other.IsExpanded = false;
-                }
-            }
 
             return;
         }
 
-        if (e.PropertyName == nameof(Category.SelectedQueue))
-        {
-            category.QueueId = category.SelectedQueue?.Id;
-        }
-
-  
+        if (e.PropertyName == nameof(Category.SelectedQueue)) category.QueueId = category.SelectedQueue?.Id;
     }
-    
 }

@@ -24,8 +24,9 @@
                            FontSize="30"
                            FontWeight="Bold" />
 
-                <TextBlock Text="Manage how your downloads use the internet, when they start, what happens when they finish, and more."
-                           Opacity="0.6" />
+                <TextBlock
+                    Text="Manage how your downloads use the internet, when they start, what happens when they finish, and more."
+                    Opacity="0.6" />
             </StackPanel>
 
             <!-- Add Queue Button -->
@@ -38,10 +39,10 @@
 
         <!-- QUEUES LIST -->
         <StackPanel Spacing="16">
-            <Button Grid.Column="1"
-                    Command="{Binding AddQueueCommand}"
-                    VerticalAlignment="Center"
-                    Padding="12,8">
+            <Button
+                Command="{Binding AddQueueCommand}"
+                VerticalAlignment="Center"
+                Padding="12,8">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <fluent:FluentIcon Icon="Add" FontSize="16" />
                     <TextBlock Text="New Queue" VerticalAlignment="Center" />
@@ -106,11 +107,12 @@
                                                        FontSize="11"
                                                        FontWeight="SemiBold"
                                                        Opacity="0.5" />
-                                            <ComboBox ItemsSource="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).SegmentOptions}"
-                                                      SelectedItem="{Binding Segments}"
-                                                      HorizontalAlignment="Stretch" />
+                                            <ComboBox
+                                                ItemsSource="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).SegmentOptions}"
+                                                SelectedItem="{Binding Segments}"
+                                                HorizontalAlignment="Stretch" />
                                         </StackPanel>
-                     
+
                                         <StackPanel Grid.Column="2" Spacing="6">
                                             <TextBlock Text="MAX SPEED LIMIT (KB/s, 0 = UNLIMITED)"
                                                        FontSize="11"
@@ -147,7 +149,8 @@
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
                                                    Opacity="0.5" />
-                                        <ItemsControl ItemsSource="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).QueueDays}">
+                                        <ItemsControl
+                                            ItemsSource="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).QueueDays}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <StackPanel Orientation="Horizontal" Spacing="6" />
@@ -162,9 +165,12 @@
 
                                                         <!-- MultiBinding for IsChecked -->
                                                         <ToggleButton.IsChecked>
-                                                            <MultiBinding Converter="{StaticResource DayIsCheckedConverter}" Mode="OneWay">
+                                                            <MultiBinding
+                                                                Converter="{StaticResource DayIsCheckedConverter}"
+                                                                Mode="OneWay">
                                                                 <!-- 1. The Queue's DaysOfWeek collection -->
-                                                                <Binding Path="$parent[ItemsControl].((models:Queue)DataContext).DaysOfWeek" />
+                                                                <Binding
+                                                                    Path="$parent[ItemsControl].((models:Queue)DataContext).DaysOfWeek" />
                                                                 <!-- 2. The current day enum value in this item -->
                                                                 <Binding />
                                                             </MultiBinding>
@@ -172,7 +178,8 @@
 
                                                         <!-- Command parameter to trigger toggle -->
                                                         <ToggleButton.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource QueueDayToggleArgsConverter}">
+                                                            <MultiBinding
+                                                                Converter="{StaticResource QueueDayToggleArgsConverter}">
                                                                 <Binding Path="$parent[ItemsControl].DataContext" />
                                                                 <Binding />
                                                             </MultiBinding>

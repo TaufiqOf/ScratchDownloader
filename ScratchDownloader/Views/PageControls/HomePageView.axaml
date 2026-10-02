@@ -1,17 +1,14 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:ScratchDownloader.ViewModels"
              xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
              xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
-             xmlns:models="clr-namespace:System.Collections;assembly=System.Collections.NonGeneric"
              xmlns:models1="clr-namespace:ScratchDownloader.Models"
              xmlns:converter="clr-namespace:ScratchDownloader.Converter"
              xmlns:control="clr-namespace:ScratchDownloader.Views.Control"
              x:Class="ScratchDownloader.Views.PageControls.HomePageView"
              x:DataType="pageViewModel:HomePageViewModel">
     <UserControl.Resources>
-        <converter:IndexToGradientBrushConverter x:Key="IndexToBrushConverter" TotalSegments="8" />
         <converter:StatusToIconConverter x:Key="StatusToIconConverter" />
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
@@ -172,15 +169,16 @@
             <dg:DataGrid.Columns>
                 <!-- FILE -->
                 <dg:DataGridTemplateColumn Header=""
-                                           Width="30" >
+                                           Width="30">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
-                                <fluent:FluentIcon Icon="{Binding Status , Converter={StaticResource StatusToIconConverter}}"
-                                                   Width="20"
-                                                   Height="20"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center" />
+                                <fluent:FluentIcon
+                                    Icon="{Binding Status , Converter={StaticResource StatusToIconConverter}}"
+                                    Width="20"
+                                    Height="20"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center" />
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

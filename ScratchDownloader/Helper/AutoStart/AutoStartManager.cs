@@ -35,7 +35,6 @@ public static class AutoStartManager
     private static IAutoStartManager CreateAutoStartManager()
     {
 #if ANDROID
-
         return new AndroidAutoStartManager(
             Application.Context);
 
@@ -43,19 +42,15 @@ public static class AutoStartManager
 
         if (RuntimeInformation.IsOSPlatform(
                 OSPlatform.Windows))
-        {
             return new WindowsAutoStartManager(
                 AppName,
                 DesktopFile);
-        }
 
         if (RuntimeInformation.IsOSPlatform(
                 OSPlatform.Linux))
-        {
             return new LinuxAutoStartManager(
                 AppName,
                 DesktopFile);
-        }
 
         throw new PlatformNotSupportedException(
             $"Auto-start is not supported on this platform. " +

@@ -6,14 +6,13 @@ namespace ScratchDownloader.Helper.AutoStart;
 
 public sealed class LinuxAutoStartManager(string appName, string desktopFile) : IAutoStartManager
 {
-    private string _appName = appName;
-
-    private string _desktopFileFile = desktopFile;
-
-
     private static readonly string? FlatpakId =
         Environment.GetEnvironmentVariable(
             "FLATPAK_ID");
+
+    private readonly string _appName = appName;
+
+    private readonly string _desktopFileFile = desktopFile;
 
 
     private static bool IsFlatpak =>
@@ -55,13 +54,11 @@ public sealed class LinuxAutoStartManager(string appName, string desktopFile) : 
     }
 
 
-    private  void Enable()
+    private void Enable()
     {
         if (!TryGetExecCommand(
                 out var execCommand))
-        {
             return;
-        }
 
 
         Directory.CreateDirectory(
@@ -69,17 +66,17 @@ public sealed class LinuxAutoStartManager(string appName, string desktopFile) : 
 
 
         var content = $"""
-            [Desktop Entry]
-            Type=Application
-            Version=1.0
-            Name={_appName}
-            Comment=ScratchShield
-            Exec={execCommand}
-            Terminal=false
-            StartupNotify=false
-            X-GNOME-Autostart-enabled=true
-            X-KDE-autostart-enabled=true
-            """;
+                       [Desktop Entry]
+                       Type=Application
+                       Version=1.0
+                       Name={_appName}
+                       Comment=ScratchShield
+                       Exec={execCommand}
+                       Terminal=false
+                       StartupNotify=false
+                       X-GNOME-Autostart-enabled=true
+                       X-KDE-autostart-enabled=true
+                       """;
 
 
         File.WriteAllText(
@@ -88,13 +85,11 @@ public sealed class LinuxAutoStartManager(string appName, string desktopFile) : 
     }
 
 
-    private  void Disable()
+    private void Disable()
     {
         if (!File.Exists(
                 DesktopFilePath))
-        {
             return;
-        }
 
 
         File.Delete(
@@ -102,7 +97,7 @@ public sealed class LinuxAutoStartManager(string appName, string desktopFile) : 
     }
 
 
-    private  bool TryGetExecCommand(
+    private bool TryGetExecCommand(
         out string execCommand)
     {
         // --------------------------------------------------------

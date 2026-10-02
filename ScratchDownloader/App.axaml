@@ -2,57 +2,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:ScratchDownloader"
              x:Class="ScratchDownloader.App">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
-             <!-- System tray -->
-             <TrayIcon.Icons>
-                 <TrayIcons>
+    <!-- System tray -->
+    <TrayIcon.Icons>
+        <TrayIcons>
 
-                     <TrayIcon
-                         Icon="avares://ScratchDownloader/Assets/avalonia-logo.ico"
-                         ToolTipText="ScratchDownloader" Clicked="TrayIconOnClicked">
+            <TrayIcon
+                Icon="avares://ScratchDownloader/Assets/avalonia-logo.ico"
+                ToolTipText="ScratchDownloader" Clicked="TrayIconOnClicked">
 
-                         <TrayIcon.Menu>
-                             <NativeMenu>
+                <TrayIcon.Menu>
+                    <NativeMenu>
 
-                                 <NativeMenuItem Header="Show"
-                                                 Click="ShowWindow_OnClick" />
+                        <NativeMenuItem Header="Show"
+                                        Click="ShowWindow_OnClick" />
 
-                                 <NativeMenuItemSeparator />
+                        <NativeMenuItemSeparator />
 
-                                 <NativeMenuItem Header="Exit"
-                                                 Click="Exit_OnClick" />
+                        <NativeMenuItem Header="Exit"
+                                        Click="Exit_OnClick" />
 
-                             </NativeMenu>
-                         </TrayIcon.Menu>
+                    </NativeMenu>
+                </TrayIcon.Menu>
 
-                     </TrayIcon>
+            </TrayIcon>
 
-                 </TrayIcons>
-             </TrayIcon.Icons>
+        </TrayIcons>
+    </TrayIcon.Icons>
 
     <Application.Styles>
         <Style Selector="Button">
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Height" Value="36" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
         <Style Selector="ComboBox">
-            <Setter Property="Height" Value="31"/>
+            <Setter Property="Height" Value="31" />
         </Style>
         <Style Selector="TimePicker">
-            <Setter Property="Height" Value="31"/>
+            <Setter Property="Height" Value="31" />
         </Style>
         <Style Selector="TextBox">
-            <Setter Property="Height" Value="31"/>
+            <Setter Property="Height" Value="31" />
         </Style>
         <Style Selector="NumericUpDown">
-            <Setter Property="Height" Value="31"/>
+            <Setter Property="Height" Value="31" />
         </Style>
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <FluentTheme />
     </Application.Styles>
 </Application>

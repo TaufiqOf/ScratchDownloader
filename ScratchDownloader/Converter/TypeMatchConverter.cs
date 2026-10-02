@@ -11,10 +11,10 @@ public class TypeMatchConverter : IValueConverter
         if (value == null || parameter == null)
             return false;
 
-        string targetTypeName = parameter.ToString()!;
-        
+        var targetTypeName = parameter.ToString()!;
+
         // Match either full type name or short class name (e.g., "HomePageViewModel")
-        Type valueType = value.GetType();
+        var valueType = value.GetType();
         return valueType.Name == targetTypeName || valueType.FullName == targetTypeName;
     }
 

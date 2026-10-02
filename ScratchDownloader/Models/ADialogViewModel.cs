@@ -1,6 +1,5 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using ScratchDownloader.ViewModels;
 
 namespace ScratchDownloader.Models;
 

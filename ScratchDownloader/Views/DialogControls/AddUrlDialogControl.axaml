@@ -1,8 +1,5 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:ScratchDownloader.Views.DialogControls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
              xmlns:dialogControlViewModel="clr-namespace:ScratchDownloader.ViewModels.DialogControlViewModel"
              xmlns:models="clr-namespace:ScratchDownloader.Models"
@@ -202,7 +199,8 @@
                                 <DataTemplate x:DataType="models:Category">
                                     <Grid ColumnDefinitions="Auto,*">
                                         <fluent:FluentIcon Icon="{Binding Icon}" VerticalAlignment="Center" />
-                                        <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                                        <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}"
+                                                   VerticalAlignment="Center" />
                                     </Grid>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -220,11 +218,12 @@
 
                         <ComboBox ItemsSource="{Binding Queues}"
                                   SelectedItem="{Binding DownloadItemInformation.Queue}"
-                                  HorizontalAlignment="Stretch" >
+                                  HorizontalAlignment="Stretch">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate x:DataType="models:Queue">
                                     <Grid ColumnDefinitions="Auto,*">
-                                        <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+                                        <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Name}"
+                                                   VerticalAlignment="Center" />
                                     </Grid>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>

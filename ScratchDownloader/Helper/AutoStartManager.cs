@@ -28,15 +28,10 @@ public static class AutoStartManager
             ".config",
             "autostart");
 
-    private static string LinuxDesktopFilePath
-    {
-        get
-        {
-            return Path.Combine(
-                LinuxAutostartDir,
-                DesktopFile);
-        }
-    }
+    private static string LinuxDesktopFilePath =>
+        Path.Combine(
+            LinuxAutostartDir,
+            DesktopFile);
 
     // ============================================================
     // macOS
@@ -49,15 +44,10 @@ public static class AutoStartManager
             "Library",
             "LaunchAgents");
 
-    private static string MacPlistFilePath
-    {
-        get
-        {
-            return Path.Combine(
-                MacLaunchAgentsDir,
-                AutostartPlist);
-        }
-    }
+    private static string MacPlistFilePath =>
+        Path.Combine(
+            MacLaunchAgentsDir,
+            AutostartPlist);
 
     // ============================================================
     // PUBLIC API
@@ -70,10 +60,8 @@ public static class AutoStartManager
         // --------------------------------------------------------
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        {
             return File.Exists(
                 LinuxDesktopFilePath);
-        }
 
         // --------------------------------------------------------
         // Windows
@@ -84,7 +72,7 @@ public static class AutoStartManager
             using var key =
                 Registry.CurrentUser.OpenSubKey(
                     @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
-                    writable: false);
+                    false);
 
             return key?.GetValue(AppName) != null;
         }
@@ -94,10 +82,8 @@ public static class AutoStartManager
         // --------------------------------------------------------
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        {
             return File.Exists(
                 MacPlistFilePath);
-        }
 
         return false;
     }
@@ -128,10 +114,7 @@ public static class AutoStartManager
         // macOS
         // --------------------------------------------------------
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        {
-            SetMacEnabled(enable);
-        }
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) SetMacEnabled(enable);
     }
 
     // ============================================================
@@ -149,10 +132,7 @@ public static class AutoStartManager
 
         if (!enable)
         {
-            if (File.Exists(desktopFile))
-            {
-                File.Delete(desktopFile);
-            }
+            if (File.Exists(desktopFile)) File.Delete(desktopFile);
 
             return;
         }
@@ -163,25 +143,23 @@ public static class AutoStartManager
 
         if (!TryGetLinuxExecCommand(
                 out var execCommand))
-        {
             return;
-        }
 
         Directory.CreateDirectory(
             LinuxAutostartDir);
 
         var content = $"""
-            [Desktop Entry]
-            Type=Application
-            Version=1.0
-            Name={AppName}
-            Comment=ScratchCube
-            Exec={execCommand}
-            Terminal=false
-            StartupNotify=false
-            X-GNOME-Autostart-enabled=true
-            X-KDE-autostart-enabled=true
-            """;
+                       [Desktop Entry]
+                       Type=Application
+                       Version=1.0
+                       Name={AppName}
+                       Comment=ScratchCube
+                       Exec={execCommand}
+                       Terminal=false
+                       StartupNotify=false
+                       X-GNOME-Autostart-enabled=true
+                       X-KDE-autostart-enabled=true
+                       """;
 
         File.WriteAllText(
             desktopFile,
@@ -294,33 +272,23 @@ public static class AutoStartManager
         var exePath =
             Environment.ProcessPath;
 
-        if (string.IsNullOrWhiteSpace(exePath))
-        {
-            return;
-        }
+        if (string.IsNullOrWhiteSpace(exePath)) return;
 
         using var key =
             Registry.CurrentUser.OpenSubKey(
                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
-                writable: true);
+                true);
 
-        if (key == null)
-        {
-            return;
-        }
+        if (key == null) return;
 
         if (enable)
-        {
             key.SetValue(
                 AppName,
                 $"\"{exePath}\" --autostart");
-        }
         else
-        {
             key.DeleteValue(
                 AppName,
-                throwOnMissingValue: false);
-        }
+                false);
     }
 
     // ============================================================
@@ -336,10 +304,7 @@ public static class AutoStartManager
 
         if (!enable)
         {
-            if (File.Exists(MacPlistFilePath))
-            {
-                File.Delete(MacPlistFilePath);
-            }
+            if (File.Exists(MacPlistFilePath)) File.Delete(MacPlistFilePath);
 
             return;
         }
@@ -351,10 +316,7 @@ public static class AutoStartManager
         var exePath =
             Environment.ProcessPath;
 
-        if (string.IsNullOrWhiteSpace(exePath))
-        {
-            return;
-        }
+        if (string.IsNullOrWhiteSpace(exePath)) return;
 
         try
         {
@@ -366,10 +328,7 @@ public static class AutoStartManager
             return;
         }
 
-        if (!File.Exists(exePath))
-        {
-            return;
-        }
+        if (!File.Exists(exePath)) return;
 
         // --------------------------------------------------------
         // Create LaunchAgents directory
@@ -383,27 +342,27 @@ public static class AutoStartManager
         // --------------------------------------------------------
 
         var plistContent = $"""
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
-                "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-            <plist version="1.0">
-            <dict>
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+                                "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+                            <plist version="1.0">
+                            <dict>
 
-                <key>Label</key>
-                <string>com.scratchcube.autostart</string>
+                                <key>Label</key>
+                                <string>com.scratchcube.autostart</string>
 
-                <key>ProgramArguments</key>
-                <array>
-                    <string>{EscapeXml(exePath)}</string>
-                    <string>--autostart</string>
-                </array>
+                                <key>ProgramArguments</key>
+                                <array>
+                                    <string>{EscapeXml(exePath)}</string>
+                                    <string>--autostart</string>
+                                </array>
 
-                <key>RunAtLoad</key>
-                <true/>
+                                <key>RunAtLoad</key>
+                                <true/>
 
-            </dict>
-            </plist>
-            """;
+                            </dict>
+                            </plist>
+                            """;
 
         File.WriteAllText(
             MacPlistFilePath,

@@ -29,10 +29,10 @@
                 BorderThickness="1"
                 BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
                 Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
-            <StackPanel 
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Margin="10">
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+                Margin="10">
                 <Button Content="{Binding NegativeButtonText}"
                         Command="{Binding NegativeCommand}"
                         MinWidth="75"

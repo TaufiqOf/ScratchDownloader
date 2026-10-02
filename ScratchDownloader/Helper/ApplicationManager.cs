@@ -115,12 +115,15 @@ public static class ApplicationManager
         }
     }
 
-    public static Dictionary<string, Queue> Queues { get; set; } = new Dictionary<string, Queue>
+    public static Dictionary<string, Queue> Queues { get; set; } = new()
     {
-        { "Main", new Queue() { Id = "Main", Name = "Main" } },
-        { "Secondary", new Queue() { Id = "Secondary", Name = "Secondary" } },
-
+        { "Main", new Queue { Id = "Main", Name = "Main" } },
+        { "Secondary", new Queue { Id = "Secondary", Name = "Secondary" } }
     };
+
+    public static DownloadManager DownloadManager { get; set; } = new();
+
+    public static Dictionary<string, Category> Categories { get; }
 
     public static TopLevel? GetTopLevel()
     {
@@ -179,21 +182,13 @@ public static class ApplicationManager
             return null;
         var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            Title = $"Select Save Folder",
+            Title = "Select Save Folder",
             AllowMultiple = false,
             SuggestedStartLocation = await storageProvider.TryGetFolderFromPathAsync(path)
         });
 
-        if (folders.Count > 0)
-        {
-            return folders[0].Path.LocalPath;
-            // Save settings here if applicable: SettingsService.Save();
-        }
-
+        if (folders.Count > 0) return folders[0].Path.LocalPath;
+        // Save settings here if applicable: SettingsService.Save();
         return null;
     }
-
-    public static DownloadManager DownloadManager { get; set; } = new DownloadManager();
-
-    public static Dictionary<string, Category> Categories { get; }
 }

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,11 +14,20 @@ namespace ScratchDownloader.Services;
 
 public class DirectDownloadService : IDownloadService
 {
-    public DownloadProgress Progress { get; set; } = new DownloadProgress();
-    public event EventHandler<string>? ErrorOccurred;
-
     private readonly HttpClient _httpClient;
     private CancellationTokenSource? _cts;
+
+    private double _lastProgressReported;
+
+
+    public DirectDownloadService(HttpClient? httpClient = null)
+    {
+        _httpClient = httpClient ?? new HttpClient();
+    }
+
+    private string MetadataFilePath => $"{DestinationFilePath}.meta.json";
+    public DownloadProgress Progress { get; set; } = new();
+    public event EventHandler<string>? ErrorOccurred;
 
     public event EventHandler? Completed;
     public event EventHandler? Initializing;
@@ -28,12 +37,27 @@ public class DirectDownloadService : IDownloadService
     public Uri? Uri { get; set; }
     public string? DestinationFilePath { get; set; }
 
-    private string MetadataFilePath => $"{DestinationFilePath}.meta.json";
-
-
-    public DirectDownloadService(HttpClient? httpClient = null)
+    public void Start(CancellationToken cancellationToken = default)
     {
-        _httpClient = httpClient ?? new HttpClient();
+        Task.Factory.StartNew(() => StartAsync(cancellationToken), cancellationToken, TaskCreationOptions.LongRunning,
+            TaskScheduler.Default);
+    }
+
+    public void Pause()
+    {
+        _cts?.Cancel();
+    }
+
+    public void Resume(CancellationToken cancellationToken = default)
+    {
+        _ = ResumeAsync(cancellationToken);
+    }
+
+    public void Stop()
+    {
+        _cts?.Cancel();
+        if (File.Exists(MetadataFilePath))
+            File.Delete(MetadataFilePath);
     }
 
     public async Task StartAsync(CancellationToken cancellationToken = default)
@@ -43,11 +67,8 @@ public class DirectDownloadService : IDownloadService
             ValidateInputs();
             _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-            string? directory = Path.GetDirectoryName(DestinationFilePath);
-            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+            var directory = Path.GetDirectoryName(DestinationFilePath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory)) Directory.CreateDirectory(directory);
 
             DownloadMetadata metadata;
             Initializing?.Invoke(this, EventArgs.Empty);
@@ -57,10 +78,7 @@ public class DirectDownloadService : IDownloadService
             }
             else
             {
-                if (File.Exists(DestinationFilePath))
-                {
-                    File.Delete(DestinationFilePath);
-                }
+                if (File.Exists(DestinationFilePath)) File.Delete(DestinationFilePath);
 
                 metadata = await InitializeMetadataAsync(_cts.Token);
             }
@@ -79,12 +97,10 @@ public class DirectDownloadService : IDownloadService
         try
         {
             if (!File.Exists(MetadataFilePath))
-            {
                 throw new FileNotFoundException("No saved state found to resume from.", MetadataFilePath);
-            }
 
             _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-            DownloadMetadata metadata = LoadMetadata();
+            var metadata = LoadMetadata();
             await ProcessDownloadAsync(metadata, _cts.Token);
         }
         catch (Exception e)
@@ -103,8 +119,8 @@ public class DirectDownloadService : IDownloadService
         // Pre-fill existing segment states
         foreach (var seg in metadata.Segments)
         {
-            long segTotal = seg.EndByte - seg.StartByte + 1;
-            double initialPercent = segTotal > 0 ? (double)seg.BytesDownloaded / segTotal * 100 : 0;
+            var segTotal = seg.EndByte - seg.StartByte + 1;
+            var initialPercent = segTotal > 0 ? (double)seg.BytesDownloaded / segTotal * 100 : 0;
 
             segmentProgressMap[seg.Index] = new SegmentProgress
             {
@@ -118,7 +134,7 @@ public class DirectDownloadService : IDownloadService
 
         Progress.SegmentProgress = segmentProgressMap;
         var overallStopwatch = Stopwatch.StartNew();
-        long initialTotalBytes = metadata.Segments.Sum(s => s.BytesDownloaded);
+        var initialTotalBytes = metadata.Segments.Sum(s => s.BytesDownloaded);
 
         var tasks = metadata.Segments.Select(segment => Task.Run(async () =>
         {
@@ -134,10 +150,7 @@ public class DirectDownloadService : IDownloadService
         {
             await Task.WhenAll(tasks);
             Completed?.Invoke(this, EventArgs.Empty);
-            if (File.Exists(MetadataFilePath))
-            {
-                File.Delete(MetadataFilePath);
-            }
+            if (File.Exists(MetadataFilePath)) File.Delete(MetadataFilePath);
         }
         catch (OperationCanceledException)
         {
@@ -149,8 +162,6 @@ public class DirectDownloadService : IDownloadService
         }
     }
 
-    private double _lastProgressReported = 0;
-
     private async Task DownloadSegmentAsync(
         SegmentState segment,
         DownloadMetadata metadata,
@@ -160,15 +171,15 @@ public class DirectDownloadService : IDownloadService
     {
         try
         {
-            long currentStart = segment.StartByte + segment.BytesDownloaded;
-            long totalSegmentBytes = segment.EndByte - segment.StartByte + 1;
+            var currentStart = segment.StartByte + segment.BytesDownloaded;
+            var totalSegmentBytes = segment.EndByte - segment.StartByte + 1;
 
             // Skip completed segments
             if (currentStart > segment.EndByte)
                 return;
 
             var request = new HttpRequestMessage(HttpMethod.Get, Uri);
-            request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(currentStart, segment.EndByte);
+            request.Headers.Range = new RangeHeaderValue(currentStart, segment.EndByte);
 
             using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
             response.EnsureSuccessStatusCode();
@@ -180,12 +191,12 @@ public class DirectDownloadService : IDownloadService
                 FileMode.Open,
                 FileAccess.Write,
                 FileShare.ReadWrite,
-                bufferSize: 81920,
-                useAsync: true);
+                81920,
+                true);
 
             fileStream.Seek(currentStart, SeekOrigin.Begin);
 
-            byte[] buffer = new byte[81920];
+            var buffer = new byte[81920];
             int read;
 
             var segmentStopwatch = Stopwatch.StartNew();
@@ -199,9 +210,9 @@ public class DirectDownloadService : IDownloadService
                 sessionBytesDownloadedForSegment += read;
 
                 // Calculate segment speed
-                double segElapsedSec = segmentStopwatch.Elapsed.TotalSeconds;
-                double segSpeed = segElapsedSec > 0 ? sessionBytesDownloadedForSegment / segElapsedSec : 0;
-                double segPercent = (double)segment.BytesDownloaded / totalSegmentBytes * 100;
+                var segElapsedSec = segmentStopwatch.Elapsed.TotalSeconds;
+                var segSpeed = segElapsedSec > 0 ? sessionBytesDownloadedForSegment / segElapsedSec : 0;
+                var segPercent = (double)segment.BytesDownloaded / totalSegmentBytes * 100;
 
                 var currentSegProgress = Progress.SegmentProgress[segment.Index];
                 currentSegProgress.Index = segment.Index;
@@ -212,13 +223,13 @@ public class DirectDownloadService : IDownloadService
 
 
                 // Calculate overall progress & speed
-                long currentTotalDownloaded = Progress.SegmentProgress.Values.Sum(s => s.BytesDownloaded);
-                double overallPercent =
+                var currentTotalDownloaded = Progress.SegmentProgress.Values.Sum(s => s.BytesDownloaded);
+                var overallPercent =
                     metadata.TotalBytes > 0 ? (double)currentTotalDownloaded / metadata.TotalBytes * 100 : 0;
 
-                long sessionTotalDownloaded = currentTotalDownloaded - initialTotalBytesRead;
-                double overallElapsedSec = overallStopwatch.Elapsed.TotalSeconds;
-                double overallSpeed = overallElapsedSec > 0 ? sessionTotalDownloaded / overallElapsedSec : 0;
+                var sessionTotalDownloaded = currentTotalDownloaded - initialTotalBytesRead;
+                var overallElapsedSec = overallStopwatch.Elapsed.TotalSeconds;
+                var overallSpeed = overallElapsedSec > 0 ? sessionTotalDownloaded / overallElapsedSec : 0;
 
                 SaveMetadata(metadata);
                 _lastProgressReported = Math.Max(_lastProgressReported, overallPercent);
@@ -242,10 +253,10 @@ public class DirectDownloadService : IDownloadService
             using var headResponse = await _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, Uri), token);
             headResponse.EnsureSuccessStatusCode();
 
-            long totalBytes = headResponse.Content.Headers.ContentLength
-                              ?? throw new InvalidOperationException("Server did not return Content-Length.");
+            var totalBytes = headResponse.Content.Headers.ContentLength
+                             ?? throw new InvalidOperationException("Server did not return Content-Length.");
 
-            bool supportsRanges = headResponse.Headers.AcceptRanges.Contains("bytes");
+            var supportsRanges = headResponse.Headers.AcceptRanges.Contains("bytes");
 
             using (var fs = new FileStream(DestinationFilePath!, FileMode.Create, FileAccess.Write,
                        FileShare.ReadWrite))
@@ -253,8 +264,8 @@ public class DirectDownloadService : IDownloadService
                 fs.SetLength(totalBytes);
             }
 
-            int effectiveSegments = supportsRanges ? Math.Max(1, SegmentCount) : 1;
-            long segmentSize = totalBytes / effectiveSegments;
+            var effectiveSegments = supportsRanges ? Math.Max(1, SegmentCount) : 1;
+            var segmentSize = totalBytes / effectiveSegments;
 
             var metadata = new DownloadMetadata
             {
@@ -262,10 +273,10 @@ public class DirectDownloadService : IDownloadService
                 TotalBytes = totalBytes
             };
 
-            for (int i = 0; i < effectiveSegments; i++)
+            for (var i = 0; i < effectiveSegments; i++)
             {
-                long startByte = i * segmentSize;
-                long endByte = (i == effectiveSegments - 1) ? totalBytes - 1 : (startByte + segmentSize - 1);
+                var startByte = i * segmentSize;
+                var endByte = i == effectiveSegments - 1 ? totalBytes - 1 : startByte + segmentSize - 1;
 
                 metadata.Segments.Add(new SegmentState
                 {
@@ -290,39 +301,16 @@ public class DirectDownloadService : IDownloadService
     {
         lock (this)
         {
-            string json = JsonSerializer.Serialize(metadata, new JsonSerializerOptions { WriteIndented = true });
+            var json = JsonSerializer.Serialize(metadata, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(MetadataFilePath, json);
         }
     }
 
     private DownloadMetadata LoadMetadata()
     {
-        string json = File.ReadAllText(MetadataFilePath);
+        var json = File.ReadAllText(MetadataFilePath);
         return JsonSerializer.Deserialize<DownloadMetadata>(json)
                ?? throw new InvalidDataException("Metadata file is invalid.");
-    }
-
-    public void Start(CancellationToken cancellationToken = default)
-    {
-        Task.Factory.StartNew(() => StartAsync(cancellationToken), cancellationToken, TaskCreationOptions.LongRunning,
-            TaskScheduler.Default);
-    }
-
-    public void Pause()
-    {
-        _cts?.Cancel();
-    }
-
-    public void Resume(CancellationToken cancellationToken = default)
-    {
-        _ = ResumeAsync(cancellationToken);
-    }
-
-    public void Stop()
-    {
-        _cts?.Cancel();
-        if (File.Exists(MetadataFilePath))
-            File.Delete(MetadataFilePath);
     }
 
     private void ValidateInputs()

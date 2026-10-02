@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Input.Platform;
@@ -11,18 +10,23 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Models;
-using Humanizer;
 using ScratchDownloader.Services;
 
 namespace ScratchDownloader.ViewModels.DialogControlViewModel;
 
 public partial class AddUrlDialogControlViewModel : ADialogViewModel
 {
-
     private CancellationTokenSource? _detectCancellation;
 
-    [ObservableProperty]
-    private DownloadItemInformationViewModel _downloadItemInformation = new DownloadItemInformationViewModel();
+    [ObservableProperty] private DownloadItemInformationViewModel _downloadItemInformation = new();
+
+
+    public AddUrlDialogControlViewModel()
+    {
+        DownloadItemInformation.Category = SettingsService.Settings.Categories["Other"];
+        DownloadItemInformation.Queue = SettingsService.Settings.Queues["Main"];
+        DownloadItemInformation.Segments = 8;
+    }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanDownload))]
@@ -59,16 +63,6 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
     ];
 
 
-    public AddUrlDialogControlViewModel()
-    {
-        DownloadItemInformation.Category = SettingsService.Settings.Categories["Other"];
-        DownloadItemInformation.Queue = SettingsService.Settings.Queues["Main"];
-        DownloadItemInformation.Segments = 8;
-        
-    }
-
-
-
     partial void OnUrlChanged(string? value)
     {
         _ = DetectUrlAsync(value);
@@ -100,7 +94,8 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
 
         try
         {
-            DownloadItemInformation = await ApplicationManager.DownloadManager.GetDownloadInfoFromUrl(url, cancellationToken);
+            DownloadItemInformation =
+                await ApplicationManager.DownloadManager.GetDownloadInfoFromUrl(url, cancellationToken);
             HasFileInfo = true;
         }
         catch (OperationCanceledException)
@@ -121,16 +116,11 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
     }
 
 
-   
-
     [RelayCommand]
     private async Task PasteAsync()
     {
         var clipboard = ApplicationManager.GetClipboard();
-        if (clipboard != null)
-        {
-            Url = await clipboard.TryGetTextAsync();
-        }
+        if (clipboard != null) Url = await clipboard.TryGetTextAsync();
     }
 
 
@@ -138,11 +128,12 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
     private async Task Browse()
     {
         DownloadItemInformation.SavePath = await ApplicationManager.SaveFileDialog(
-            title: "Select Save Location",
-            startPath: Path.GetDirectoryName(DownloadItemInformation.SavePath) ?? Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-            suggestedFileName: DownloadItemInformation.SavePath ?? "download",
-            allowMultiple: false,
-            fileTypeFilter: new List<FilePickerFileType>
+            "Select Save Location",
+            Path.GetDirectoryName(DownloadItemInformation.SavePath) ??
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+            DownloadItemInformation.SavePath ?? "download",
+            false,
+            new List<FilePickerFileType>
             {
                 new("All Files")
                 {

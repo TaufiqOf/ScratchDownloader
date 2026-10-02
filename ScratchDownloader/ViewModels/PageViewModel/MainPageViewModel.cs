@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Avalonia.Controls;
+using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
@@ -9,14 +9,13 @@ namespace ScratchDownloader.ViewModels.PageViewModel;
 
 public partial class MainPageViewModel : ViewModelBase
 {
-    [ObservableProperty] 
-    private IViewModel? _currentView;
-
-    [ObservableProperty] 
-    private bool _isPaneOpen;
-    [ObservableProperty]
-    private string _version = "v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3);
     private readonly Dictionary<string, IViewModel> _views = new();
+
+    [ObservableProperty] private IViewModel? _currentView;
+
+    [ObservableProperty] private bool _isPaneOpen;
+
+    [ObservableProperty] private string _version = "v" + Assembly.GetExecutingAssembly().GetName().Version?.ToString(3);
 
     public MainPageViewModel()
     {
@@ -43,14 +42,8 @@ public partial class MainPageViewModel : ViewModelBase
     {
         if (_views.TryGetValue(viewName, out var view))
         {
-            if(CurrentView is ViewModelBase viewModel)
-            {
-                viewModel.OnNavigatedFrom();
-            }   
-            if(view is ViewModelBase newViewModel)
-            {
-                newViewModel.OnNavigatedTo();
-            }
+            if (CurrentView is ViewModelBase viewModel) viewModel.OnNavigatedFrom();
+            if (view is ViewModelBase newViewModel) newViewModel.OnNavigatedTo();
             CurrentView = view;
         }
     }

@@ -15,19 +15,16 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
 {
     [ObservableProperty] private ObservableCollection<Queue> _queues = new();
 
-    public IReadOnlyList<QueueDaysOfWeek> QueueDays { get; } = Enum.GetValues<QueueDaysOfWeek>();
-    public IReadOnlyList<OperationMode> OperationModes { get; } = Enum.GetValues<OperationMode>();
-    public ObservableCollection<int> SegmentOptions { get; } = [1, 2, 4, 8, 16, 32];
-
 
     public QueuePageViewModel()
     {
         InitializeQueues();
-        if (Queues.FirstOrDefault() is { } firstQueue)
-        {
-            firstQueue.IsExpanded = true;
-        }
+        if (Queues.FirstOrDefault() is { } firstQueue) firstQueue.IsExpanded = true;
     }
+
+    public IReadOnlyList<QueueDaysOfWeek> QueueDays { get; } = Enum.GetValues<QueueDaysOfWeek>();
+    public IReadOnlyList<OperationMode> OperationModes { get; } = Enum.GetValues<OperationMode>();
+    public ObservableCollection<int> SegmentOptions { get; } = [1, 2, 4, 8, 16, 32];
 
     private void InitializeQueues()
     {
@@ -41,15 +38,9 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
     private void OnQueuePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Queue.IsExpanded) && sender is Queue expandedQueue && expandedQueue.IsExpanded)
-        {
             foreach (var queue in Queues)
-            {
                 if (queue != expandedQueue)
-                {
                     queue.IsExpanded = false;
-                }
-            }
-        }
     }
 
     [RelayCommand]
@@ -62,10 +53,7 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
             Name = $"New Queue #{Queues.Count + 1}",
             IsExpanded = true // Automatically expands the new queue (which collapses others)
         };
-        foreach (var queue in Queues)
-        {
-            queue.IsExpanded = false;
-        }
+        foreach (var queue in Queues) queue.IsExpanded = false;
 
         newQueue.PropertyChanged += OnQueuePropertyChanged;
         Queues.Add(newQueue);
@@ -91,8 +79,7 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
             $"Are you sure you want to delete the queue '{queue?.Name}'?",
             "Yes",
             new RelayCommand(() => ConfirmDeleteQueue(queue)),
-            "No",
-            null);
+            "No");
     }
 
     private void ConfirmDeleteQueue(Queue? queue)
@@ -102,17 +89,10 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
         queue.PropertyChanged -= OnQueuePropertyChanged;
         Queues.Remove(queue);
 
-        if (SettingsService.Settings.Queues.ContainsKey(queue.Id))
-        {
-            SettingsService.Settings.Queues.Remove(queue.Id);
-            // SettingsService.Save();
-        }
-
+        if (SettingsService.Settings.Queues.ContainsKey(queue.Id)) SettingsService.Settings.Queues.Remove(queue.Id);
+        // SettingsService.Save();
         // Expand the first available queue if none are open
-        if (Queues.Any() && !Queues.Any(q => q.IsExpanded))
-        {
-            Queues.First().IsExpanded = true;
-        }
+        if (Queues.Any() && !Queues.Any(q => q.IsExpanded)) Queues.First().IsExpanded = true;
     }
 
     [RelayCommand]
@@ -122,13 +102,9 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
             return;
 
         if (args.Queue.DaysOfWeek.Contains(args.Day))
-        {
             args.Queue.DaysOfWeek.Remove(args.Day);
-        }
         else
-        {
             args.Queue.DaysOfWeek.Add(args.Day);
-        }
     }
 
     [RelayCommand]
@@ -152,6 +128,6 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
 }
 
 /// <summary>
-/// Helper argument class used when passing both Queue and QueueDaysOfWeek from XAML bindings.
+///     Helper argument class used when passing both Queue and QueueDaysOfWeek from XAML bindings.
 /// </summary>
 public record QueueDayToggleArgs(Queue Queue, QueueDaysOfWeek Day);

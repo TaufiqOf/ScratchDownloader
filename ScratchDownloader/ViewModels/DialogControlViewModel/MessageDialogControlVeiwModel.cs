@@ -1,5 +1,4 @@
 using System;
-using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FluentIcons.Common;
 using ScratchDownloader.Models;
@@ -8,17 +7,10 @@ namespace ScratchDownloader.ViewModels.DialogControlViewModel;
 
 public partial class MessageDialogControlViewModel : ADialogViewModel
 {
-    [ObservableProperty] public partial Icon Icon { get; set; }
-    [ObservableProperty] public partial string? Message { get; set; }
-    [ObservableProperty] public partial string? NegativeButtonText { get; set; }
-    [ObservableProperty] public partial string? PositiveButtonText { get; set; }
-    [ObservableProperty] public partial bool IsCancelButtonVisible { get; set; }
-
-
-    public MessageDialogControlViewModel(MessageDialogType messageDialogType, 
+    public MessageDialogControlViewModel(MessageDialogType messageDialogType,
         string? message,
-        string? positiveButtonText = "OK", 
-        string? negativeButtonText = "Cancel", 
+        string? positiveButtonText = "OK",
+        string? negativeButtonText = "Cancel",
         bool isCancelButtonVisible = false)
     {
         Message = message;
@@ -44,4 +36,10 @@ public partial class MessageDialogControlViewModel : ADialogViewModel
                 throw new ArgumentOutOfRangeException(nameof(messageDialogType), messageDialogType, null);
         }
     }
+
+    [ObservableProperty] public partial Icon Icon { get; set; }
+    [ObservableProperty] public partial string? Message { get; set; }
+    [ObservableProperty] public partial string? NegativeButtonText { get; set; }
+    [ObservableProperty] public partial string? PositiveButtonText { get; set; }
+    [ObservableProperty] public partial bool IsCancelButtonVisible { get; set; }
 }

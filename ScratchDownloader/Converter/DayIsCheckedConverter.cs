@@ -13,12 +13,10 @@ public class DayIsCheckedConverter : IMultiValueConverter
     {
         // values[0] -> Queue.DaysOfWeek (List<QueueDaysOfWeek>)
         // values[1] -> Current day (QueueDaysOfWeek)
-        if (values.Count >= 2 && 
-            values[0] is IEnumerable<QueueDaysOfWeek> daysList && 
+        if (values.Count >= 2 &&
+            values[0] is IEnumerable<QueueDaysOfWeek> daysList &&
             values[1] is QueueDaysOfWeek currentDay)
-        {
             return daysList.Contains(currentDay);
-        }
 
         return false;
     }

@@ -2,14 +2,12 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Avalonia.Styling;
 using ScratchDownloader.Models;
 
 namespace ScratchDownloader.Services;
 
 public static class SettingsService
 {
-    
     private static readonly string _settingsDirectory =
         Path.Combine(
             Environment.GetFolderPath(
@@ -21,12 +19,12 @@ public static class SettingsService
             _settingsDirectory,
             "settings.json");
 
-    public static AppSettings Settings { get; private set; } = Load();
-
     static SettingsService()
     {
         Directory.CreateDirectory(_settingsDirectory);
     }
+
+    public static AppSettings Settings { get; } = Load();
 
     public static void Save()
     {
@@ -42,9 +40,9 @@ public static class SettingsService
         File.WriteAllText(_settingsPath, json);
         Settings.Categories.Values.ToList().ForEach(category =>
         {
-            Console.WriteLine($" Saving QueueId: {category.QueueId} CategoryId: {category.Id} Name: {category.Name} Folder: {category.Folder} Extension: {category.Extension}");
+            Console.WriteLine(
+                $" Saving QueueId: {category.QueueId} CategoryId: {category.Id} Name: {category.Name} Folder: {category.Folder} Extension: {category.Extension}");
         });
-
     }
 
     private static AppSettings Load()

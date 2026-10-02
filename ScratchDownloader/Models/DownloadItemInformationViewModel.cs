@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Humanizer;
-using ScratchDownloader.Helper;
 using ScratchDownloader.Services;
 
 namespace ScratchDownloader.Models;
@@ -29,9 +28,9 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     [ObservableProperty] public partial Queue Queue { get; set; } = SettingsService.Settings.Queues["Main"];
     [ObservableProperty] public partial int Segments { get; set; } = 8;
     public Uri Uri { get; set; }
+
     public async Task GetDataFromUrl(string uri, CancellationToken cancellationToken = default)
     {
-        
         using var request = new HttpRequestMessage(
             HttpMethod.Head,
             uri);
@@ -63,13 +62,13 @@ public partial class DownloadItemInformationViewModel : ObservableObject
             FileSizeBytes = 0;
             FileSizeDisplay = "Unknown size";
         }
-        var category = SettingsService.Settings.Categories.Values.FirstOrDefault(q => q.Extension.Contains(FileExtension,StringComparison.OrdinalIgnoreCase));
+
+        var category = SettingsService.Settings.Categories.Values.FirstOrDefault(q =>
+            q.Extension.Contains(FileExtension, StringComparison.OrdinalIgnoreCase));
         Category = category ?? SettingsService.Settings.Categories["Other"];
         Queue = SettingsService.Settings.Queues[Category.QueueId];
-        SavePath = Path.Combine(Category.Folder,FileName);
+        SavePath = Path.Combine(Category.Folder, FileName);
     }
-
-
 
 
     private static string GetFileName(
@@ -112,10 +111,10 @@ public partial class DownloadItemInformationViewModel : ObservableObject
 
     partial void OnCategoryChanged(Category value)
     {
-        SavePath = Path.Combine(Category.Folder,FileName);
+        SavePath = Path.Combine(Category.Folder, FileName);
         Queue = SettingsService.Settings.Queues[Category.QueueId];
     }
-    
+
 
     partial void OnQueueChanged(Queue value)
     {

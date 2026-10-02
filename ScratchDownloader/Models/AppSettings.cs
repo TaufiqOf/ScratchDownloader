@@ -15,10 +15,6 @@ public class AppSettings
     public Dictionary<string, Category> Categories { get; set; } = ApplicationManager.Categories;
     public Dictionary<string, Queue> Queues { get; set; } = ApplicationManager.Queues;
 
-    public AppSettings()
-    {
-        
-    }
     public ThemeVariant GetThemeVariant()
     {
         var key = Theme.Key.ToString();
