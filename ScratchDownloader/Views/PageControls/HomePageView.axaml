@@ -190,7 +190,7 @@
                      GridLinesVisibility="Horizontal">
 
             <dg:DataGrid.Columns>
-                <!-- FILE -->
+                <!-- ICON -->
                 <dg:DataGridTemplateColumn Header=""
                                            Width="30">
                     <DataGridTemplateColumn.CellTemplate>
@@ -207,9 +207,17 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </dg:DataGridTemplateColumn>
                 <!-- FILE -->
-                <dg:DataGridTextColumn Header="File"
-                                       Binding="{Binding DownloadItemInformation.SavedFileName}"
-                                       Width="3*" />
+                <dg:DataGridTemplateColumn Header="File"
+                                           Width="3*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DownloadItemInformation.SavedFileName}"
+                                       ToolTip.Tip="{Binding DownloadItemInformation.SavedFileName}"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </dg:DataGridTemplateColumn>
 
                 <!-- STATUS -->
                 <dg:DataGridTextColumn Header="Status"
@@ -217,7 +225,7 @@
                                        Width="160" />
 
                 <!-- PROGRESS -->
-                <DataGridTemplateColumn Header="Progress" Width="300">
+                <DataGridTemplateColumn Header="Progress" Width="250">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid RowDefinitions="Auto,Auto"
@@ -260,7 +268,7 @@
                 <!-- ETA -->
                 <dg:DataGridTextColumn Header="ETA"
                                        Binding="{Binding Progress.Eta}"
-                                       Width="150" />
+                                       Width="120" />
                 <!-- DATE ADDED -->
                 <dg:DataGridTextColumn Header="ADDED"
                                        Binding="{Binding AddedDateTimeText}"

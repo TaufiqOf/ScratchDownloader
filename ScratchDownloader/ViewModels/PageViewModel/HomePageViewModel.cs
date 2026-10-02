@@ -118,7 +118,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         try
         {
             DialogManager.ShowMessage(MessageDialogType.Warning, "Clear all Downloads",
-                "Are you sure you want to stop and remove all completed stopped and failed all downloads? This action cannot be undone.",
+                "Are you sure you want to stop and remove all completed, stopped and failed downloads? This action cannot be undone.",
                 "Yes",
                 new RelayCommand(() =>
                 {
