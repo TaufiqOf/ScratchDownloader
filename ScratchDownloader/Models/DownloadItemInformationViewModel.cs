@@ -31,6 +31,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     [ObservableProperty] public partial Queue Queue { get; set; } = SettingsService.Settings.Queues["Main"];
     [ObservableProperty] public partial int Segments { get; set; } = 8;
     [ObservableProperty] public partial string? Checksum { get; set; } = string.Empty;
+    [ObservableProperty] public partial bool StartImmediately { get; set; } = true;
     public Uri Uri { get; set; }
 
     public async Task GetDataFromUrl(string uri, CancellationToken cancellationToken = default)

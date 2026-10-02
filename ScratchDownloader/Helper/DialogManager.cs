@@ -16,15 +16,19 @@ public static class DialogManager
         MainWindow = mainWindow;
     }
 
-    public static void ShowMessage(
+    public static async Task ShowMessage(
         MessageDialogType type,
         string title,
         string message,
         string positiveText = "OK",
         IRelayCommand? positiveCommand = null,
         string negativeText = "",
-        IRelayCommand? negativeCommand = null)
+        IRelayCommand? negativeCommand = null,
+        Window? owner = null)
     {
+        if (owner is null)
+            owner = MainWindow;
+
         var dialogControlViewModel = new MessageDialogControlViewModel(type, message, positiveText, negativeText,
             !string.IsNullOrWhiteSpace(negativeText));
         var dialog = new DialogWindow
@@ -47,7 +51,7 @@ public static class DialogManager
             dialog.Close();
         });
 
-        dialog.ShowDialog(MainWindow);
+        await dialog.ShowDialog(MainWindow);
     }
 
     public static async Task ShowMessage(
@@ -57,13 +61,13 @@ public static class DialogManager
         IRelayCommand? negativeCommand = null)
     {
         var dialogControlViewModel = viewModel;
-
         var dialog = new DialogWindow
         {
             Title = title,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             DialogControl = dialogControlViewModel
         };
+        dialogControlViewModel.Owner ??= dialog;
 
         // Wire up commands to close the dialog and execute the passed RelayCommand
         dialogControlViewModel.PositiveCommand = new RelayCommand(() =>

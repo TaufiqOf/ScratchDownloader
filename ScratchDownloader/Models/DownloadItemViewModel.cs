@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Humanizer;
 using ScratchDownloader.Services;
 
 namespace ScratchDownloader.Models;
@@ -17,7 +19,6 @@ public partial class DownloadItemViewModel : ObservableObject
 
     public DownloadItemViewModel()
     {
-
     }
 
     public void Initialize(
@@ -39,10 +40,18 @@ public partial class DownloadItemViewModel : ObservableObject
         _checkSumService = new CheckSumService();
     }
 
+    [ObservableProperty] public partial DateTime? AddedDateTime { get; set; }
+    [ObservableProperty] public partial string AddedDateTimeText { get; set; }
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
     [ObservableProperty] public partial DownloadProgress Progress { get; set; } = new();
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
     public event EventHandler<DownloadStatus>? StatusChanged;
+
+    partial void OnAddedDateTimeChanged(DateTime? value)
+    {
+        AddedDateTimeText =
+            $"{AddedDateTime.Humanize(true,DateTime.UtcNow, new CultureInfo("en-US"))} {AddedDateTime:HH:mm}";
+    }
 
     private void DownloadServiceOnErrorOccurred(object? sender, string e)
     {
@@ -66,20 +75,22 @@ public partial class DownloadItemViewModel : ObservableObject
     private async void DownloadServiceOnCompleted(object? sender, EventArgs e)
     {
         Progress.BytesPerSecond = 0;
-        if(DownloadItemInformation?.SavePath ==null)
+        if (DownloadItemInformation?.SavePath == null)
             return;
-        if(!string.IsNullOrEmpty(DownloadItemInformation?.Checksum))
+        if (!string.IsNullOrEmpty(DownloadItemInformation?.Checksum))
         {
             Status = DownloadStatus.CheckingChecksum;
             StatusChanged?.Invoke(this, DownloadStatus.CheckingChecksum);
-            var match = await _checkSumService.Check(DownloadItemInformation.SavePath, DownloadItemInformation.Checksum);
-            if(!match)
+            var match = await _checkSumService.Check(DownloadItemInformation.SavePath,
+                DownloadItemInformation.Checksum);
+            if (!match)
             {
                 Status = DownloadStatus.ChecksumFailed;
                 StatusChanged?.Invoke(this, DownloadStatus.ChecksumFailed);
                 return;
             }
         }
+
         Status = DownloadStatus.Completed;
         StatusChanged?.Invoke(this, DownloadStatus.Completed);
     }
@@ -98,7 +109,6 @@ public partial class DownloadItemViewModel : ObservableObject
     {
         if (Status == DownloadStatus.Completed
             || Status == DownloadStatus.Stopped
-            || Status == DownloadStatus.Queued
             || Status == DownloadStatus.Failed)
             return;
         Progress.BytesPerSecond = 0;

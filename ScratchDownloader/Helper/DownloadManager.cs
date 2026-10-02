@@ -64,14 +64,15 @@ public partial class DownloadManager : ViewModelBase
     }
 
     public void Add(
-        DownloadItemInformationViewModel downloadItemInformationViewModel,
-        bool startImmediately = true)
+        DownloadItemInformationViewModel downloadItemInformationViewModel)
     {
         if (downloadItemInformationViewModel == null)
             throw new ArgumentNullException(nameof(downloadItemInformationViewModel));
         var downloadItemViewModel =
             new DownloadItemViewModel();
-        Add(downloadItemViewModel, downloadItemInformationViewModel, startImmediately);
+        if (downloadItemInformationViewModel.StartImmediately)
+            downloadItemViewModel.Status = DownloadStatus.Queued;
+        Add(downloadItemViewModel, downloadItemInformationViewModel, downloadItemInformationViewModel.StartImmediately);
     }
 
     private void Add(DownloadItemViewModel downloadItemViewModel,
@@ -82,6 +83,7 @@ public partial class DownloadManager : ViewModelBase
         Downloads.Add(downloadItemViewModel);
         if (startImmediately)
             downloadItemViewModel.Start();
+        downloadItemViewModel.AddedDateTime ??= DateTime.UtcNow;
         downloadItemViewModel.StatusChanged += DownloadItemViewModelOnStatusChanged;
         UpdateStatus();
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
@@ -102,7 +104,7 @@ public partial class DownloadManager : ViewModelBase
             NotificationManager.Error($"Downloaded Completed but Checksum Failed",
                 $"Downloaded Completed but Checksum Failed: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
         }
-        
+
         ((DownloadItemViewModel)sender)?.Status = e;
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
@@ -164,6 +166,7 @@ public partial class DownloadManager : ViewModelBase
                 download.Start();
             }
         }
+
         _startAfterLoad = false;
 
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
@@ -172,9 +175,9 @@ public partial class DownloadManager : ViewModelBase
 
     public void Clear()
     {
-        var downloadItemViewModels = Downloads.Where(d => 
+        var downloadItemViewModels = Downloads.Where(d =>
             d.Status == DownloadStatus.Completed
-            || d.Status == DownloadStatus.Failed 
+            || d.Status == DownloadStatus.Failed
             || d.Status == DownloadStatus.ChecksumFailed
             || d.Status == DownloadStatus.Stopped).ToList();
         foreach (var download in downloadItemViewModels)

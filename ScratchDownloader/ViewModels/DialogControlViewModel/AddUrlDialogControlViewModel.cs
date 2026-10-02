@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Input.Platform;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -21,7 +22,7 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
     [ObservableProperty] private DownloadItemInformationViewModel _downloadItemInformation = new();
 
 
-    public AddUrlDialogControlViewModel()
+    public AddUrlDialogControlViewModel(Window? owner = null) : base(owner)
     {
         DownloadItemInformation.Category = SettingsService.Settings.Categories["Other"];
         DownloadItemInformation.Queue = SettingsService.Settings.Queues["Main"];
@@ -37,7 +38,7 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
 
     [ObservableProperty] public partial bool HasFileInfo { get; set; }
 
-    [ObservableProperty] public partial bool StartImmediately { get; set; }
+
 
     [ObservableProperty] public partial bool UseServerFilename { get; set; } = true;
 
@@ -96,6 +97,11 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
         {
             DownloadItemInformation =
                 await ApplicationManager.DownloadManager.GetDownloadInfoFromUrl(url, cancellationToken);
+            if (File.Exists(DownloadItemInformation.SavePath))
+            {
+                RenameFile();
+            }
+
             HasFileInfo = true;
         }
         catch (OperationCanceledException)
@@ -140,5 +146,50 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
                     Patterns = new List<string> { "*" }
                 }
             });
+    }
+
+    [RelayCommand]
+    private async Task StartDownload()
+    {
+        if (File.Exists(DownloadItemInformation.SavePath))
+        {
+          await DialogManager.ShowMessage(MessageDialogType.Warning, "File Exists",
+                $"The file \"{Path.GetFileName(DownloadItemInformation.SavePath)}\" already exists. Do you want to rename it or overwrite the existing file?"
+                , "Rename and Continue",
+                new RelayCommand(() =>
+                {
+                    RenameFile();
+                    PositiveCommand?.Execute(null);
+                }),
+                "Overwrite",
+                new RelayCommand(() =>
+                {
+                    // Do nothing on overwrite
+                    PositiveCommand?.Execute(null);
+                }),
+                Owner
+                );
+            return;
+        }
+
+        PositiveCommand?.Execute(null);
+    }
+
+    private void RenameFile()
+    {
+        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(DownloadItemInformation.SavePath);
+        var extension = Path.GetExtension(DownloadItemInformation.SavePath);
+        var directory = Path.GetDirectoryName(DownloadItemInformation.SavePath) ??
+                        Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+        var counter = 1;
+        string newSavePath;
+        do
+        {
+            newSavePath = Path.Combine(directory, $"{fileNameWithoutExtension} ({counter}){extension}");
+            counter++;
+        } while (File.Exists(newSavePath));
+
+        DownloadItemInformation.SavePath = newSavePath;
     }
 }

@@ -24,6 +24,7 @@
                           ColumnSpacing="8">
 
                         <TextBox Grid.Column="0"
+                                 KeyDown="InputElement_OnKeyDown"
                                  Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
                                  PlaceholderText="https://..."
                                  VerticalContentAlignment="Center"
@@ -157,8 +158,10 @@
                           ColumnSpacing="8">
 
                         <TextBox Grid.Column="0"
+                                 KeyDown="InputElement_OnKeyDown"
                                  Text="{Binding DownloadItemInformation.SavePath}"
                                  Height="36"
+                                 TextAlignment="End"
                                  VerticalContentAlignment="Center" />
 
                         <Button Grid.Column="1"
@@ -260,10 +263,7 @@
                         <TextBox PlaceholderText="Checksum" Text="{Binding DownloadItemInformation.Checksum}"></TextBox>
 
                         <CheckBox Content="Start download automatically"
-                                  IsChecked="{Binding StartImmediately}" />
-
-                        <CheckBox Content="Use server filename"
-                                  IsChecked="{Binding UseServerFilename}" />
+                                  IsChecked="{Binding DownloadItemInformation.StartImmediately, Mode=TwoWay}" />
 
                     </StackPanel>
 
@@ -286,7 +286,7 @@
                         Command="{Binding NegativeCommand}"
                         MinWidth="75" />
                 <Button
-                    Command="{Binding PositiveCommand}"
+                    Command="{Binding StartDownloadCommand}"
                     MinWidth="75"
                     IsEnabled="{Binding HasFileInfo}"
                     IsDefault="True"
