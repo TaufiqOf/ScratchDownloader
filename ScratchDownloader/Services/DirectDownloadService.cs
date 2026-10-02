@@ -161,7 +161,7 @@ public class DirectDownloadService : IDownloadService
             ErrorOccurred?.Invoke(this, e.Message);
         }
     }
-
+    long _lastReportedMs = 0; 
     private async Task DownloadSegmentAsync(
         SegmentState segment,
         DownloadMetadata metadata,
@@ -169,10 +169,13 @@ public class DirectDownloadService : IDownloadService
         long initialTotalBytesRead,
         CancellationToken token)
     {
+        var segmentStopwatch = Stopwatch.StartNew();
+        long sessionBytesDownloadedForSegment = 0;
+        long totalSegmentBytes = segment.EndByte - segment.StartByte + 1;
+
         try
         {
             var currentStart = segment.StartByte + segment.BytesDownloaded;
-            var totalSegmentBytes = segment.EndByte - segment.StartByte + 1;
 
             // Skip completed segments
             if (currentStart > segment.EndByte)
@@ -199,8 +202,6 @@ public class DirectDownloadService : IDownloadService
             var buffer = new byte[81920];
             int read;
 
-            var segmentStopwatch = Stopwatch.StartNew();
-            long sessionBytesDownloadedForSegment = 0;
 
             while ((read = await contentStream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
             {
@@ -208,35 +209,19 @@ public class DirectDownloadService : IDownloadService
 
                 segment.BytesDownloaded += read;
                 sessionBytesDownloadedForSegment += read;
-
-                // Calculate segment speed
-                var segElapsedSec = segmentStopwatch.Elapsed.TotalSeconds;
-                var segSpeed = segElapsedSec > 0 ? sessionBytesDownloadedForSegment / segElapsedSec : 0;
-                var segPercent = (double)segment.BytesDownloaded / totalSegmentBytes * 100;
-
-                var currentSegProgress = Progress.SegmentProgress[segment.Index];
-                currentSegProgress.Index = segment.Index;
-                currentSegProgress.Progress = segPercent;
-                currentSegProgress.BytesDownloaded = segment.BytesDownloaded;
-                currentSegProgress.TotalBytes = totalSegmentBytes;
-                currentSegProgress.BytesPerSecond = segSpeed;
-
-
-                // Calculate overall progress & speed
-                var currentTotalDownloaded = Progress.SegmentProgress.Values.Sum(s => s.BytesDownloaded);
-                var overallPercent =
-                    metadata.TotalBytes > 0 ? (double)currentTotalDownloaded / metadata.TotalBytes * 100 : 0;
-
-                var sessionTotalDownloaded = currentTotalDownloaded - initialTotalBytesRead;
-                var overallElapsedSec = overallStopwatch.Elapsed.TotalSeconds;
-                var overallSpeed = overallElapsedSec > 0 ? sessionTotalDownloaded / overallElapsedSec : 0;
-
                 SaveMetadata(metadata);
-                _lastProgressReported = Math.Max(_lastProgressReported, overallPercent);
-                Progress.Progress = overallPercent;
-                Progress.BytesPerSecond = overallSpeed;
-                Progress.TotalBytes = metadata.TotalBytes;
-                Progress.BytesDownloaded = currentTotalDownloaded;
+                //update progress after 200 milliseconds
+                if (segmentStopwatch.ElapsedMilliseconds - _lastReportedMs >= 100)
+                {
+                    UpdateProgress(
+                        segment,
+                        metadata, 
+                        overallStopwatch,
+                        initialTotalBytesRead,
+                        segmentStopwatch,
+                        sessionBytesDownloadedForSegment,
+                        totalSegmentBytes);
+                }
             }
         }
         catch (Exception e)
@@ -244,6 +229,49 @@ public class DirectDownloadService : IDownloadService
             Console.WriteLine(e);
             throw;
         }
+        finally
+        {
+            UpdateProgress(segment, 
+                metadata, 
+                overallStopwatch, 
+                initialTotalBytesRead, 
+                segmentStopwatch, 
+                sessionBytesDownloadedForSegment, 
+                totalSegmentBytes);
+        }
+    }
+
+    private void UpdateProgress(SegmentState segment, DownloadMetadata metadata, Stopwatch overallStopwatch,
+        long initialTotalBytesRead, Stopwatch segmentStopwatch, long sessionBytesDownloadedForSegment,
+        long totalSegmentBytes)
+    {
+        _lastReportedMs = segmentStopwatch.ElapsedMilliseconds;
+        // Calculate segment speed
+        var segElapsedSec = segmentStopwatch.Elapsed.TotalSeconds;
+        var segSpeed = segElapsedSec > 0 ? sessionBytesDownloadedForSegment / segElapsedSec : 0;
+        var segPercent = (double)segment.BytesDownloaded / totalSegmentBytes * 100;
+        var currentSegProgress = Progress.SegmentProgress[segment.Index];
+        currentSegProgress.Index = segment.Index;
+        currentSegProgress.Progress = segPercent;
+        currentSegProgress.BytesDownloaded = segment.BytesDownloaded;
+        currentSegProgress.TotalBytes = totalSegmentBytes;
+        currentSegProgress.BytesPerSecond = segSpeed;
+
+
+        // Calculate overall progress & speed
+        var currentTotalDownloaded = Progress.SegmentProgress.Values.Sum(s => s.BytesDownloaded);
+        var overallPercent =
+            metadata.TotalBytes > 0 ? (double)currentTotalDownloaded / metadata.TotalBytes * 100 : 0;
+
+        var sessionTotalDownloaded = currentTotalDownloaded - initialTotalBytesRead;
+        var overallElapsedSec = overallStopwatch.Elapsed.TotalSeconds;
+        var overallSpeed = overallElapsedSec > 0 ? sessionTotalDownloaded / overallElapsedSec : 0;
+
+        _lastProgressReported = Math.Max(_lastProgressReported, overallPercent);
+        Progress.Progress = overallPercent;
+        Progress.BytesPerSecond = overallSpeed;
+        Progress.TotalBytes = metadata.TotalBytes;
+        Progress.BytesDownloaded = currentTotalDownloaded;
     }
 
     private async Task<DownloadMetadata> InitializeMetadataAsync(CancellationToken token)

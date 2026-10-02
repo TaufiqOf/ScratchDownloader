@@ -49,28 +49,35 @@ public partial class DownloadManager : ViewModelBase
         await newDownloadItemInformationViewModel.GetDataFromUrl(url, cancellationToken);
         return newDownloadItemInformationViewModel;
     }
-    public void Add(DownloadItemViewModel downloadItemViewModel, bool startImmediately = true,bool startAfterLoad = false )
+
+    public void Add(
+        DownloadItemViewModel downloadItemViewModel,
+        bool startImmediately = true,
+        bool startAfterLoad = false)
     {
-        _startAfterLoad=startAfterLoad;
+        _startAfterLoad = startAfterLoad;
         if (downloadItemViewModel == null)
             throw new ArgumentNullException(nameof(downloadItemViewModel));
-        downloadItemViewModel.Initialize(downloadItemViewModel.DownloadItemInformation, new DirectDownloadService());
-        Downloads.Add(downloadItemViewModel);
-        if (startImmediately)
-            downloadItemViewModel.Start();
-        downloadItemViewModel.StatusChanged += DownloadItemViewModelOnStatusChanged;
-        UpdateStatus();
-        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
-        SettingsService.Save();
+        if (downloadItemViewModel.DownloadItemInformation == null)
+            throw new ArgumentNullException(nameof(downloadItemViewModel.DownloadItemInformation));
+        Add(downloadItemViewModel, downloadItemViewModel.DownloadItemInformation, startImmediately);
     }
 
-    public void Add(DownloadItemInformationViewModel downloadItemInformationViewModel, bool startImmediately = true)
+    public void Add(
+        DownloadItemInformationViewModel downloadItemInformationViewModel,
+        bool startImmediately = true)
     {
         if (downloadItemInformationViewModel == null)
             throw new ArgumentNullException(nameof(downloadItemInformationViewModel));
-
         var downloadItemViewModel =
             new DownloadItemViewModel();
+        Add(downloadItemViewModel, downloadItemInformationViewModel, startImmediately);
+    }
+
+    private void Add(DownloadItemViewModel downloadItemViewModel,
+        DownloadItemInformationViewModel downloadItemInformationViewModel,
+        bool startImmediately)
+    {
         downloadItemViewModel.Initialize(downloadItemInformationViewModel, new DirectDownloadService());
         Downloads.Add(downloadItemViewModel);
         if (startImmediately)
@@ -81,6 +88,7 @@ public partial class DownloadManager : ViewModelBase
         SettingsService.Save();
     }
 
+
     private void DownloadItemViewModelOnStatusChanged(object? sender, DownloadStatus e)
     {
         if (e == DownloadStatus.Completed)
@@ -89,6 +97,7 @@ public partial class DownloadManager : ViewModelBase
         if (e == DownloadStatus.Failed)
             NotificationManager.Error($"Downloaded {e}",
                 $"Download {e}: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+        ((DownloadItemViewModel)sender)?.Status = e;
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
         UpdateStatus();
@@ -101,14 +110,14 @@ public partial class DownloadManager : ViewModelBase
                           $"| Completed: {Downloads.Count(d => d.Status == DownloadStatus.Completed)} " +
                           $"| Failed: {Downloads.Count(d => d.Status == DownloadStatus.Failed)}";
 
-        ActiveCount = $"Active: {Downloads.Count(d => d.Status == DownloadStatus.Downloading)}";
+        ActiveCount =
+            $"Active: {Downloads.Count(d => d.Status == DownloadStatus.Downloading || d.Status == DownloadStatus.Initializing)}";
         TotalSpeed =
             $"Total Speed: {ByteSize.FromBytes(Downloads.Sum(d => d.Progress.BytesPerSecond))
                 .Humanize("0.00")}/s";
         TotalDownloadedSize =
             $"Total Size: {ByteSize.FromBytes(Downloads.Sum(d => d.DownloadItemInformation?.FileSizeBytes ?? 0))
                 .Humanize("0.00")}";
-     
     }
 
     public void Resume(DownloadItemViewModel download)
@@ -143,13 +152,28 @@ public partial class DownloadManager : ViewModelBase
     {
         foreach (var download in Downloads)
         {
-            if (_startAfterLoad && (download.Status == DownloadStatus.Downloading 
+            if (_startAfterLoad && (download.Status == DownloadStatus.Downloading
                                     || download.Status == DownloadStatus.Initializing))
             {
                 _startAfterLoad = false;
                 download.Start();
-                
             }
         }
+
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
+    }
+
+    public void Clear()
+    {
+        foreach (var download in Downloads)
+        {
+            download.Stop();
+            download.StatusChanged -= DownloadItemViewModelOnStatusChanged;
+        }
+
+        Downloads.Clear();
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
     }
 }

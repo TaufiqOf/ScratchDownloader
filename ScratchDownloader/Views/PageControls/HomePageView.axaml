@@ -25,6 +25,8 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
@@ -101,13 +103,33 @@
                                VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
-
             <Border Grid.Column="5"
                     BorderThickness="1"
                     BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                     Margin="5,5" />
 
-            <ComboBox Grid.Column="6"
+            <Button Grid.Column="6"
+                    ToolTip.Tip="Clear All"
+                    VerticalContentAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding ClearAllCommand}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="5"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <fluent:FluentIcon Icon="Delete"
+                                       VerticalAlignment="Center" />
+                    <TextBlock Text="Clear All"
+                               IsVisible="False"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Border Grid.Column="7"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Margin="5,5" />
+
+            <ComboBox Grid.Column="8"
                       ItemsSource="{Binding Categories}"
                       Width="160"
                       VerticalAlignment="Center"
@@ -123,7 +145,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <ComboBox Grid.Column="7"
+            <ComboBox Grid.Column="9"
                       ItemsSource="{Binding Queues}"
                       Width="160"
                       Margin="5,0,0,0"
@@ -138,12 +160,12 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Border Grid.Column="8"
+            <Border Grid.Column="10"
                     BorderThickness="1"
                     BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                     Margin="5,5" />
             <!-- Search -->
-            <TextBox Grid.Column="10"
+            <TextBox Grid.Column="12"
                      Width="250"
                      HorizontalAlignment="Right"
                      VerticalAlignment="Center"

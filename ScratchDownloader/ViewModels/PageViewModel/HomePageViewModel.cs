@@ -2,6 +2,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
@@ -14,12 +16,25 @@ namespace ScratchDownloader.ViewModels.PageViewModel;
 public partial class HomePageViewModel : ViewModelBase, IViewModel
 {
     private readonly MainPageViewModel _mainPageViewModel;
+    private bool _updateFilterDisabled = true;
+    private Timer _loadTimer;
 
     public HomePageViewModel(MainPageViewModel mainPageViewModel)
     {
         _mainPageViewModel = mainPageViewModel;
         DownloadManager = ApplicationManager.DownloadManager;
-
+        _loadTimer = new Timer(1000);
+        _loadTimer.Elapsed += (sender, args) =>
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                _loadTimer.Stop();
+                DownloadManager.StartPendingDownloads();
+                _updateFilterDisabled = false;
+                UpdateFilter();
+            });
+        };
+        _loadTimer.Start();
     }
 
     public DownloadManager DownloadManager { get; set; }
@@ -97,6 +112,22 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         }
     }
 
+    [RelayCommand]
+    private void ClearAll()
+    {
+        try
+        {
+            DownloadManager.Clear();
+            UpdateFilter();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            DialogManager.ShowMessage(MessageDialogType.Error, "Clear Download",
+                "Failed to clear all downloads. Please try again.");
+        }
+    }
+
 
     [RelayCommand]
     private void StopAll()
@@ -124,14 +155,14 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
 
     partial void OnSelectedQueueChanged(Queue? value)
     {
-        if(SelectedQueue == null || SelectedCategory == null)
+        if (SelectedQueue == null || SelectedCategory == null)
             return;
         UpdateFilter();
     }
 
     partial void OnSelectedCategoryChanged(Category? value)
     {
-        if(SelectedCategory == null || SelectedQueue == null)
+        if (SelectedCategory == null || SelectedQueue == null)
             return;
         UpdateFilter();
     }
@@ -143,6 +174,9 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
 
     private void UpdateFilter()
     {
+        if (_updateFilterDisabled)
+            return;
+
         FilteredDownloads = new ObservableCollection<DownloadItemViewModel>(
             DownloadManager.Downloads.Where(d =>
                 d.DownloadItemInformation != null &&
@@ -165,6 +199,6 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         SelectedCategory = Categories.FirstOrDefault();
         SelectedQueue = Queues.FirstOrDefault();
         base.OnNavigatedTo();
-        DownloadManager.StartPendingDownloads();
+
     }
 }
