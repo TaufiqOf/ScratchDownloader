@@ -14,15 +14,10 @@ public partial class DownloadItemInformationViewModel : ObservableObject
 {
     private readonly HttpClient _httpClient = new();
     [ObservableProperty] public partial string FileName { get; set; } = string.Empty;
-
     [ObservableProperty] public partial string FileExtension { get; set; } = string.Empty;
-
     [ObservableProperty] public partial string FileHost { get; set; } = string.Empty;
-
     [ObservableProperty] public partial long FileSizeBytes { get; set; }
-
     [ObservableProperty] public partial string FileSizeDisplay { get; set; } = "0 MB";
-
     [ObservableProperty] public partial string? SavePath { get; set; } = string.Empty;
     [ObservableProperty] public partial Category Category { get; set; } = SettingsService.Settings.Categories["Other"];
     [ObservableProperty] public partial Queue Queue { get; set; } = SettingsService.Settings.Queues["Main"];
@@ -31,43 +26,53 @@ public partial class DownloadItemInformationViewModel : ObservableObject
 
     public async Task GetDataFromUrl(string uri, CancellationToken cancellationToken = default)
     {
-        using var request = new HttpRequestMessage(
-            HttpMethod.Head,
-            uri);
-
-        using var response = await _httpClient.SendAsync(
-            request,
-            HttpCompletionOption.ResponseHeadersRead,
-            cancellationToken);
-
-        response.EnsureSuccessStatusCode();
-
-        var finalUri = response.RequestMessage?.RequestUri ?? new Uri(uri);
-        Uri = finalUri;
-        var fileName = GetFileName(response, finalUri);
-
-        FileName = fileName;
-        FileExtension = GetExtension(fileName);
-        FileHost = finalUri.Host;
-
-        // Extract content length header
-        if (response.Content.Headers.ContentLength.HasValue)
+        try
         {
-            var bytes = response.Content.Headers.ContentLength.Value;
-            FileSizeBytes = bytes;
-            FileSizeDisplay = FormatFileSize(bytes);
-        }
-        else
-        {
-            FileSizeBytes = 0;
-            FileSizeDisplay = "Unknown size";
-        }
+            using var request = new HttpRequestMessage(
+                HttpMethod.Head,
+                uri);
 
-        var category = SettingsService.Settings.Categories.Values.FirstOrDefault(q =>
-            q.Extension.Contains(FileExtension, StringComparison.OrdinalIgnoreCase));
-        Category = category ?? SettingsService.Settings.Categories["Other"];
-        Queue = SettingsService.Settings.Queues[Category.QueueId];
-        SavePath = Path.Combine(Category.Folder, FileName);
+            using var response = await _httpClient.SendAsync(
+                request,
+                HttpCompletionOption.ResponseHeadersRead,
+                cancellationToken);
+
+            response.EnsureSuccessStatusCode();
+
+            var finalUri = response.RequestMessage?.RequestUri ?? new Uri(uri);
+            Uri = finalUri;
+            var fileName = GetFileName(response, finalUri);
+
+            FileName = fileName;
+            FileExtension = GetExtension(fileName);
+            FileHost = finalUri.Host;
+
+            // Extract content length header
+            if (response.Content.Headers.ContentLength.HasValue)
+            {
+                var bytes = response.Content.Headers.ContentLength.Value;
+                FileSizeBytes = bytes;
+                FileSizeDisplay = FormatFileSize(bytes);
+            }
+            else
+            {
+                FileSizeBytes = 0;
+                FileSizeDisplay = "Unknown size";
+            }
+
+            var settingsCategory = SettingsService.Settings.Categories["Other"];
+
+            var category = SettingsService.Settings.Categories.Values.FirstOrDefault(q =>
+                q.Extension.Contains(FileExtension, StringComparison.OrdinalIgnoreCase));
+            Category = category ?? settingsCategory;
+
+            SavePath = Path.Combine(Category.Folder, FileName);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
 
@@ -112,7 +117,8 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     partial void OnCategoryChanged(Category value)
     {
         SavePath = Path.Combine(Category.Folder, FileName);
-        Queue = SettingsService.Settings.Queues[Category.QueueId];
+        var settingsQueue = SettingsService.Settings.Queues["Main"];
+        Queue = Category.QueueId is not null ? SettingsService.Settings.Queues[Category.QueueId] : settingsQueue;
     }
 
 

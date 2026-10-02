@@ -14,6 +14,8 @@ public class AppSettings
     public ThemeVariant Theme { get; set; } = ThemeVariant.Default;
     public Dictionary<string, Category> Categories { get; set; } = ApplicationManager.Categories;
     public Dictionary<string, Queue> Queues { get; set; } = ApplicationManager.Queues;
+    
+
 
     public ThemeVariant GetThemeVariant()
     {

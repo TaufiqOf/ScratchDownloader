@@ -19,6 +19,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         _mainPageViewModel = mainPageViewModel;
         DownloadManager = ApplicationManager.DownloadManager;
+
     }
 
     public DownloadManager DownloadManager { get; set; }
@@ -32,8 +33,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     [ObservableProperty] public partial ObservableCollection<Queue> Queues { get; set; }
     [ObservableProperty] public partial ObservableCollection<Category> Categories { get; set; }
 
-    [ObservableProperty] public partial Queue SelectedQueue { get; set; }
-    [ObservableProperty] public partial Category SelectedCategory { get; set; }
+    [ObservableProperty] public partial Queue? SelectedQueue { get; set; }
+    [ObservableProperty] public partial Category? SelectedCategory { get; set; }
     [ObservableProperty] public partial string SearchText { get; set; }
 
 
@@ -121,13 +122,17 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     }
 
 
-    partial void OnSelectedQueueChanged(Queue value)
+    partial void OnSelectedQueueChanged(Queue? value)
     {
+        if(SelectedQueue == null || SelectedCategory == null)
+            return;
         UpdateFilter();
     }
 
-    partial void OnSelectedCategoryChanged(Category value)
+    partial void OnSelectedCategoryChanged(Category? value)
     {
+        if(SelectedCategory == null || SelectedQueue == null)
+            return;
         UpdateFilter();
     }
 
@@ -159,7 +164,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         Queues.Insert(0, new Queue { Name = "All Queue", Id = "all" });
         SelectedCategory = Categories.FirstOrDefault();
         SelectedQueue = Queues.FirstOrDefault();
-        UpdateFilter();
         base.OnNavigatedTo();
+        DownloadManager.StartPendingDownloads();
     }
 }

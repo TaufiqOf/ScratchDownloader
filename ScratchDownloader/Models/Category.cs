@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FluentIcons.Common;
+using ScratchDownloader.Services;
 
 namespace ScratchDownloader.Models;
 
@@ -20,10 +22,23 @@ public partial class Category : ObservableObject
 
     [ObservableProperty] public partial bool IsExpanded { get; set; }
 
+    private string? _oldQueueId;
+
+    partial void OnQueueIdChanged(string? oldValue, string? newValue)
+    {
+        if (string.IsNullOrEmpty(newValue))
+        {
+            _oldQueueId = oldValue;
+        }
+    }
 
     partial void OnQueueIdChanged(string? value)
     {
-        Console.WriteLine(
-            $"QueueId changed to: {value}");
+        if (string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(_oldQueueId))
+        {
+            QueueId = _oldQueueId;
+            _oldQueueId = null;
+        }
+
     }
 }

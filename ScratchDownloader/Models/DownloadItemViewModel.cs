@@ -2,34 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Timer = System.Timers.Timer;
+using ScratchDownloader.Services;
 
 namespace ScratchDownloader.Models;
 
-public enum DownloadStatus
-{
-    Initializing,
-    Queued,
-    Downloading,
-    Paused,
-    Stopped,
-    Completed,
-    Failed
-}
-
 public partial class DownloadItemViewModel : ObservableObject
 {
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private CancellationTokenSource _cancellationTokenSource = new();
 
-    private readonly IDownloadService _downloadService;
+    private IDownloadService _downloadService;
     private readonly Timer _timer;
 
-    public DownloadItemViewModel(DownloadItemInformationViewModel downloadItemInformationViewModel,
+    public DownloadItemViewModel()
+    {
+
+    }
+
+    public void Initialize(
+        DownloadItemInformationViewModel downloadItemInformationViewModel,
         IDownloadService downloadService)
     {
+        DownloadItemInformation = downloadItemInformationViewModel;
         _cancellationTokenSource = new CancellationTokenSource();
         _downloadService = downloadService;
-        _downloadService.Progress = Progress;
         _downloadService.Initializing += DownloadServiceOnInitializing;
         _downloadService.Downloading += DownloadServiceOnDownloading;
         _downloadService.Completed += DownloadServiceOnCompleted;
@@ -37,19 +32,12 @@ public partial class DownloadItemViewModel : ObservableObject
         _downloadService.SegmentCount = downloadItemInformationViewModel.Segments;
         _downloadService.Uri = downloadItemInformationViewModel.Uri;
         _downloadService.DestinationFilePath = downloadItemInformationViewModel.SavePath;
-        DownloadItemInformation = downloadItemInformationViewModel;
-        Progress.TotalBytes = downloadItemInformationViewModel.FileSizeBytes;
+        _downloadService.Progress = Progress;
+        Progress?.TotalBytes = downloadItemInformationViewModel.FileSizeBytes;
     }
 
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
-
-    [ObservableProperty]
-    public partial Dictionary<int, SegmentProgress> SegmentProgress { get; set; } =
-        new();
-
     [ObservableProperty] public partial DownloadProgress Progress { get; set; } = new();
-
-
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
     public event EventHandler<DownloadStatus>? StatusChanged;
 
@@ -113,6 +101,6 @@ public partial class DownloadItemViewModel : ObservableObject
 
     public void Start()
     {
-        if (Status == DownloadStatus.Queued) _downloadService.Start(_cancellationTokenSource.Token);
+        _downloadService.Start(_cancellationTokenSource.Token);
     }
 }

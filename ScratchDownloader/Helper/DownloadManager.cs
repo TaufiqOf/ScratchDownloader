@@ -16,6 +16,7 @@ namespace ScratchDownloader.Helper;
 public partial class DownloadManager : ViewModelBase
 {
     private readonly Timer _timer;
+    private bool _startAfterLoad;
 
     public DownloadManager()
     {
@@ -24,7 +25,7 @@ public partial class DownloadManager : ViewModelBase
         _timer.Start();
     }
 
-    public ObservableCollection<DownloadItemViewModel> Downloads { get; } = new();
+    public ObservableCollection<DownloadItemViewModel> Downloads { get; set; } = new();
 
     [ObservableProperty] public partial string DownloadSummary { get; set; }
 
@@ -48,18 +49,36 @@ public partial class DownloadManager : ViewModelBase
         await newDownloadItemInformationViewModel.GetDataFromUrl(url, cancellationToken);
         return newDownloadItemInformationViewModel;
     }
+    public void Add(DownloadItemViewModel downloadItemViewModel, bool startImmediately = true,bool startAfterLoad = false )
+    {
+        _startAfterLoad=startAfterLoad;
+        if (downloadItemViewModel == null)
+            throw new ArgumentNullException(nameof(downloadItemViewModel));
+        downloadItemViewModel.Initialize(downloadItemViewModel.DownloadItemInformation, new DirectDownloadService());
+        Downloads.Add(downloadItemViewModel);
+        if (startImmediately)
+            downloadItemViewModel.Start();
+        downloadItemViewModel.StatusChanged += DownloadItemViewModelOnStatusChanged;
+        UpdateStatus();
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
+    }
 
-    public void Add(DownloadItemInformationViewModel downloadItemInformationViewModel)
+    public void Add(DownloadItemInformationViewModel downloadItemInformationViewModel, bool startImmediately = true)
     {
         if (downloadItemInformationViewModel == null)
             throw new ArgumentNullException(nameof(downloadItemInformationViewModel));
 
         var downloadItemViewModel =
-            new DownloadItemViewModel(downloadItemInformationViewModel, new DirectDownloadService());
+            new DownloadItemViewModel();
+        downloadItemViewModel.Initialize(downloadItemInformationViewModel, new DirectDownloadService());
         Downloads.Add(downloadItemViewModel);
-        downloadItemViewModel.Start();
+        if (startImmediately)
+            downloadItemViewModel.Start();
         downloadItemViewModel.StatusChanged += DownloadItemViewModelOnStatusChanged;
         UpdateStatus();
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
     }
 
     private void DownloadItemViewModelOnStatusChanged(object? sender, DownloadStatus e)
@@ -70,8 +89,8 @@ public partial class DownloadManager : ViewModelBase
         if (e == DownloadStatus.Failed)
             NotificationManager.Error($"Downloaded {e}",
                 $"Download {e}: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
-
-
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
         UpdateStatus();
     }
 
@@ -89,25 +108,48 @@ public partial class DownloadManager : ViewModelBase
         TotalDownloadedSize =
             $"Total Size: {ByteSize.FromBytes(Downloads.Sum(d => d.DownloadItemInformation?.FileSizeBytes ?? 0))
                 .Humanize("0.00")}";
+     
     }
 
     public void Resume(DownloadItemViewModel download)
     {
         download.Resume();
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
     }
 
     public void Pause(DownloadItemViewModel download)
     {
         download.Pause();
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
     }
 
     public void Stop(DownloadItemViewModel download)
     {
         download.Stop();
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
     }
 
     public void Start(DownloadItemViewModel download)
     {
         download.Start();
+        SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
+        SettingsService.Save();
+    }
+
+    public void StartPendingDownloads()
+    {
+        foreach (var download in Downloads)
+        {
+            if (_startAfterLoad && (download.Status == DownloadStatus.Downloading 
+                                    || download.Status == DownloadStatus.Initializing))
+            {
+                _startAfterLoad = false;
+                download.Start();
+                
+            }
+        }
     }
 }

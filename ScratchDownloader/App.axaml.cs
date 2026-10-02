@@ -1,10 +1,12 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using ScratchDownloader.Helper;
+using ScratchDownloader.Models;
 using ScratchDownloader.Services;
 using ScratchDownloader.Views.Windows;
 using MainPageView = ScratchDownloader.Views.PageControls.MainPageView;
@@ -32,6 +34,18 @@ public class App : Application
         ThemeManager.SetTheme(SettingsService.Settings.GetThemeVariant());
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+  
+            desktop.ShutdownMode =
+                ShutdownMode.OnExplicitShutdown;
+
+            desktop.ShutdownRequested +=
+                OnShutdownRequested;
+
+            foreach (var downloadItemViewModel in SettingsService.HistorySettings.DownloadItems)
+            {
+                ApplicationManager.DownloadManager.Add(downloadItemViewModel,false,true);
+            }
+
             var desktopMainWindow = new MainWindow
             {
                 DataContext = new MainPageViewModel()
@@ -39,24 +53,13 @@ public class App : Application
             desktop.MainWindow = desktopMainWindow;
             _mainWindow = desktopMainWindow;
             NotificationManager.Initialize(desktop.MainWindow);
-            desktop.ShutdownMode =
-                ShutdownMode.OnExplicitShutdown;
-
-            desktop.ShutdownRequested +=
-                OnShutdownRequested;
-
+            ApplicationManager.MainWindow = desktop.MainWindow;
+                
             _mainWindow.Closing +=
                 MainWindow_OnClosing;
             if (SettingsService.Settings.StartMinimized)
                 _mainWindow.Loaded +=
                     (sender, args) => { _mainWindow.Hide(); };
-            SettingsService.Settings.Categories.Values.ToList().ForEach(category =>
-            {
-                Console.WriteLine(
-                    $" Loading QueueId: {category.QueueId} CategoryId: {category.Id} Name: {category.Name} Folder: {category.Folder} Extension: {category.Extension}");
-            });
-
-            ApplicationManager.MainWindow = desktop.MainWindow;
         }
         else if (ApplicationLifetime is IActivityApplicationLifetime singleViewFactoryApplicationLifetime)
         {
