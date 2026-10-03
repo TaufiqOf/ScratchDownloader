@@ -21,6 +21,7 @@ public class DirectDownloadService : IDownloadService
     private double _lastProgressReported;
     private const int BufferSize = 81920; // 80 KB buffer size for reading/writing
 
+    public double CapSpeed { get; set; } = 0; // 0 means no cap
     private string MetadataFilePath => $"{DestinationFilePath}.meta.json";
     public DownloadProgress Progress { get; set; } = new();
     public event EventHandler<string>? ErrorOccurred;
@@ -46,6 +47,7 @@ public class DirectDownloadService : IDownloadService
                     segmentProgress.BytesPerSecond = 0;
                 }
             }
+
             if (Progress.BytesPerSecond > 0)
             {
                 Progress.BytesPerSecond = Progress.SegmentProgress.Values.Sum(s => s.BytesPerSecond);
@@ -219,6 +221,8 @@ public class DirectDownloadService : IDownloadService
             var buffer = new byte[BufferSize];
             int read;
 
+            // Track time for chunk throttling
+            var chunkStopwatch = Stopwatch.StartNew();
 
             while ((read = await contentStream.ReadAsync(buffer, 0, buffer.Length, token)) > 0)
             {
@@ -227,7 +231,30 @@ public class DirectDownloadService : IDownloadService
                 segment.BytesDownloaded += read;
                 sessionBytesDownloadedForSegment += read;
                 SaveMetadata(metadata);
-                //update progress after 100 milliseconds
+
+                // --- SPEED CAP LIMITING ---
+                if (CapSpeed > 0)
+                {
+                    // Share the total cap speed equally among active/total segments
+                    double segmentCapSpeed = CapSpeed / metadata.Segments.Count;
+
+                    // Expected time in milliseconds to download 'read' bytes at 'segmentCapSpeed'
+                    double expectedMs = (read / segmentCapSpeed) * 1000.0;
+                    double elapsedMs = chunkStopwatch.Elapsed.TotalMilliseconds;
+
+                    if (elapsedMs < expectedMs)
+                    {
+                        int delayMs = (int)(expectedMs - elapsedMs);
+                        if (delayMs > 0)
+                        {
+                            await Task.Delay(delayMs, token);
+                        }
+                    }
+
+                    chunkStopwatch.Restart();
+                }
+
+                // Update progress after 100 milliseconds
                 var segmentProgress = Progress.SegmentProgress[segment.Index];
                 if (segmentStopwatch.ElapsedMilliseconds - segmentProgress.LastReportedMs >= 100)
                 {
@@ -249,7 +276,8 @@ public class DirectDownloadService : IDownloadService
         }
         finally
         {
-            UpdateProgress(segment,
+            UpdateProgress(
+                segment,
                 metadata,
                 overallStopwatch,
                 initialTotalBytesRead,

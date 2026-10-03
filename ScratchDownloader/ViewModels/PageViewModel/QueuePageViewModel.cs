@@ -114,7 +114,7 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
             return;
 
         queue.MaxConcurrentDownloads = 8;
-        queue.MaxSpeedLimit = 0;
+        queue.MaxSpeedLimitInKiloBytes = 0;
         queue.StartTime = null;
         queue.DaysOfWeek.Clear();
         queue.AfterComplete = OperationMode.Nothing;

@@ -132,6 +132,8 @@ public partial class DownloadItemInformationViewModel : ObservableObject
         SavePath = Path.Combine(Category.Folder, FileName);
         var settingsQueue = SettingsService.Settings.Queues["Main"];
         Queue = Category.QueueId is not null ? SettingsService.Settings.Queues[Category.QueueId] : settingsQueue;
+        Segments = Queue.Segments;
+
     }
 
 

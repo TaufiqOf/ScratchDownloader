@@ -118,7 +118,7 @@
                                                        FontSize="11"
                                                        FontWeight="SemiBold"
                                                        Opacity="0.5" />
-                                            <NumericUpDown Value="{Binding MaxSpeedLimit}"
+                                            <NumericUpDown Value="{Binding MaxSpeedLimitInKiloBytes}"
                                                            Minimum="0"
                                                            Increment="50"
                                                            FormatString="0 KB/s" />

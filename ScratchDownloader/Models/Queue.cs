@@ -30,7 +30,7 @@ public partial class Queue : ObservableObject
     [ObservableProperty] public partial string Name { get; set; }
     [ObservableProperty] public partial int MaxConcurrentDownloads { get; set; } = 2;
     [ObservableProperty] public partial int Segments { get; set; } = 8;
-    [ObservableProperty] public partial double MaxSpeedLimit { get; set; } = 0; // 0 means no limit
+    [ObservableProperty] public partial double MaxSpeedLimitInKiloBytes { get; set; } = 0; // 0 means no limit
     [ObservableProperty] public partial TimeSpan? StartTime { get; set; }
     [ObservableProperty] public partial List<QueueDaysOfWeek> DaysOfWeek { get; set; } = new();
     [ObservableProperty] public partial OperationMode AfterComplete { get; set; } = OperationMode.Nothing;

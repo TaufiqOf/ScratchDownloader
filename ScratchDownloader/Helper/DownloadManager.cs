@@ -82,7 +82,7 @@ public partial class DownloadManager : ViewModelBase
     {
         downloadItemViewModel.Initialize(downloadItemInformationViewModel, new DirectDownloadService());
         Downloads.Add(downloadItemViewModel);
-        
+
         if (startImmediately)
         {
             downloadItemViewModel.Start();
@@ -100,22 +100,42 @@ public partial class DownloadManager : ViewModelBase
 
     private void DownloadItemViewModelOnStatusChanged(object? sender, DownloadStatus e)
     {
+        var downloadItemViewModel = sender as DownloadItemViewModel;
+        if (downloadItemViewModel == null) return;
+        SetCapToQueueItems(downloadItemViewModel);
         if (e == DownloadStatus.Completed)
             NotificationManager.Success($"Downloaded {e}",
-                $"Download {e}: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+                $"Download {e}: {downloadItemViewModel.DownloadItemInformation?.FileName}");
         if (e == DownloadStatus.Failed)
             NotificationManager.Error($"Downloaded {e}",
-                $"Download {e}: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+                $"Download {e}: {downloadItemViewModel.DownloadItemInformation?.FileName}");
         if (e == DownloadStatus.ChecksumFailed)
         {
             NotificationManager.Error($"Downloaded Completed but Checksum Failed",
-                $"Downloaded Completed but Checksum Failed: {((DownloadItemViewModel)sender)?.DownloadItemInformation?.FileName}");
+                $"Downloaded Completed but Checksum Failed: {downloadItemViewModel.DownloadItemInformation?.FileName}");
         }
 
-        ((DownloadItemViewModel)sender)?.Status = e;
+        downloadItemViewModel.Status = e;
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
         UpdateStatus();
+    }
+
+    private void SetCapToQueueItems(DownloadItemViewModel downloadItemViewModel)
+    {
+        var currentQueue = downloadItemViewModel.DownloadItemInformation?.Queue;
+        if (currentQueue == null) return;
+        var activeDownloads = Downloads.Where(d => 
+                d.Status == DownloadStatus.Downloading ||  
+                d.Status == DownloadStatus.Initializing)
+            .ToList();
+        var capSpeed = 0d;
+        if (currentQueue.MaxSpeedLimitInKiloBytes >= 0)
+        {
+            capSpeed = currentQueue.MaxSpeedLimitInKiloBytes / activeDownloads.Count;
+        }
+        activeDownloads.ForEach(d => d.CapSpeedInKBps = capSpeed);
+
     }
 
     private void UpdateStatus()
@@ -184,7 +204,7 @@ public partial class DownloadManager : ViewModelBase
                                     || download.Status == DownloadStatus.Initializing))
             {
                 download.Start();
-                if(SettingsService.Settings.OpenWidgetEnabled) download.ShowWidget();
+                if (SettingsService.Settings.OpenWidgetEnabled) download.ShowWidget();
             }
         }
 

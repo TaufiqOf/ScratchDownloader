@@ -6,6 +6,7 @@ namespace ScratchDownloader.Models;
 public interface IDownloadService
 {
     DownloadProgress Progress { get; set; }
+    double CapSpeed { get; set; }
     int SegmentCount { get; set; }
     Uri Uri { get; set; }
     string? DestinationFilePath { get; set; }

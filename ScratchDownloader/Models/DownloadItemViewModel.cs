@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.Json.Serialization;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Input.Platform;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -21,29 +22,30 @@ public partial class DownloadItemViewModel : ObservableObject
     private ICheckSumService _checkSumService;
     private IDownloadService _downloadService;
     private DownloadWidgetWindow? _widgetWindow;
-    
+
     private const int MaxSpeedSamples = 60;
 
     private readonly DispatcherTimer _speedChartTimer = new()
     {
         Interval = TimeSpan.FromSeconds(1)
     };
-    
-    [JsonIgnore]
-    public SolidColorPaint SpeedChartStroke { get; set; }
 
-    [JsonIgnore]
-    public SolidColorPaint SpeedChartFill { get; set; }
- 
-    [JsonIgnore]
-    public Func<double, string> SpeedAxisLabeler { get; } = value => $"{value:0.#} MB/s";
-    
-    [JsonIgnore]
-    public ObservableCollection<double> SpeedHistory { get; } = new();
-    
+    [JsonIgnore] public SolidColorPaint SpeedChartStroke { get; set; }
+
+    [JsonIgnore] public SolidColorPaint SpeedChartFill { get; set; }
+
+    [JsonIgnore] public Func<double, string> SpeedAxisLabeler { get; } = value => $"{value:0.#} MB/s";
+
+    [JsonIgnore] public ObservableCollection<double> SpeedHistory { get; } = new();
+
+    public double CapSpeedInKBps
+    {
+        get => _downloadService?.CapSpeed / 1024d ?? 0;
+        set => _downloadService?.CapSpeed = value * 1024d;
+    }
+
     public DownloadItemViewModel()
     {
-        
     }
 
     private void SpeedChartTimerOnTick(object? sender, EventArgs e)
@@ -76,18 +78,18 @@ public partial class DownloadItemViewModel : ObservableObject
         _speedChartTimer.Tick += SpeedChartTimerOnTick;
     }
 
-  
+
     public bool CanOpen =>
         Status == DownloadStatus.Completed &&
         !string.IsNullOrWhiteSpace(DownloadItemInformation?.SavePath) &&
         File.Exists(DownloadItemInformation.SavePath);
-    
+
     public bool CanShowWidget => true ||
-        _widgetWindow  is null &&
-        (Status == DownloadStatus.Downloading ||
-         Status == DownloadStatus.Initializing ||
-         Status == DownloadStatus.CheckingChecksum);
-    
+                                 _widgetWindow is null &&
+                                 (Status == DownloadStatus.Downloading ||
+                                  Status == DownloadStatus.Initializing ||
+                                  Status == DownloadStatus.CheckingChecksum);
+
     [ObservableProperty] public partial DateTime? AddedDateTime { get; set; }
     [ObservableProperty] public partial string AddedDateTimeText { get; set; }
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
@@ -255,31 +257,62 @@ public partial class DownloadItemViewModel : ObservableObject
         ApplicationManager.DownloadManager.Remove(this);
         _widgetWindow?.Close();
     }
-    
+
     [RelayCommand]
     private void DeleteFile()
     {
-        DialogManager.ShowMessage( MessageDialogType.Warning,
-            "Delete File", 
-            "Are you sure you want to delete the downloaded file?", 
-            "Yes", 
+        DialogManager.ShowMessage(MessageDialogType.Warning,
+            "Delete File",
+            "Are you sure you want to delete the downloaded file?",
+            "Yes",
             new RelayCommand(() =>
-        {
-            ApplicationManager.DownloadManager.Remove(this);  
-            File.Delete(DownloadItemInformation?.SavePath ?? string.Empty);
-            File.Delete(DownloadItemInformation?.SavePath + ".meta.json" ?? string.Empty);
-  
-            _widgetWindow?.Close();
-        }), "No");
+            {
+                ApplicationManager.DownloadManager.Remove(this);
+                Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        File.Delete(DownloadItemInformation?.SavePath ?? string.Empty);
+                        File.Delete(DownloadItemInformation?.SavePath + ".meta.json" ?? string.Empty);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Failed to delete file: {e}");
+                    }
+                });
+
+                _widgetWindow?.Close();
+            }), "No");
     }
-    
+
     [RelayCommand]
     private void Restart()
     {
+        Stop();
         Status = DownloadStatus.Queued;
-        File.Delete(DownloadItemInformation?.SavePath ?? string.Empty);
-        File.Delete(DownloadItemInformation?.SavePath + ".meta.json" ?? string.Empty);
-        Start();
+        Task.Factory.StartNew(() =>
+        {
+            try
+            {
+                File.Delete(DownloadItemInformation?.SavePath ?? string.Empty);
+                File.Delete(DownloadItemInformation?.SavePath + ".meta.json" ?? string.Empty);
+                Progress.Progress = 0;
+                Progress.BytesPerSecond = 0;
+                Progress.BytesDownloaded = 0;
+                foreach (var segmentProgressValue in Progress.SegmentProgress.Values)
+                {
+                    segmentProgressValue.BytesDownloaded = 0;
+                    segmentProgressValue.BytesPerSecond = 0;
+                    segmentProgressValue.Progress = 0;
+                }
+
+                Dispatcher.UIThread.Post(Start);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to delete file: {e}");
+            }
+        });
     }
 
     [RelayCommand]
