@@ -266,7 +266,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <Separator />
-                                
+
                                 <!-- MOVE TO QUEUE -->
                                 <MenuItem Header="Move to Queue...">
                                     <MenuItem.Icon>
@@ -296,13 +296,12 @@
                                 </MenuItem>
                                 <!-- REMOVE -->
                                 <MenuItem Header="Delete File"
-                                          Command="{Binding DeleteFileCommand}" >
+                                          Command="{Binding DeleteFileCommand}">
                                     <MenuItem.Icon>
                                         <fluent:FluentIcon Icon="Delete" />
                                     </MenuItem.Icon>
                                 </MenuItem>
 
-                        
 
                                 <Separator />
 
@@ -385,7 +384,7 @@
                                                Margin="5,0,0,0"
                                                Text="{Binding Progress.ProgressText}"
                                                FontSize="10"
-                                               FontWeight="DemiBold"/>
+                                               FontWeight="DemiBold" />
                                 </Grid>
 
                                 <!-- Segment Progress -->
@@ -400,10 +399,19 @@
                 </DataGridTemplateColumn>
 
                 <!-- SPEED -->
-                <dg:DataGridTextColumn Header="Speed"
-                                       Binding="{Binding Progress.Speed}"
-                                       Width="120" />
-
+                <dg:DataGridTemplateColumn Header="Speed"
+                                           Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{Binding CapSpeedText}"
+                                           FontSize="9" />
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Progress.Speed}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </dg:DataGridTemplateColumn>
                 <!-- SIZE -->
                 <dg:DataGridTextColumn Header="Size"
                                        Binding="{Binding Progress.FileSizeDisplay}"

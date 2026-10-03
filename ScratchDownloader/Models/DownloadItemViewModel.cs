@@ -9,6 +9,7 @@ using Avalonia.Input.Platform;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Humanizer;
 using LiveChartsCore.SkiaSharpView.Painting;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Services;
@@ -41,7 +42,12 @@ public partial class DownloadItemViewModel : ObservableObject
     public double CapSpeedInKBps
     {
         get => _downloadService?.CapSpeed / 1024d ?? 0;
-        set => _downloadService?.CapSpeed = value * 1024d;
+        set
+        {
+            _downloadService?.CapSpeed = value * 1024d;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(CapSpeedText));
+        }
     }
 
     public DownloadItemViewModel()
@@ -96,7 +102,7 @@ public partial class DownloadItemViewModel : ObservableObject
     [ObservableProperty] public partial DownloadProgress Progress { get; set; } = new();
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
     [ObservableProperty] private bool _isTopMost;
-
+    public string CapSpeedText => CapSpeedInKBps == 0 ? "  " : ByteSize.FromBytes(CapSpeedInKBps * 1024).Humanize("0.00") + "/s";
     public event EventHandler<DownloadStatus>? StatusChanged;
 
     partial void OnAddedDateTimeChanged(DateTime? value)
@@ -209,6 +215,7 @@ public partial class DownloadItemViewModel : ObservableObject
         if (Status == DownloadStatus.Paused || Status == DownloadStatus.Queued)
         {
             Status = DownloadStatus.Downloading;
+            StatusChanged?.Invoke(this, DownloadStatus.Downloading);
             _downloadService.Resume(_cancellationTokenSource.Token);
             if (!_speedChartTimer.IsEnabled)
                 _speedChartTimer.Start();
