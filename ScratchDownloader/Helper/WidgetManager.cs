@@ -13,7 +13,7 @@ namespace ScratchDownloader.Helper;
 
 public static class WidgetManager
 {
-    private const int Margin = 20;
+    private const int Margin = 10;
     private const int Spacing = 10;
     private static readonly List<DownloadWidgetWindow> _widgets = new();
 

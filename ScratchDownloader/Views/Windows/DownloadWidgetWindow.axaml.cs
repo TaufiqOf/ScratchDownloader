@@ -62,14 +62,9 @@ public partial class DownloadWidgetWindow : Window
                 _downloadItemViewModel.Status == DownloadStatus.ChecksumFailed ||
                 _downloadItemViewModel.Status == DownloadStatus.Failed)
             {
-                PlayPauseButton.IsVisible = false;
+                PlayPauseButtonIcon.Icon = FluentIcons.Common.Icon.ArrowClockwise;
             }
-            else
-            {
-                PlayPauseButton.IsVisible = true;
-            }
-
-            if (_downloadItemViewModel.Status == DownloadStatus.Downloading)
+            else if (_downloadItemViewModel.Status == DownloadStatus.Downloading)
             {
                 PlayPauseButtonIcon.Icon = FluentIcons.Common.Icon.Pause;
             }
@@ -98,6 +93,12 @@ public partial class DownloadWidgetWindow : Window
         else if (_downloadItemViewModel.Status == DownloadStatus.Paused)
         {
             _downloadItemViewModel.ResumeCommand.Execute(null);
+        }
+        if( _downloadItemViewModel.Status == DownloadStatus.Completed ||
+           _downloadItemViewModel.Status == DownloadStatus.ChecksumFailed ||
+           _downloadItemViewModel.Status == DownloadStatus.Failed)
+        {
+            _downloadItemViewModel.RestartCommand.Execute(null);
         }
         UpdatePlayPauseButton();
     }

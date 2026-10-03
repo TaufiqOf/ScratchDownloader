@@ -152,7 +152,6 @@
                     BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
                     Margin="5,5" />
             <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right" Spacing="5">
-   
                 <Button  x:Name="PlayPauseButton" Click="OnPlayPauseButtonClick" ToolTip.Tip="Play/Pause">
                     <fluent:FluentIcon x:Name="PlayPauseButtonIcon" Icon="Play"></fluent:FluentIcon>
                 </Button>
