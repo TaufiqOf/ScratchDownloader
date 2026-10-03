@@ -84,7 +84,10 @@ public partial class DownloadManager : ViewModelBase
         downloadItemViewModel.Initialize(downloadItemInformationViewModel, new DirectDownloadService());
         Downloads.Add(downloadItemViewModel);
         if (startImmediately)
+        {
             downloadItemViewModel.Start();
+            downloadItemViewModel.ShowWidget();
+        }
         downloadItemViewModel.AddedDateTime ??= DateTime.UtcNow;
         downloadItemViewModel.StatusChanged += DownloadItemViewModelOnStatusChanged;
         UpdateStatus();

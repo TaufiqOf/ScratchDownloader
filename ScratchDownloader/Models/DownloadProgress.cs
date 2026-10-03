@@ -62,6 +62,12 @@ public partial class DownloadProgress : ViewModelBase
             return;
         }
 
+        if (secondsRemaining < 1)
+        {
+            Eta = "< 1 second";
+            return;
+        }
+
         Eta = TimeSpan.FromSeconds(secondsRemaining).Humanize();
     }
 }

@@ -23,6 +23,7 @@
         <PackageReference Include="FluentIcons.Avalonia.Fluent"/>
         <PackageReference Include="FluentIcons.Common"/>
         <PackageReference Include="Humanizer.Core"/>
+        <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" />
     </ItemGroup>
 
     <ItemGroup>

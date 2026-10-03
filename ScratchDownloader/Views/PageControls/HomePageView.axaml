@@ -269,7 +269,6 @@
                                     <!-- Queues go here -->
 
                                 </MenuItem>
-             
 
 
                                 <!-- REMOVE -->
@@ -279,7 +278,13 @@
                                         <fluent:FluentIcon Icon="Delete" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-
+                                <!-- REMOVE -->
+                                <MenuItem Header="Delete File"
+                                          Command="{Binding DeleteFileCommand}" >
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Delete" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
 
                                 <!-- RESTART -->
                                 <MenuItem Header="Restart Download"
@@ -303,7 +308,7 @@
 
 
                                 <Separator />
-                   
+
                                 <!-- Show Widget -->
                                 <MenuItem Header="Show Widget"
                                           Command="{Binding ShowWidgetCommand}"
@@ -367,27 +372,29 @@
                 <DataGridTemplateColumn Header="Progress" Width="250">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid RowDefinitions="Auto,Auto"
+                            <Grid RowDefinitions="Auto,Auto,Auto"
                                   Margin="4">
 
                                 <!-- Overall Progress -->
-                                <ProgressBar Grid.Row="0"
-                                             Minimum="0"
-                                             Maximum="100"
-                                             Height="6"
-                                             IsIndeterminate="{Binding Status, Converter={StaticResource StatusToIndeterminateConverter}}"
-                                             Value="{Binding Progress.Progress}" />
+                                <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+
+                                    <ProgressBar Grid.Column="0"
+                                                 Minimum="0"
+                                                 Maximum="100"
+                                                 Height="6"
+                                                 IsIndeterminate="{Binding Status, Converter={StaticResource StatusToIndeterminateConverter}}"
+                                                 Value="{Binding Progress.Progress}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Progress.ProgressText}"
+                                               FontSize="10"
+                                               FontWeight="DemiBold"/>
+                                </Grid>
 
                                 <!-- Segment Progress -->
                                 <control:SegmentProgressControl Grid.Row="1"
                                                                 Margin="0,6,0,0"
                                                                 Segments="{Binding Progress.SegmentProgress}" />
-
                                 <!-- Status Text -->
-                                <TextBlock Grid.Row="1"
-                                           Text="{Binding Progress.ProgressText}"
-                                           FontSize="11"
-                                           Margin="0,5,0,0" />
 
                             </Grid>
                         </DataTemplate>

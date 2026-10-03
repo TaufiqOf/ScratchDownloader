@@ -9,4 +9,5 @@ public partial class SegmentProgress : ViewModelBase
     [ObservableProperty] public partial long BytesDownloaded { get; set; }
     [ObservableProperty] public partial long TotalBytes { get; set; }
     [ObservableProperty] public partial double BytesPerSecond { get; set; } // Bytes per second
+    public long LastReportedMs { get; set; }
 }

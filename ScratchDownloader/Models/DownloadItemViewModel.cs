@@ -1,10 +1,14 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Json.Serialization;
 using System.Threading;
 using Avalonia.Input.Platform;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LiveChartsCore.SkiaSharpView.Painting;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Services;
 using ScratchDownloader.Views.Windows;
@@ -15,12 +19,38 @@ public partial class DownloadItemViewModel : ObservableObject
 {
     private CancellationTokenSource _cancellationTokenSource = new();
     private ICheckSumService _checkSumService;
-
+ 
     private IDownloadService _downloadService;
     private DownloadWidgetWindow? _widgetWindow;
+    private const int MaxSpeedSamples = 60;
 
+    private readonly DispatcherTimer _speedChartTimer = new()
+    {
+        Interval = TimeSpan.FromSeconds(1)
+    };
+    [JsonIgnore]
+    public SolidColorPaint SpeedChartStroke { get; set; }
+
+    [JsonIgnore]
+    public SolidColorPaint SpeedChartFill { get; set; }
+    [JsonIgnore]
+    public Func<double, string> SpeedAxisLabeler { get; } =
+        value => $"{value:0.#} MB/s";
+    [JsonIgnore]
+    public ObservableCollection<double> SpeedHistory { get; } = new();
     public DownloadItemViewModel()
     {
+        
+    }
+
+    private void SpeedChartTimerOnTick(object? sender, EventArgs e)
+    {
+        var speed = Progress.BytesPerSecond / (1024d * 1024d);
+
+        SpeedHistory.Add(speed);
+
+        while (SpeedHistory.Count > MaxSpeedSamples)
+            SpeedHistory.RemoveAt(0);
     }
 
     public void Initialize(
@@ -40,14 +70,16 @@ public partial class DownloadItemViewModel : ObservableObject
         _downloadService.Progress = Progress;
         Progress?.TotalBytes = downloadItemInformationViewModel.FileSizeBytes;
         _checkSumService = new CheckSumService();
+        _speedChartTimer.Tick += SpeedChartTimerOnTick;
     }
 
+  
     public bool CanOpen =>
         Status == DownloadStatus.Completed &&
         !string.IsNullOrWhiteSpace(DownloadItemInformation?.SavePath) &&
         File.Exists(DownloadItemInformation.SavePath);
     
-    public bool CanShowWidget =>
+    public bool CanShowWidget => true ||
         _widgetWindow  is null &&
         (Status == DownloadStatus.Downloading ||
          Status == DownloadStatus.Initializing ||
@@ -58,6 +90,7 @@ public partial class DownloadItemViewModel : ObservableObject
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
     [ObservableProperty] public partial DownloadProgress Progress { get; set; } = new();
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
+    [ObservableProperty] private bool _isTopMost;
 
     public event EventHandler<DownloadStatus>? StatusChanged;
 
@@ -115,6 +148,9 @@ public partial class DownloadItemViewModel : ObservableObject
     {
         StatusChanged?.Invoke(this, DownloadStatus.Downloading);
         Status = DownloadStatus.Downloading;
+
+        if (!_speedChartTimer.IsEnabled)
+            _speedChartTimer.Start();
     }
 
     private void DownloadServiceOnInitializing(object? sender, EventArgs e)
@@ -126,6 +162,7 @@ public partial class DownloadItemViewModel : ObservableObject
     private async void DownloadServiceOnCompleted(object? sender, EventArgs e)
     {
         Progress.BytesPerSecond = 0;
+        _speedChartTimer.Stop();
         if (DownloadItemInformation?.SavePath == null)
             return;
         if (!string.IsNullOrEmpty(DownloadItemInformation?.Checksum))
@@ -168,6 +205,8 @@ public partial class DownloadItemViewModel : ObservableObject
         {
             Status = DownloadStatus.Downloading;
             _downloadService.Resume(_cancellationTokenSource.Token);
+            if (!_speedChartTimer.IsEnabled)
+                _speedChartTimer.Start();
         }
     }
 
@@ -178,9 +217,13 @@ public partial class DownloadItemViewModel : ObservableObject
             || Status == DownloadStatus.Stopped
             || Status == DownloadStatus.Failed)
             return;
+
         Progress.BytesPerSecond = 0;
         _downloadService.Stop();
         Status = DownloadStatus.Stopped;
+
+        _speedChartTimer.Stop();
+
         _widgetWindow?.Close();
     }
 
@@ -192,6 +235,8 @@ public partial class DownloadItemViewModel : ObservableObject
             _downloadService.Pause();
             Progress.BytesPerSecond = 0;
             Status = DownloadStatus.Paused;
+            StatusChanged?.Invoke(this, DownloadStatus.Paused);
+            _speedChartTimer.Stop();
         }
     }
 
@@ -207,7 +252,24 @@ public partial class DownloadItemViewModel : ObservableObject
         ApplicationManager.DownloadManager.Remove(this);
         _widgetWindow?.Close();
     }
-
+    
+    [RelayCommand]
+    private void DeleteFile()
+    {
+        DialogManager.ShowMessage( MessageDialogType.Warning,
+            "Delete File", 
+            "Are you sure you want to delete the downloaded file?", 
+            "Yes", 
+            new RelayCommand(() =>
+        {
+            ApplicationManager.DownloadManager.Remove(this);  
+            File.Delete(DownloadItemInformation?.SavePath ?? string.Empty);
+            File.Delete(DownloadItemInformation?.SavePath + ".meta.json" ?? string.Empty);
+  
+            _widgetWindow?.Close();
+        }), "No");
+    }
+    
     [RelayCommand]
     private void Restart()
     {
