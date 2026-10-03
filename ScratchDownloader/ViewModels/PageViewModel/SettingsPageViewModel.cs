@@ -21,6 +21,14 @@ public partial class SettingsPageViewModel : ViewModelBase, IViewModel
     [ObservableProperty] private bool _startWithSystem =
         SettingsService.Settings.StartWithSystem;
 
+    [ObservableProperty] private bool _openWidgetEnabled =
+        SettingsService.Settings.OpenWidgetEnabled;
+
+    [ObservableProperty] private bool _closeWidgetEnabled =
+        SettingsService.Settings.CloseWidgetEnabled;
+
+    [ObservableProperty] private double _closeWidgetInterval =
+        SettingsService.Settings.AutoCloseInterval / 1000;
 
     public SettingsPageViewModel()
     {
@@ -64,6 +72,24 @@ public partial class SettingsPageViewModel : ViewModelBase, IViewModel
     partial void OnStartMinimizedChanged(bool value)
     {
         SettingsService.Settings.StartMinimized = value;
+        SettingsService.Save();
+    }
+
+    partial void OnCloseWidgetEnabledChanged(bool value)
+    {
+        SettingsService.Settings.CloseWidgetEnabled = value;
+        SettingsService.Save();
+    }
+
+    partial void OnOpenWidgetEnabledChanged(bool value)
+    {
+        SettingsService.Settings.OpenWidgetEnabled = value;
+        SettingsService.Save();
+    }
+
+    partial void OnCloseWidgetIntervalChanged(double value)
+    {
+        SettingsService.Settings.AutoCloseInterval = value * 1000;
         SettingsService.Save();
     }
 }

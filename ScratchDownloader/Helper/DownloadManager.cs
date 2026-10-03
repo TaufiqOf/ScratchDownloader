@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 using System.Timers;
 using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using Humanizer;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
-using ScratchDownloader.ViewModels.PageViewModel;
 using Timer = System.Timers.Timer;
 
 namespace ScratchDownloader.Helper;
@@ -20,6 +18,7 @@ public partial class DownloadManager : ViewModelBase
     private readonly Timer _timer;
     private bool _startAfterLoad;
     public Action? ItemUpdated { get; set; }
+
     public DownloadManager()
     {
         _timer = new Timer(700);
@@ -83,11 +82,13 @@ public partial class DownloadManager : ViewModelBase
     {
         downloadItemViewModel.Initialize(downloadItemInformationViewModel, new DirectDownloadService());
         Downloads.Add(downloadItemViewModel);
+        
         if (startImmediately)
         {
             downloadItemViewModel.Start();
-            downloadItemViewModel.ShowWidget();
+            if (SettingsService.Settings.OpenWidgetEnabled) downloadItemViewModel.ShowWidget();
         }
+
         downloadItemViewModel.AddedDateTime ??= DateTime.UtcNow;
         downloadItemViewModel.StatusChanged += DownloadItemViewModelOnStatusChanged;
         UpdateStatus();
@@ -141,7 +142,7 @@ public partial class DownloadManager : ViewModelBase
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
     }
-    
+
 
     public void Pause(DownloadItemViewModel download)
     {
@@ -163,6 +164,7 @@ public partial class DownloadManager : ViewModelBase
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
     }
+
     public void Remove(DownloadItemViewModel downloadItemViewModel)
     {
         downloadItemViewModel.Stop();
@@ -172,8 +174,8 @@ public partial class DownloadManager : ViewModelBase
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
         ItemUpdated?.Invoke();
-
     }
+
     public void StartPendingDownloads()
     {
         foreach (var download in Downloads)
@@ -182,6 +184,7 @@ public partial class DownloadManager : ViewModelBase
                                     || download.Status == DownloadStatus.Initializing))
             {
                 download.Start();
+                if(SettingsService.Settings.OpenWidgetEnabled) download.ShowWidget();
             }
         }
 
@@ -210,7 +213,4 @@ public partial class DownloadManager : ViewModelBase
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();
     }
-
-
-
 }

@@ -114,6 +114,52 @@
                                           HorizontalAlignment="Left" />
                         </Grid>
                     </Border>
+                    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                            CornerRadius="12"
+                            Padding="20">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Grid RowDefinitions="Auto,Auto">
+                                <TextBlock Text="Auto Show Widget"
+                                           FontSize="15" />
+                                <TextBlock Grid.Row="1" Text="Open the download widget when a download starts."
+                                           FontSize="12" />
+                            </Grid>
+
+                            <ToggleSwitch Grid.Column="1" IsChecked="{Binding OpenWidgetEnabled}"
+                                          HorizontalAlignment="Left" />
+                        </Grid>
+                    </Border>
+                    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                            CornerRadius="12"
+                            Padding="20">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Grid RowDefinitions="Auto,Auto">
+                                <TextBlock Text="Auto Close Widget"
+                                           FontSize="15" />
+                                <TextBlock Grid.Row="1" Text="Close the download widget when a download finishes."
+                                           FontSize="12" />
+                            </Grid>
+
+                            <ToggleSwitch Grid.Column="1" IsChecked="{Binding CloseWidgetEnabled}"
+                                          HorizontalAlignment="Left" />
+                        </Grid>
+                    </Border>
+                    
+                    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                            CornerRadius="12"
+                            Padding="20">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Grid RowDefinitions="Auto,Auto">
+                                <TextBlock Text="Auto Close Widget Interval"
+                                           FontSize="15" />
+                                <TextBlock Grid.Row="1" Text="Set the interval (in seconds) to automatically close the download widget after a download finishes."
+                                           FontSize="12" />
+                            </Grid>
+
+                            <NumericUpDown Width="150" Grid.Column="1" Value="{Binding CloseWidgetInterval}"
+                                          HorizontalAlignment="Left" />
+                        </Grid>
+                    </Border>
                 </StackPanel>
             </StackPanel>
 

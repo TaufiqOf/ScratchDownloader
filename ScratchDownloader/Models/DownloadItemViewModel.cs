@@ -19,25 +19,28 @@ public partial class DownloadItemViewModel : ObservableObject
 {
     private CancellationTokenSource _cancellationTokenSource = new();
     private ICheckSumService _checkSumService;
- 
     private IDownloadService _downloadService;
     private DownloadWidgetWindow? _widgetWindow;
+    
     private const int MaxSpeedSamples = 60;
 
     private readonly DispatcherTimer _speedChartTimer = new()
     {
         Interval = TimeSpan.FromSeconds(1)
     };
+    
     [JsonIgnore]
     public SolidColorPaint SpeedChartStroke { get; set; }
 
     [JsonIgnore]
     public SolidColorPaint SpeedChartFill { get; set; }
+ 
     [JsonIgnore]
-    public Func<double, string> SpeedAxisLabeler { get; } =
-        value => $"{value:0.#} MB/s";
+    public Func<double, string> SpeedAxisLabeler { get; } = value => $"{value:0.#} MB/s";
+    
     [JsonIgnore]
     public ObservableCollection<double> SpeedHistory { get; } = new();
+    
     public DownloadItemViewModel()
     {
         
@@ -283,7 +286,6 @@ public partial class DownloadItemViewModel : ObservableObject
     private void CopyUrl()
     {
         ApplicationManager.GetClipboard()?.SetTextAsync(DownloadItemInformation?.Uri.ToString() ?? string.Empty);
-        // Copy URL to clipboard
     }
 
     [RelayCommand]

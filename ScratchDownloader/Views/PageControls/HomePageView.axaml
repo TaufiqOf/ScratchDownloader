@@ -230,6 +230,24 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
 
+                                <!-- RESTART -->
+                                <MenuItem Header="Restart Download"
+                                          Command="{Binding RestartCommand}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="ArrowClockwise" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+
+                                <!-- COPY URL -->
+                                <MenuItem Header="Copy URL"
+                                          Command="{Binding CopyUrlCommand}">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Copy" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+
                                 <!-- OPEN -->
                                 <MenuItem Header="Open"
                                           Command="{Binding OpenCommand}"
@@ -247,19 +265,8 @@
                                         <fluent:FluentIcon Icon="FolderOpen" />
                                     </MenuItem.Icon>
                                 </MenuItem>
-
-
-                                <!-- MOVE TO CATEGORY -->
-                                <MenuItem Header="Move to Category...">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Folder" />
-                                    </MenuItem.Icon>
-
-                                    <!-- Categories go here -->
-
-                                </MenuItem>
-
-
+                                <Separator />
+                                
                                 <!-- MOVE TO QUEUE -->
                                 <MenuItem Header="Move to Queue...">
                                     <MenuItem.Icon>
@@ -270,6 +277,15 @@
 
                                 </MenuItem>
 
+                                <!-- MOVE TO CATEGORY -->
+                                <MenuItem Header="Move to Category...">
+                                    <MenuItem.Icon>
+                                        <fluent:FluentIcon Icon="Folder" />
+                                    </MenuItem.Icon>
+
+                                    <!-- Categories go here -->
+                                </MenuItem>
+                                <Separator />
 
                                 <!-- REMOVE -->
                                 <MenuItem Header="Remove from list"
@@ -286,26 +302,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
 
-                                <!-- RESTART -->
-                                <MenuItem Header="Restart Download"
-                                          Command="{Binding RestartCommand}"
-                                          IsVisible="{Binding Status,
-                                  Converter={StaticResource StatusEqualsConverter},
-                                  ConverterParameter=Failed}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="ArrowClockwise" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-
-
-                                <!-- COPY URL -->
-                                <MenuItem Header="Copy URL"
-                                          Command="{Binding CopyUrlCommand}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Copy" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-
+                        
 
                                 <Separator />
 
@@ -376,7 +373,7 @@
                                   Margin="4">
 
                                 <!-- Overall Progress -->
-                                <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                                <Grid Grid.Row="0" ColumnDefinitions="*,50">
 
                                     <ProgressBar Grid.Column="0"
                                                  Minimum="0"
@@ -385,6 +382,7 @@
                                                  IsIndeterminate="{Binding Status, Converter={StaticResource StatusToIndeterminateConverter}}"
                                                  Value="{Binding Progress.Progress}" />
                                     <TextBlock Grid.Column="1"
+                                               Margin="5,0,0,0"
                                                Text="{Binding Progress.ProgressText}"
                                                FontSize="10"
                                                FontWeight="DemiBold"/>

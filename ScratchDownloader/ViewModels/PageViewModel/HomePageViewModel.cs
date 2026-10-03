@@ -73,7 +73,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            DialogManager.ShowMessage(MessageDialogType.Error, "New Download",
+            await DialogManager.ShowMessage(MessageDialogType.Error, "New Download",
                 "Failed to create a new download. Please try again.");
         }
         // Open the new download dialog.
@@ -86,7 +86,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     }
 
     [RelayCommand]
-    private void ResumeAll()
+    private async Task ResumeAllAsync()
     {
         try
         {
@@ -99,13 +99,13 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            DialogManager.ShowMessage(MessageDialogType.Error, "Resume Download",
+            await DialogManager.ShowMessage(MessageDialogType.Error, "Resume Download",
                 "Failed to resume all downloads. Please try again.");
         }
     }
 
     [RelayCommand]
-    private void PauseAll()
+    private async Task PauseAllAsync()
     {
         try
         {
@@ -115,17 +115,17 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            DialogManager.ShowMessage(MessageDialogType.Error, "Pause Download",
+            await DialogManager.ShowMessage(MessageDialogType.Error, "Pause Download",
                 "Failed to pause all downloads. Please try again.");
         }
     }
 
     [RelayCommand]
-    private void ClearAll()
+    private async Task ClearAllAsync()
     {
         try
         {
-            DialogManager.ShowMessage(MessageDialogType.Warning, "Clear Download History",
+            await DialogManager.ShowMessage(MessageDialogType.Warning, "Clear Download History",
                 "Are you sure you want to remove all completed, stopped and failed downloads? This action cannot be undone.",
                 "Yes",
                 new RelayCommand(() =>
@@ -138,18 +138,18 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            DialogManager.ShowMessage(MessageDialogType.Error, "Clear Download",
+            await DialogManager.ShowMessage(MessageDialogType.Error, "Clear Download",
                 "Failed to clear all downloads. Please try again.");
         }
     }
 
 
     [RelayCommand]
-    private void StopAll()
+    private async Task StopAllAsync()
     {
         try
         {
-            DialogManager.ShowMessage(MessageDialogType.Warning, "Stop All Downloads",
+            await DialogManager.ShowMessage(MessageDialogType.Warning, "Stop All Downloads",
                 "Are you sure you want to stop all downloads? This action cannot be undone.",
                 "Yes",
                 new RelayCommand(() =>
@@ -162,12 +162,12 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            DialogManager.ShowMessage(MessageDialogType.Error, "Stop Download",
+            await DialogManager.ShowMessage(MessageDialogType.Error, "Stop Download",
                 "Failed to stop all downloads. Please try again.");
         }
     }
     [RelayCommand]
-    private void ResumeDownload(DownloadItemViewModel? download)
+    private async Task ResumeDownloadAsync(DownloadItemViewModel? download)
     {
         if (download is null)
             return;
