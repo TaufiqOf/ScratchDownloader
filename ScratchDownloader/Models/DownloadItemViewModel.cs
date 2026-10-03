@@ -46,8 +46,13 @@ public partial class DownloadItemViewModel : ObservableObject
         Status == DownloadStatus.Completed &&
         !string.IsNullOrWhiteSpace(DownloadItemInformation?.SavePath) &&
         File.Exists(DownloadItemInformation.SavePath);
-
-
+    
+    public bool CanShowWidget =>
+        _widgetWindow  is null &&
+        (Status == DownloadStatus.Downloading ||
+         Status == DownloadStatus.Initializing ||
+         Status == DownloadStatus.CheckingChecksum);
+    
     [ObservableProperty] public partial DateTime? AddedDateTime { get; set; }
     [ObservableProperty] public partial string AddedDateTimeText { get; set; }
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;

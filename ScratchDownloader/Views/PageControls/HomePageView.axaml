@@ -307,9 +307,7 @@
                                 <!-- Show Widget -->
                                 <MenuItem Header="Show Widget"
                                           Command="{Binding ShowWidgetCommand}"
-                                          IsVisible="{Binding Status,
-                                  Converter={StaticResource StatusEqualsConverter},
-                                  ConverterParameter=Downloading}">
+                                          IsEnabled="{Binding CanShowWidget}">
                                     <MenuItem.Icon>
                                         <fluent:FluentIcon Icon="Window" />
                                     </MenuItem.Icon>

@@ -10,11 +10,12 @@ public partial class DownloadWidgetWindow : Window
 
     public DownloadWidgetWindow(DownloadItemViewModel downloadItemViewModel)
     {
+        this.DataContext = downloadItemViewModel;
         _downloadItemViewModel = downloadItemViewModel;
         InitializeComponent();
-        FileNameTextBlock.Text = _downloadItemViewModel.DownloadItemInformation?.SavedFileName;
-
     }
+
+    public DownloadItemViewModel ItemViewModel => _downloadItemViewModel;
 
     private void InputElement_OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {

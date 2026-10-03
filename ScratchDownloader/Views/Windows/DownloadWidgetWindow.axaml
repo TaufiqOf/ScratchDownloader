@@ -2,6 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:control="clr-namespace:ScratchDownloader.Views.Control"
+        xmlns:windows="clr-namespace:ScratchDownloader.Views.Windows"
+        xmlns:converter="clr-namespace:ScratchDownloader.Converter"
+        xmlns:models="clr-namespace:ScratchDownloader.Models"
         mc:Ignorable="d"
         CanResize="False"
         CanMaximize="False"
@@ -11,7 +15,11 @@
         Width="400"
         SizeToContent="Height"
         Background="Transparent"
+        x:DataType="models:DownloadItemViewModel"
         x:Class="ScratchDownloader.Views.Windows.DownloadWidgetWindow">
+    <Window.Resources>
+        <converter:StatusToIndeterminateConverter x:Key="StatusToIndeterminateConverter" />
+    </Window.Resources>
     <Border 
         Padding="15"
         BorderThickness="2"
@@ -19,9 +27,31 @@
         Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
         CornerRadius="8">
         <Grid RowDefinitions="Auto,*,Auto" >
-            <TextBlock x:Name="FileNameTextBlock"></TextBlock>
+            <TextBlock Text="{Binding DownloadItemInformation.SavedFileName}"></TextBlock>
             <Grid Grid.Row="1">
-                
+                <Grid RowDefinitions="Auto,Auto"
+                      Margin="4">
+
+                    <!-- Overall Progress -->
+                    <ProgressBar Grid.Row="0"
+                                 Minimum="0"
+                                 Maximum="100"
+                                 Height="6"
+                                 IsIndeterminate="{Binding Status, Converter={StaticResource StatusToIndeterminateConverter}}"
+                                 Value="{Binding Progress.Progress}" />
+
+                    <!-- Segment Progress -->
+                    <control:SegmentProgressControl Grid.Row="1"
+                                                    Margin="0,6,0,0"
+                                                    Segments="{Binding Progress.SegmentProgress}" />
+
+                    <!-- Status Text -->
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding Progress.ProgressText}"
+                               FontSize="11"
+                               Margin="0,5,0,0" />
+
+                </Grid> 
             </Grid>
             <Label Grid.Row="2" Content="Close" PointerPressed="InputElement_OnPointerPressed"></Label>
         </Grid>

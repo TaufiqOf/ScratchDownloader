@@ -109,7 +109,7 @@ public partial class SegmentProgressControl : UserControl
 
         if (count == 0) return;
 
-        var gap = 2.0;
+        var gap = 0.1;
         var segmentWidth = (width - gap * (count - 1)) / count;
 
         if (segmentWidth <= 0) return;

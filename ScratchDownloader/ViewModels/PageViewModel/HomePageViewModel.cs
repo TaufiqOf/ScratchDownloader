@@ -54,6 +54,12 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     [ObservableProperty] public partial Category? SelectedCategory { get; set; }
     [ObservableProperty] public partial string SearchText { get; set; }
 
+    partial void OnSelectedDownloadChanged(DownloadItemViewModel? value)
+    {
+        OnPropertyChanged(nameof(value.CanShowWidget));
+        OnPropertyChanged(nameof(value.CanOpen));
+
+    }
 
     [RelayCommand]
     private async Task NewAsync()
