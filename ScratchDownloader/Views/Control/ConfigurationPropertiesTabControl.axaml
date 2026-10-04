@@ -1,13 +1,13 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:loc="using:ScratchDownloader.Localization"
+             xmlns:vm="using:ScratchDownloader.Views.Control"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:localization="clr-namespace:ScratchDownloader.Localization"
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
-             mc:Ignorable="d"
              x:DataType="pageViewModel:HomePageViewModel"
-             x:Class="ScratchDownloader.Views.Control.FilePropertiesTabControl">
-    <Border CornerRadius="8"
+             x:Class="ScratchDownloader.Views.Control.ConfigurationPropertiesTabControl">
+ <Border CornerRadius="8"
             BorderThickness="1"
             Padding="16"
             Margin="0,8"
@@ -35,33 +35,29 @@
             </Grid.Styles>
 
             <!-- File Name -->
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:Loc Name}" Classes="Label" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{localization:Loc Category}" Classes="Label" />
             <TextBlock Grid.Row="0" Grid.Column="1" Classes="Value"
                        FontWeight="Medium"
-                       Text="{Binding SelectedDownload?.DownloadItemInformation?.SavedFileName}" />
+                       Text="{Binding SelectedDownload?.DownloadItemInformation?.Category.Name}" />
 
             <!-- File Path -->
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Loc Path}" Classes="Label" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{localization:Loc Queue}" Classes="Label" />
             <TextBlock Grid.Row="1" Grid.Column="1" Classes="Value"
                        TextWrapping="Wrap"
-                       Text="{Binding SelectedDownload?.DownloadItemInformation?.SavePath}" />
+                       Text="{Binding SelectedDownload?.DownloadItemInformation?.Queue.Name}" />
 
             <!-- File Size -->
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc SizeProperty}" Classes="Label" />
-            <TextBlock Grid.Row="2" Grid.Column="1" Classes="Value">
-                <Run Text="{Binding SelectedDownload?.Progress.FileSizeDisplay}"></Run>
-                <Run FontSize="10" Text=" ("></Run>
-                <Run FontSize="10" Text="{Binding SelectedDownload?.DownloadItemInformation?.FileSizeBytes}"></Run>
-                <Run FontSize="10" Text="{loc:Loc BytesSuffix}"></Run>
-            </TextBlock>
-
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{localization:Loc MaxSpeedLimit}" Classes="Label" />
+            <TextBlock Grid.Row="2" Grid.Column="1" Classes="Value" 
+                       TextWrapping="Wrap"
+                       Text="{Binding SelectedDownload?.CapSpeedText}" />
             <!-- File Host -->
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="{loc:Loc Host}" Classes="Label" />
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="{localization:Loc Host}" Classes="Label" />
             <TextBlock Grid.Row="3" Grid.Column="1" Classes="Value"
                        Text="{Binding SelectedDownload?.DownloadItemInformation?.FileHost}" />
 
             <!-- File Added -->
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:Loc AddedProperty}" Classes="Label" Margin="0,0,16,0" />
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="{localization:Loc AddedProperty}" Classes="Label" Margin="0,0,16,0" />
             <TextBlock Grid.Row="4" Grid.Column="1" Classes="Value" Margin="0"
                        Text="{Binding SelectedDownload?.AddedDateTimeText}" />
         </Grid>

@@ -463,9 +463,12 @@
                 <TabItem Header="{loc:Loc FileTab}"
                          FontSize="12"
                          FontWeight="Bold">
-
                     <control:FilePropertiesTabControl DataContext="{Binding }" />
-
+                </TabItem>
+                <TabItem Header="{loc:Loc Settings}"
+                         FontSize="12"
+                         FontWeight="Bold">
+                    <control:ConfigurationPropertiesTabControl DataContext="{Binding }" />
                 </TabItem>
             </TabControl>
         </Grid>
