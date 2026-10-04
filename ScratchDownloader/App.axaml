@@ -36,6 +36,10 @@
     </TrayIcon.Icons>
 
     <Application.Styles>
+        <Style Selector="Window">
+            <Setter Property="FlowDirection"
+                    Value="{ReflectionBinding FlowDirection, Source={x:Static loc:Strings.Instance}}" />
+        </Style>
         <Style Selector="Button">
             <Setter Property="Height" Value="36" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
