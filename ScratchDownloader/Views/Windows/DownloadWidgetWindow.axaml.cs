@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using LiveChartsCore.SkiaSharpView.Painting;
 using ScratchDownloader.Models;
@@ -44,14 +46,23 @@ public partial class DownloadWidgetWindow : Window
             Application.Current?.Dispatcher.Post(() => Close());
 
         InitializeComponent();
-        var initialCsvData =
-            " ,,70,1,18,19,30,31,,\n,,69,2,17,20,29,32,,,,,\n,,68,3,16,21,28,33,,,,,\n,,67,4,15,22,27,34,,,,,\n,,66,5,14,23,26,35,,,,,\n,,65,6,13,24,25,36,,,,,\n,,64,7,12,11,38,37,,,,,\n61,62,63,8,9,10,39,40,41,42,,,\n60,59,,,,,,,44,43,,,\n ,58,57,,,,,46,45,,,,\n ,,56,55,,,48,47,,,,,\n ,,,54,53,50,49,,,,,,\n,,,,52,51,,,,,,,";
-        var csvdata2 =
-            "﻿,,,,,,,8,,,\n,,,,,,7,9,,,\n,,,,,6,10,,,,\n,,,,5,12,,,,,\n,,,4,13,,,,,,24\n,,3,,14,,,,,23,25\n,2,,,15,,,,22,,26\n1,,,,16,,,21,31,,27\n,,,,17,,20,,,30,28\n,,,,18,19,,,,,29\n,,,,,,,,,,";
-        AddCsvToLoop(initialCsvData);
-        AddCsvToLoop(csvdata2);
-        SnakeBackground.CsvData = initialCsvData;
+        var csvdata0 = GetData($"avares://ScratchDownloader/Assets/Ani1.csv");
+
+        AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani1.csv"));
+        AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani2.csv"));
+        AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani3.csv"));
+        AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani4.csv"));
+
+        SnakeBackground.CsvData = csvdata0;
         UpdatePlayPauseButton();
+    }
+
+    private static string GetData(string avaresScratchdownloaderAssetsAni1Csv)
+    {
+        using var stream0 = AssetLoader.Open(new Uri(avaresScratchdownloaderAssetsAni1Csv));
+        using var reader0 = new StreamReader(stream0);
+        var csvdata0 = reader0.ReadToEnd();
+        return csvdata0;
     }
 
     private void AutoCloseIfCompleted()
