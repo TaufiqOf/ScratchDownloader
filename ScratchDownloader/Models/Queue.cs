@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ScratchDownloader.Models;
@@ -35,6 +36,7 @@ public partial class Queue : ObservableObject
     [ObservableProperty] public partial List<QueueDaysOfWeek> DaysOfWeek { get; set; } = new();
     [ObservableProperty] public partial OperationMode AfterComplete { get; set; } = OperationMode.Nothing;
     [ObservableProperty] public partial bool IsExpanded { get; set; }
+    [JsonIgnore] [ObservableProperty] public partial int ApplicationCount { get; set; }
 
     public override bool Equals(object? obj)
     {

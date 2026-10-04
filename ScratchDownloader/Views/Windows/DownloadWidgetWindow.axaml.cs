@@ -64,7 +64,7 @@ public partial class DownloadWidgetWindow : Window
             {
                 PlayPauseButtonIcon.Icon = FluentIcons.Common.Icon.ArrowClockwise;
             }
-            else if (_downloadItemViewModel.Status == DownloadStatus.Downloading)
+            else if (_downloadItemViewModel.Status == DownloadStatus.Downloading ||  _downloadItemViewModel.Status == DownloadStatus.Initializing)
             {
                 PlayPauseButtonIcon.Icon = FluentIcons.Common.Icon.Pause;
             }

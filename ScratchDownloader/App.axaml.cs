@@ -41,13 +41,7 @@ public class App : Application
             desktop.ShutdownRequested +=
                 OnShutdownRequested;
 
-            foreach (var downloadItemViewModel in SettingsService.HistorySettings.DownloadItems)
-            {
-                if(downloadItemViewModel.DownloadItemInformation == null)
-                    continue;
-                downloadItemViewModel.DownloadItemInformation.Loading = false;
-                ApplicationManager.DownloadManager.Add(downloadItemViewModel,false,true);
-            }
+
 
             var desktopMainWindow = new MainWindow
             {
@@ -63,6 +57,13 @@ public class App : Application
             if (SettingsService.Settings.StartMinimized)
                 _mainWindow.Loaded +=
                     (sender, args) => { _mainWindow.Hide(); };
+            foreach (var downloadItemViewModel in SettingsService.HistorySettings.DownloadItems)
+            {
+                if(downloadItemViewModel.DownloadItemInformation == null)
+                    continue;
+                downloadItemViewModel.DownloadItemInformation.Loading = false;
+                ApplicationManager.DownloadManager.Add(downloadItemViewModel,false,true);
+            }
         }
         else if (ApplicationLifetime is IActivityApplicationLifetime singleViewFactoryApplicationLifetime)
         {

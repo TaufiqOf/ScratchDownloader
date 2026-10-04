@@ -217,7 +217,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         if (_updateFilterDisabled)
             return;
-
+        Categories[0].ApplicationCount = SettingsService.Settings.Categories.Values.Sum(c => c.ApplicationCount);
+        Queues[0].ApplicationCount = SettingsService.Settings.Queues.Values.Sum(q => q.ApplicationCount);
         FilteredDownloads = new ObservableCollection<DownloadItemViewModel>(
             DownloadManager.Downloads.Where(d =>
                 d.DownloadItemInformation != null &&

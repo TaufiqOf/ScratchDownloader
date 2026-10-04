@@ -40,18 +40,22 @@ public class DirectDownloadService : IDownloadService
         _httpClient = httpClient ?? new HttpClient();
         _progressTimer.Elapsed += (sender, args) =>
         {
+            _progressTimer.Stop();
             foreach (var segmentProgress in Progress.SegmentProgress.Values)
             {
-                if (segmentProgress.LastReportedMs > 1000)
+                if (segmentProgress.SpeedTimer.ElapsedMilliseconds > 1000)
                 {
                     segmentProgress.BytesPerSecond = 0;
+                    segmentProgress.LastReportedMs = 0;
+                    segmentProgress.SpeedTimer.Restart();
                 }
             }
 
-            if (Progress.BytesPerSecond > 0)
+            if (Progress.BytesPerSecond >= 0)
             {
                 Progress.BytesPerSecond = Progress.SegmentProgress.Values.Sum(s => s.BytesPerSecond);
             }
+            _progressTimer.Start();
         };
         _progressTimer.Start();
     }
@@ -168,6 +172,11 @@ public class DirectDownloadService : IDownloadService
         try
         {
             await Task.WhenAll(tasks);
+            Progress.SegmentProgress.Values.ToList().ForEach(s =>
+            {
+                s.Progress = 100;
+                s.BytesPerSecond = 0;
+            });
             Completed?.Invoke(this, EventArgs.Empty);
             if (File.Exists(MetadataFilePath)) File.Delete(MetadataFilePath);
         }
@@ -296,14 +305,13 @@ public class DirectDownloadService : IDownloadService
         var segSpeed = segElapsedSec > 0 ? sessionBytesDownloadedForSegment / segElapsedSec : 0;
         var segPercent = (double)segment.BytesDownloaded / totalSegmentBytes * 100;
         var currentSegProgress = Progress.SegmentProgress[segment.Index];
-        currentSegProgress.LastReportedMs = segmentStopwatch.ElapsedMilliseconds;
+        currentSegProgress.LastReportedMs = currentSegProgress.SpeedTimer.ElapsedMilliseconds;
         currentSegProgress.Index = segment.Index;
         currentSegProgress.Progress = segPercent;
         currentSegProgress.BytesDownloaded = segment.BytesDownloaded;
         currentSegProgress.TotalBytes = totalSegmentBytes;
         currentSegProgress.BytesPerSecond = segSpeed;
-
-
+        currentSegProgress.SpeedTimer.Restart();
         // Calculate overall progress & speed
         var currentTotalDownloaded = Progress.SegmentProgress.Values.Sum(s => s.BytesDownloaded);
         var overallPercent =

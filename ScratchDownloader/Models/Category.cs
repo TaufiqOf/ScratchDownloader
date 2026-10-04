@@ -19,7 +19,9 @@ public partial class Category : ObservableObject
     [ObservableProperty] public partial string? QueueId { get; set; }
 
     [JsonIgnore] [ObservableProperty] public partial Queue? SelectedQueue { get; set; }
+    [JsonIgnore] [ObservableProperty] public partial int ApplicationCount { get; set; }
 
+    
     [ObservableProperty] public partial bool IsExpanded { get; set; }
 
     private string? _oldQueueId;
