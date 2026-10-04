@@ -12,11 +12,11 @@
 
             <!-- HEADER -->
             <StackPanel Spacing="5">
-                <TextBlock Text="{loc:Loc Settings}"
+                <TextBlock Text="{loc:Loc {x:Static loc:Language+Common.Settings}}"
                            FontSize="30"
                            FontWeight="Bold" />
 
-                <TextBlock Text="{loc:Loc ConfigureApp}"
+                <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.ConfigureApp}}"
                            Opacity="0.6" />
             </StackPanel>
 
@@ -27,10 +27,10 @@
             <!-- APPEARANCE -->
             <StackPanel Spacing="16">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="{loc:Loc Appearance}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.Appearance}}"
                                FontSize="18"
                                FontWeight="SemiBold" />
-                    <TextBlock Text="{loc:Loc AppearanceDescription}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.AppearanceDescription}}"
                                Opacity="0.6"
                                FontSize="13" />
                 </StackPanel>
@@ -40,9 +40,9 @@
                         Padding="20">
                     <Grid ColumnDefinitions="*,Auto">
                         <Grid RowDefinitions="Auto,Auto">
-                            <TextBlock Text="{loc:Loc Theme}"
+                            <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.Theme}}"
                                        FontSize="15" />
-                            <TextBlock Grid.Row="1" Text="{loc:Loc SelectTheme}"
+                            <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.SelectTheme}}"
                                        FontSize="12" />
                         </Grid>
                         <ComboBox Grid.Column="1" Width="150"
@@ -55,7 +55,7 @@
                         CornerRadius="12"
                         Padding="20">
                     <Grid ColumnDefinitions="*,Auto">
-                        <TextBlock Text="{loc:Loc Language}"
+                        <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.Language}}"
                                    FontSize="15"
                                    VerticalAlignment="Center" />
                         <ComboBox Grid.Column="1"
@@ -73,10 +73,10 @@
             <!-- APPLICATION -->
             <StackPanel Spacing="16">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="{loc:Loc Application}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.Application}}"
                                FontSize="18"
                                FontWeight="SemiBold" />
-                    <TextBlock Text="{loc:Loc ApplicationDescription}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.ApplicationDescription}}"
                                Opacity="0.6"
                                FontSize="13" />
                 </StackPanel>
@@ -86,9 +86,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="{loc:Loc StartAtLogin}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartAtLogin}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc StartAtLoginDescription}"
+                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartAtLoginDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -102,9 +102,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="{loc:Loc StartMinimized}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartMinimized}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc StartMinimizedDescription}"
+                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartMinimizedDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -118,9 +118,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="{loc:Loc Notifications}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.Notifications}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc NotificationsDescription}"
+                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.NotificationsDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -133,9 +133,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="{loc:Loc AutoShowWidget}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoShowWidget}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc AutoShowWidgetDescription}"
+                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoShowWidgetDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -148,9 +148,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="{loc:Loc AutoCloseWidget}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidget}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc AutoCloseWidgetDescription}"
+                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidgetDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -164,9 +164,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="{loc:Loc AutoCloseWidgetInterval}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidgetInterval}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc AutoCloseWidgetIntervalDescription}"
+                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidgetIntervalDescription}}"
                                            FontSize="12" />
                             </Grid>
 

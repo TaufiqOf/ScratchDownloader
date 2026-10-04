@@ -31,7 +31,7 @@ public static class DialogManager
             owner = MainWindow;
 
         var dialogControlViewModel = new MessageDialogControlViewModel(type, message,
-            positiveText ?? Strings.Get("Ok"), negativeText,
+            positiveText ?? Strings.Get(Language.Common.Ok), negativeText,
             !string.IsNullOrWhiteSpace(negativeText));
         var dialog = new DialogWindow
         {

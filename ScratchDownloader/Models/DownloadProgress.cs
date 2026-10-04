@@ -81,7 +81,7 @@ public partial class DownloadProgress : ViewModelBase
 
         if (secondsRemaining < 1)
         {
-            Eta = Strings.Get("LessThanOneSecond");
+            Eta = Strings.Get(Language.Time.LessThanOneSecond);
             return;
         }
 

@@ -19,12 +19,12 @@
                 <TrayIcon.Menu>
                     <NativeMenu>
 
-                        <NativeMenuItem Header="{loc:Loc Show}"
+                        <NativeMenuItem Header="{loc:Loc {x:Static loc:Language+Tray.Show}}"
                                         Click="ShowWindow_OnClick" />
 
                         <NativeMenuItemSeparator />
 
-                        <NativeMenuItem Header="{loc:Loc Exit}"
+                        <NativeMenuItem Header="{loc:Loc {x:Static loc:Language+Tray.Exit}}"
                                         Click="Exit_OnClick" />
 
                     </NativeMenu>

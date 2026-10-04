@@ -12,18 +12,18 @@ public sealed class LocalizedEnumConverter : IValueConverter
     {
         var key = value switch
         {
-            QueueDaysOfWeek.Sunday => "DaySunday",
-            QueueDaysOfWeek.Monday => "DayMonday",
-            QueueDaysOfWeek.Tuesday => "DayTuesday",
-            QueueDaysOfWeek.Wednesday => "DayWednesday",
-            QueueDaysOfWeek.Thursday => "DayThursday",
-            QueueDaysOfWeek.Friday => "DayFriday",
-            QueueDaysOfWeek.Saturday => "DaySaturday",
-            OperationMode.Nothing => "OperationNothing",
-            OperationMode.Notify => "OperationNotify",
-            OperationMode.Sleep => "OperationSleep",
-            OperationMode.Shutdown => "OperationShutdown",
-            OperationMode.RunScript => "OperationRunScript",
+            QueueDaysOfWeek.Sunday => Language.QueueDay.Sunday,
+            QueueDaysOfWeek.Monday => Language.QueueDay.Monday,
+            QueueDaysOfWeek.Tuesday => Language.QueueDay.Tuesday,
+            QueueDaysOfWeek.Wednesday => Language.QueueDay.Wednesday,
+            QueueDaysOfWeek.Thursday => Language.QueueDay.Thursday,
+            QueueDaysOfWeek.Friday => Language.QueueDay.Friday,
+            QueueDaysOfWeek.Saturday => Language.QueueDay.Saturday,
+            OperationMode.Nothing => Language.OperationMode.Nothing,
+            OperationMode.Notify => Language.OperationMode.Notify,
+            OperationMode.Sleep => Language.OperationMode.Sleep,
+            OperationMode.Shutdown => Language.OperationMode.Shutdown,
+            OperationMode.RunScript => Language.OperationMode.RunScript,
             _ => null
         };
 

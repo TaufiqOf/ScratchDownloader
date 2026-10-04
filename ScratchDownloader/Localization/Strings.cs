@@ -45,7 +45,7 @@ public sealed class Strings : INotifyPropertyChanged
             new LanguageOption("ar", "العربية"),
             new LanguageOption("bn", "বাংলা"),
             new LanguageOption("zh", "中文(简体)"),
-            new LanguageOption("en", EnglishStrings.Values["English"]),
+            new LanguageOption("en", EnglishStrings.Values[global::ScratchDownloader.Localization.Language.LanguageNames.English]),
             new LanguageOption("fr", "Français"),
             new LanguageOption("de", "Deutsch"),
             new LanguageOption("he", "עברית"),
@@ -53,7 +53,7 @@ public sealed class Strings : INotifyPropertyChanged
             new LanguageOption("ja", "日本語"),
             new LanguageOption("ko", "한국어"),
             new LanguageOption("ru", "Русский"),
-            new LanguageOption("es", SpanishStrings.Values["Spanish"])
+            new LanguageOption("es", SpanishStrings.Values[global::ScratchDownloader.Localization.Language.LanguageNames.Spanish])
         ];
     }
 

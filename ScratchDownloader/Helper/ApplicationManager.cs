@@ -24,11 +24,11 @@ public static class ApplicationManager
                 new Category
                 {
                     Id = "Documents",
-                    Name = Strings.Get("CategoryDocuments"),
+                    Name = Strings.Get(Language.DefaultCategory.Documents),
                     Icon = Icon.Document,
                     Folder = Path.Combine(home, "Documents"),
                     Extension = "pdf, doc, docx, txt, rtf, xls, xlsx, ppt, pptx, odt, csv",
-                    Description = Strings.Get("CategoryDocumentsDescription")
+                    Description = Strings.Get(Language.DefaultCategory.DocumentsDescription)
                 }
             },
             {
@@ -36,11 +36,11 @@ public static class ApplicationManager
                 new Category
                 {
                     Id = "Videos",
-                    Name = Strings.Get("CategoryVideos"),
+                    Name = Strings.Get(Language.DefaultCategory.Videos),
                     Icon = Icon.Video,
                     Folder = Path.Combine(home, "Videos"),
                     Extension = "mp4, mkv, avi, mov, wmv, flv, webm, m4v, 3gp, ts",
-                    Description = Strings.Get("CategoryVideosDescription")
+                    Description = Strings.Get(Language.DefaultCategory.VideosDescription)
                 }
             },
             {
@@ -48,11 +48,11 @@ public static class ApplicationManager
                 new Category
                 {
                     Id = "Music",
-                    Name = Strings.Get("CategoryMusic"),
+                    Name = Strings.Get(Language.DefaultCategory.Music),
                     Icon = Icon.MusicNote1,
                     Folder = Path.Combine(home, "Music"),
                     Extension = "mp3, wav, flac, aac, ogg, m4a, wma, opus, alac",
-                    Description = Strings.Get("CategoryMusicDescription")
+                    Description = Strings.Get(Language.DefaultCategory.MusicDescription)
                 }
             },
             {
@@ -60,11 +60,11 @@ public static class ApplicationManager
                 new Category
                 {
                     Id = "Images",
-                    Name = Strings.Get("CategoryImages"),
+                    Name = Strings.Get(Language.DefaultCategory.Images),
                     Icon = Icon.Image,
                     Folder = Path.Combine(home, "Pictures"),
                     Extension = "jpg, jpeg, png, gif, bmp, webp, svg, ico, tiff, psd",
-                    Description = Strings.Get("CategoryImagesDescription")
+                    Description = Strings.Get(Language.DefaultCategory.ImagesDescription)
                 }
             },
             {
@@ -72,11 +72,11 @@ public static class ApplicationManager
                 new Category
                 {
                     Id = "Archives",
-                    Name = Strings.Get("CategoryArchives"),
+                    Name = Strings.Get(Language.DefaultCategory.Archives),
                     Icon = Icon.FolderZip,
                     Folder = Path.Combine(home, "Downloads", "Archives"),
                     Extension = "zip, rar, 7z, tar, gz, bz2, xz, zst, lz, lzma, tgz, tbz2, txz",
-                    Description = Strings.Get("CategoryArchivesDescription")
+                    Description = Strings.Get(Language.DefaultCategory.ArchivesDescription)
                 }
             },
             {
@@ -84,11 +84,11 @@ public static class ApplicationManager
                 new Category
                 {
                     Id = "Applications",
-                    Name = Strings.Get("CategoryApplications"),
+                    Name = Strings.Get(Language.DefaultCategory.Applications),
                     Icon = Icon.AppFolder,
                     Folder = Path.Combine(home, "Downloads", "Applications"),
                     Extension = "exe, msi, deb, rpm, AppImage, dmg, pkg, apk, iso, bin, sh",
-                    Description = Strings.Get("CategoryApplicationsDescription")
+                    Description = Strings.Get(Language.DefaultCategory.ApplicationsDescription)
                 }
             },
             {
@@ -96,11 +96,11 @@ public static class ApplicationManager
                 new Category
                 {
                     Id = "Other",
-                    Name = Strings.Get("CategoryOther"),
+                    Name = Strings.Get(Language.DefaultCategory.Other),
                     Icon = Icon.DocumentBorder,
                     Folder = Path.Combine(home, "Downloads", "Other"),
                     Extension = string.Empty,
-                    Description = Strings.Get("CategoryOtherDescription")
+                    Description = Strings.Get(Language.DefaultCategory.OtherDescription)
                 }
             }
         };
@@ -110,13 +110,13 @@ public static class ApplicationManager
     {
         foreach (var (id, nameKey, descriptionKey) in new[]
                  {
-                     ("Documents", "CategoryDocuments", "CategoryDocumentsDescription"),
-                     ("Videos", "CategoryVideos", "CategoryVideosDescription"),
-                     ("Music", "CategoryMusic", "CategoryMusicDescription"),
-                     ("Images", "CategoryImages", "CategoryImagesDescription"),
-                     ("Archives", "CategoryArchives", "CategoryArchivesDescription"),
-                     ("Applications", "CategoryApplications", "CategoryApplicationsDescription"),
-                     ("Other", "CategoryOther", "CategoryOtherDescription")
+                     ("Documents", Language.DefaultCategory.Documents, Language.DefaultCategory.DocumentsDescription),
+                     ("Videos", Language.DefaultCategory.Videos, Language.DefaultCategory.VideosDescription),
+                     ("Music", Language.DefaultCategory.Music, Language.DefaultCategory.MusicDescription),
+                     ("Images", Language.DefaultCategory.Images, Language.DefaultCategory.ImagesDescription),
+                     ("Archives", Language.DefaultCategory.Archives, Language.DefaultCategory.ArchivesDescription),
+                     ("Applications", Language.DefaultCategory.Applications, Language.DefaultCategory.ApplicationsDescription),
+                     ("Other", Language.DefaultCategory.Other, Language.DefaultCategory.OtherDescription)
                  })
         {
             if (!Categories.TryGetValue(id, out var category))
@@ -126,8 +126,8 @@ public static class ApplicationManager
             category.Description = Strings.Get(descriptionKey);
         }
 
-        LocalizeDefaultQueue("Main", "MainQueue");
-        LocalizeDefaultQueue("Secondary", "SecondaryQueue");
+        LocalizeDefaultQueue("Main", Language.DefaultCategory.MainQueue);
+        LocalizeDefaultQueue("Secondary", Language.DefaultCategory.SecondaryQueue);
     }
 
     private static void LocalizeDefaultQueue(string id, string nameKey)
@@ -151,8 +151,8 @@ public static class ApplicationManager
 
     public static Dictionary<string, Queue> Queues { get; set; } = new()
     {
-        { "Main", new Queue { Id = "Main", Name = Strings.Get("MainQueue") } },
-        { "Secondary", new Queue { Id = "Secondary", Name = Strings.Get("SecondaryQueue") } }
+        { "Main", new Queue { Id = "Main", Name = Strings.Get(Language.DefaultCategory.MainQueue) } },
+        { "Secondary", new Queue { Id = "Secondary", Name = Strings.Get(Language.DefaultCategory.SecondaryQueue) } }
     };
 
     public static DownloadManager DownloadManager { get; set; } = new();
@@ -184,8 +184,8 @@ public static class ApplicationManager
         if (storageProvider == null)
             return null;
 
-        title ??= Strings.Get("SelectFile");
-        suggestedFileName ??= Strings.Get("Untitled");
+        title ??= Strings.Get(Language.FileDialogs.SelectFile);
+        suggestedFileName ??= Strings.Get(Language.FileDialogs.Untitled);
         startPath ??= Path.Combine(
             Environment.GetFolderPath(
                 Environment.SpecialFolder.UserProfile),
@@ -198,7 +198,7 @@ public static class ApplicationManager
             SuggestedStartLocation = startFolder,
             FileTypeChoices = fileTypeFilter ?? new List<FilePickerFileType>
             {
-                new(Strings.Get("AllFiles"))
+                new(Strings.Get(Language.Common.AllFiles))
                 {
                     Patterns = new List<string> { "*" }
                 }
@@ -218,7 +218,7 @@ public static class ApplicationManager
             return null;
         var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
         {
-            Title = Strings.Get("SelectSaveFolder"),
+            Title = Strings.Get(Language.FileDialogs.SelectSaveFolder),
             AllowMultiple = false,
             SuggestedStartLocation = await storageProvider.TryGetFolderFromPathAsync(path)
         });

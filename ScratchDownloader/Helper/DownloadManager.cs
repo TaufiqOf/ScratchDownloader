@@ -107,17 +107,17 @@ public partial class DownloadManager : ViewModelBase
         if (downloadItemViewModel == null) return;
         SetCapToQueueItems(downloadItemViewModel);
         if (e == DownloadStatus.Completed)
-            NotificationManager.Success(Strings.Get("NotificationDownloadComplete"),
-                Strings.Format("NotificationDownloadCompleteMessage",
+            NotificationManager.Success(Strings.Get(Language.Notification.DownloadComplete),
+                Strings.Format(Language.Notification.DownloadCompleteMessage,
                     downloadItemViewModel.DownloadItemInformation?.FileName ?? string.Empty));
         if (e == DownloadStatus.Failed)
-            NotificationManager.Error(Strings.Get("NotificationDownloadFailed"),
-                Strings.Format("NotificationDownloadFailedMessage",
+            NotificationManager.Error(Strings.Get(Language.Notification.DownloadFailed),
+                Strings.Format(Language.Notification.DownloadFailedMessage,
                     downloadItemViewModel.DownloadItemInformation?.FileName ?? string.Empty));
         if (e == DownloadStatus.ChecksumFailed)
         {
-            NotificationManager.Error(Strings.Get("NotificationChecksumFailed"),
-                Strings.Format("NotificationChecksumFailedMessage",
+            NotificationManager.Error(Strings.Get(Language.Notification.ChecksumFailed),
+                Strings.Format(Language.Notification.ChecksumFailedMessage,
                     downloadItemViewModel.DownloadItemInformation?.FileName ?? string.Empty));
         }
 
@@ -151,19 +151,19 @@ public partial class DownloadManager : ViewModelBase
 
     private void UpdateStatus()
     {
-        DownloadSummary = $"{Strings.Format("DownloadsCount", Downloads.Count)} " +
-                          $"| {Strings.Format("PausedCount", Downloads.Count(d => d.Status == DownloadStatus.Paused))} " +
-                          $"| {Strings.Format("CompletedCount", Downloads.Count(d => d.Status == DownloadStatus.Completed))} " +
-                          $"| {Strings.Format("FailedCount", Downloads.Count(d => d.Status == DownloadStatus.Failed))}";
+        DownloadSummary = $"{Strings.Format(Language.HomePage.DownloadsCount, Downloads.Count)} " +
+                          $"| {Strings.Format(Language.HomePage.PausedCount, Downloads.Count(d => d.Status == DownloadStatus.Paused))} " +
+                          $"| {Strings.Format(Language.HomePage.CompletedCount, Downloads.Count(d => d.Status == DownloadStatus.Completed))} " +
+                          $"| {Strings.Format(Language.HomePage.FailedCount, Downloads.Count(d => d.Status == DownloadStatus.Failed))}";
 
         ActiveCount =
-            Strings.Format("ActiveCount",
+            Strings.Format(Language.HomePage.ActiveCount,
                 Downloads.Count(d => d.Status == DownloadStatus.Downloading || d.Status == DownloadStatus.Initializing));
         TotalSpeed =
-            $"{Strings.Get("TotalSpeed")} {ByteSize.FromBytes(Downloads.Sum(d => d.Progress.BytesPerSecond))
+            $"{Strings.Get(Language.HomePage.TotalSpeed)} {ByteSize.FromBytes(Downloads.Sum(d => d.Progress.BytesPerSecond))
                 .Humanize("0.00")}/s";
         TotalDownloadedSize =
-            $"{Strings.Get("TotalSize")} {ByteSize.FromBytes(Downloads.Sum(d => d.DownloadItemInformation?.FileSizeBytes ?? 0))
+            $"{Strings.Get(Language.HomePage.TotalSize)} {ByteSize.FromBytes(Downloads.Sum(d => d.DownloadItemInformation?.FileSizeBytes ?? 0))
                 .Humanize("0.00")}";
     }
 

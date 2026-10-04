@@ -109,7 +109,7 @@ public partial class DownloadItemViewModel : ObservableObject
     [ObservableProperty] public partial DateTime? AddedDateTime { get; set; }
     [JsonIgnore][ObservableProperty] public partial string AddedDateTimeText { get; set; }
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
-    [JsonIgnore] public string StatusText => Strings.Get($"Status{Status}");
+    [JsonIgnore] public string StatusText => Strings.Get($"{nameof(Language.DownloadStatus)}.{Status}");
     [ObservableProperty] public partial DownloadProgress Progress { get; set; } = new();
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
     [ObservableProperty] private bool _isTopMost;
@@ -132,24 +132,24 @@ public partial class DownloadItemViewModel : ObservableObject
 
         if (age < TimeSpan.FromMinutes(1))
         {
-            AddedDateTimeText = Strings.Get("Now");
+            AddedDateTimeText = Strings.Get(Language.Time.Now);
         }
         else if (age < TimeSpan.FromHours(1))
         {
             // Humanizer: "10 minutes ago" -> "10m ago"
-            AddedDateTimeText = Strings.Format("MinutesAgo", Math.Max(1, (int)age.TotalMinutes));
+            AddedDateTimeText = Strings.Format(Language.Time.MinutesAgo, Math.Max(1, (int)age.TotalMinutes));
         }
         else if (age < TimeSpan.FromHours(24))
         {
-            AddedDateTimeText = Strings.Format("HoursAgo", (int)age.TotalHours);
+            AddedDateTimeText = Strings.Format(Language.Time.HoursAgo, (int)age.TotalHours);
         }
         else if (localDate.Date == DateTime.Now.Date.AddDays(-1))
         {
-            AddedDateTimeText = Strings.Format("Yesterday", localDate.ToString("HH:mm"));
+            AddedDateTimeText = Strings.Format(Language.Time.Yesterday, localDate.ToString("HH:mm"));
         }
         else if (age < TimeSpan.FromDays(7))
         {
-            AddedDateTimeText = Strings.Format("DaysAgo", (int)age.TotalDays);
+            AddedDateTimeText = Strings.Format(Language.Time.DaysAgo, (int)age.TotalDays);
         }
         else
         {
@@ -291,9 +291,9 @@ public partial class DownloadItemViewModel : ObservableObject
     private void DeleteFile()
     {
         DialogManager.ShowMessage(MessageDialogType.Warning,
-            Strings.Get("DeleteFile"),
-            Strings.Get("DeleteDownloadedFile"),
-            Strings.Get("Yes"),
+            Strings.Get(Language.Common.DeleteFile),
+            Strings.Get(Language.HomePage.DeleteDownloadedFile),
+            Strings.Get(Language.Common.Yes),
             new RelayCommand(() =>
             {
                 ApplicationManager.DownloadManager.Remove(this);
@@ -311,7 +311,7 @@ public partial class DownloadItemViewModel : ObservableObject
                 });
 
                 _widgetWindow?.Close();
-            }), Strings.Get("No"));
+            }), Strings.Get(Language.Common.No));
     }
 
     [RelayCommand]

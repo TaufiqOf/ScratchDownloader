@@ -35,33 +35,33 @@
             </Grid.Styles>
 
             <!-- File Name -->
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:Loc Name}" Classes="Label" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:Loc {x:Static loc:Language+FilePropertiesTabControl.Name}}" Classes="Label" />
             <TextBlock Grid.Row="0" Grid.Column="1" Classes="Value"
                        FontWeight="Medium"
                        Text="{Binding SelectedDownload?.DownloadItemInformation?.SavedFileName}" />
 
             <!-- File Path -->
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Loc Path}" Classes="Label" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Loc {x:Static loc:Language+FilePropertiesTabControl.Path}}" Classes="Label" />
             <TextBlock Grid.Row="1" Grid.Column="1" Classes="Value"
                        TextWrapping="Wrap"
                        Text="{Binding SelectedDownload?.DownloadItemInformation?.SavePath}" />
 
             <!-- File Size -->
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc SizeProperty}" Classes="Label" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc {x:Static loc:Language+FilePropertiesTabControl.SizeProperty}}" Classes="Label" />
             <TextBlock Grid.Row="2" Grid.Column="1" Classes="Value">
                 <Run Text="{Binding SelectedDownload?.Progress.FileSizeDisplay}"></Run>
                 <Run FontSize="10" Text=" ("></Run>
                 <Run FontSize="10" Text="{Binding SelectedDownload?.DownloadItemInformation?.FileSizeBytes}"></Run>
-                <Run FontSize="10" Text="{loc:Loc BytesSuffix}"></Run>
+                <Run FontSize="10" Text="{loc:Loc {x:Static loc:Language+FilePropertiesTabControl.BytesSuffix}}"></Run>
             </TextBlock>
 
             <!-- File Host -->
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="{loc:Loc Host}" Classes="Label" />
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="{loc:Loc {x:Static loc:Language+FilePropertiesTabControl.Host}}" Classes="Label" />
             <TextBlock Grid.Row="3" Grid.Column="1" Classes="Value"
                        Text="{Binding SelectedDownload?.DownloadItemInformation?.FileHost}" />
 
             <!-- File Added -->
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:Loc AddedProperty}" Classes="Label" Margin="0,0,16,0" />
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:Loc {x:Static loc:Language+FilePropertiesTabControl.AddedProperty}}" Classes="Label" Margin="0,0,16,0" />
             <TextBlock Grid.Row="4" Grid.Column="1" Classes="Value" Margin="0"
                        Text="{Binding SelectedDownload?.AddedDateTimeText}" />
         </Grid>

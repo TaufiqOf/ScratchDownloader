@@ -54,7 +54,7 @@
                 <Grid Grid.Row="0" ColumnDefinitions="70,100,*,*">
                     <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="4">
                         <TextBlock Grid.Row="0"
-                                   Text="{loc:Loc WidgetProgress}"
+                                   Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetProgress}}"
                                    FontSize="10" />
                         <TextBlock Grid.Row="1"
                                    Text="{Binding Progress.ProgressText}"
@@ -62,7 +62,7 @@
                     </Grid>
                     <Grid Grid.Column="1" RowDefinitions="Auto,*" Margin="4">
                         <TextBlock Grid.Row="0"
-                                   Text="{loc:Loc WidgetSpeed}"
+                                   Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetSpeed}}"
                                    FontSize="10" />
                         <TextBlock Grid.Row="1"
                                    Text="{Binding Progress.Speed}"
@@ -70,7 +70,7 @@
                     </Grid>
                     <Grid Grid.Column="2" RowDefinitions="Auto,*" Margin="4">
                         <TextBlock Grid.Row="0"
-                                   Text="{loc:Loc WidgetEta}"
+                                   Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetEta}}"
                                    FontSize="10" />
                         <TextBlock Grid.Row="1"
                                    Text="{Binding Progress.Eta}"
@@ -78,7 +78,7 @@
                     </Grid>
                     <Grid Grid.Column="3" RowDefinitions="Auto,*" Margin="4">
                         <TextBlock Grid.Row="0"
-                                   Text="{loc:Loc WidgetSize}"
+                                   Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetSize}}"
                                    FontSize="10" />
                         <TextBlock Grid.Row="1"
                                    Text="{Binding Progress.FileSizeDisplay}"
@@ -153,19 +153,19 @@
                     BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
                     Margin="5,5" />
             <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right" Spacing="5">
-                <Button  x:Name="PlayPauseButton" Click="OnPlayPauseButtonClick" ToolTip.Tip="{loc:Loc PlayPause}">
+                <Button  x:Name="PlayPauseButton" Click="OnPlayPauseButtonClick" ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.PlayPause}}">
                     <fluent:FluentIcon x:Name="PlayPauseButtonIcon" Icon="Play"></fluent:FluentIcon>
                 </Button>
-                <Button Click="OnOpenFolderClick" ToolTip.Tip="{loc:Loc OpenFolder}">
+                <Button Click="OnOpenFolderClick" ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.OpenFolder}}">
                     <fluent:FluentIcon Icon="OpenFolder"></fluent:FluentIcon>
                 </Button>
                 <Border BorderThickness="1"
                         BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
                         Margin="5,5" />
-                <ToggleButton ToolTip.Tip="{loc:Loc TopMost}" IsChecked="{Binding IsTopMost}">
+                <ToggleButton ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.TopMost}}" IsChecked="{Binding IsTopMost}">
                     <fluent:FluentIcon Icon="Pin"/>
                 </ToggleButton>
-                <Button  Click="OnCloseButtonClick" ToolTip.Tip="{loc:Loc Close}">
+                <Button  Click="OnCloseButtonClick" ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.Close}}">
                     <fluent:FluentIcon Icon="Dismiss"></fluent:FluentIcon>
                 </Button>
             </StackPanel>

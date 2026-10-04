@@ -48,9 +48,9 @@ public partial class SettingsPageViewModel : ViewModelBase, IViewModel
 
     private static IReadOnlyList<ThemeOption> CreateThemes() =>
     [
-        new ThemeOption(Strings.Get("SystemTheme"), ThemeVariant.Default),
-        new ThemeOption(Strings.Get("LightTheme"), ThemeVariant.Light),
-        new ThemeOption(Strings.Get("DarkTheme"), ThemeVariant.Dark)
+        new ThemeOption(Strings.Get(Language.SettingsPage.SystemTheme), ThemeVariant.Default),
+        new ThemeOption(Strings.Get(Language.SettingsPage.LightTheme), ThemeVariant.Light),
+        new ThemeOption(Strings.Get(Language.SettingsPage.DarkTheme), ThemeVariant.Dark)
     ];
 
     partial void OnSelectedThemeChanged(ThemeOption? value)

@@ -82,7 +82,7 @@
                                        IsVisible="{Binding IsPaneOpen}"
                                        FontWeight="SemiBold" />
 
-                            <TextBlock Text="{loc:Loc SystemProtection}"
+                            <TextBlock Text="{loc:Loc {x:Static loc:Language+MainPage.SystemProtection}}"
                                        FontSize="11"
                                        IsVisible="{Binding IsPaneOpen}" />
 
@@ -108,7 +108,7 @@
                                       Padding="12">
                             <StackPanel Orientation="Horizontal" Spacing="14">
                                 <fluent:FluentIcon Icon="Home" Width="22" Height="22" FontSize="20" />
-                                <TextBlock Text="{loc:Loc Dashboard}" FontSize="14" IsVisible="{Binding IsPaneOpen}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+MainPage.Dashboard}}" FontSize="14" IsVisible="{Binding IsPaneOpen}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
                         </ToggleButton>
@@ -124,7 +124,7 @@
                                       Padding="12">
                             <StackPanel Orientation="Horizontal" Spacing="14">
                                 <fluent:FluentIcon Icon="Folder" Width="22" Height="22" FontSize="20" />
-                                <TextBlock Text="{loc:Loc Category}" FontSize="14" IsVisible="{Binding IsPaneOpen}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+Common.Category}}" FontSize="14" IsVisible="{Binding IsPaneOpen}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
                         </ToggleButton>
@@ -139,7 +139,7 @@
                                       Padding="12">
                             <StackPanel Orientation="Horizontal" Spacing="14">
                                 <fluent:FluentIcon Icon="DocumentQueue" Width="22" Height="22" FontSize="20" />
-                                <TextBlock Text="{loc:Loc Queue}" FontSize="14" IsVisible="{Binding IsPaneOpen}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+Common.Queue}}" FontSize="14" IsVisible="{Binding IsPaneOpen}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
                         </ToggleButton>
@@ -154,7 +154,7 @@
                                       Padding="12">
                             <StackPanel Orientation="Horizontal" Spacing="14">
                                 <fluent:FluentIcon Icon="Settings" Width="22" Height="22" FontSize="20" />
-                                <TextBlock Text="{loc:Loc Settings}" FontSize="14" IsVisible="{Binding IsPaneOpen}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+Common.Settings}}" FontSize="14" IsVisible="{Binding IsPaneOpen}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
                         </ToggleButton>

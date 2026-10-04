@@ -135,14 +135,14 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
     private async Task Browse()
     {
         DownloadItemInformation.SavePath = await ApplicationManager.SaveFileDialog(
-            Strings.Get("SelectSaveLocation"),
+            Strings.Get(Language.AddUrlDialog.SelectSaveLocation),
             Path.GetDirectoryName(DownloadItemInformation.SavePath) ??
             Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
             DownloadItemInformation.SavePath ?? "download",
             false,
             new List<FilePickerFileType>
             {
-                new(Strings.Get("AllFiles"))
+                new(Strings.Get(Language.Common.AllFiles))
                 {
                     Patterns = new List<string> { "*" }
                 }
@@ -154,15 +154,15 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
     {
         if (File.Exists(DownloadItemInformation.SavePath))
         {
-          await DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get("FileExists"),
-                Strings.Format("FileExistsMessage", Path.GetFileName(DownloadItemInformation.SavePath))
-                , Strings.Get("RenameAndContinue"),
+          await DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get(Language.AddUrlDialog.FileExists),
+                Strings.Format(Language.AddUrlDialog.FileExistsMessage, Path.GetFileName(DownloadItemInformation.SavePath))
+                , Strings.Get(Language.AddUrlDialog.RenameAndContinue),
                 new RelayCommand(() =>
                 {
                     RenameFile();
                     PositiveCommand?.Execute(null);
                 }),
-                Strings.Get("Overwrite"),
+                Strings.Get(Language.AddUrlDialog.Overwrite),
                 new RelayCommand(() =>
                 {
                     // Do nothing on overwrite

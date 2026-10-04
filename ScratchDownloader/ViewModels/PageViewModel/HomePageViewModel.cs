@@ -47,9 +47,9 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
             return;
 
         if (Categories is { Count: > 0 })
-            Categories[0].Name = Strings.Get("AllCategories");
+            Categories[0].Name = Strings.Get(Language.HomePage.AllCategories);
         if (Queues is { Count: > 0 })
-            Queues[0].Name = Strings.Get("AllQueues");
+            Queues[0].Name = Strings.Get(Language.HomePage.AllQueues);
     }
 
 
@@ -82,13 +82,13 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         {
             var newDownloadDialog = new AddUrlDialogControlViewModel();
             var okCommand = new RelayCommand(() => StartDownload(newDownloadDialog));
-            await DialogManager.ShowMessage(newDownloadDialog, Strings.Get("NewDownload"), okCommand);
+            await DialogManager.ShowMessage(newDownloadDialog, Strings.Get(Language.HomePage.NewDownload), okCommand);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("NewDownload"),
-                Strings.Get("FailedNewDownload"));
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get(Language.HomePage.NewDownload),
+                Strings.Get(Language.HomePage.FailedNewDownload));
         }
         // Open the new download dialog.
     }
@@ -113,8 +113,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("ResumeDownloadTitle"),
-                Strings.Get("FailedResumeAll"));
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get(Language.HomePage.ResumeDownloadTitle),
+                Strings.Get(Language.HomePage.FailedResumeAll));
         }
     }
 
@@ -129,8 +129,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("PauseDownloadTitle"),
-                Strings.Get("FailedPauseAll"));
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get(Language.HomePage.PauseDownloadTitle),
+                Strings.Get(Language.HomePage.FailedPauseAll));
         }
     }
 
@@ -139,21 +139,21 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            await DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get("ClearDownloadHistory"),
-                Strings.Get("ClearHistoryConfirmation"),
-                Strings.Get("Yes"),
+            await DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get(Language.HomePage.ClearDownloadHistory),
+                Strings.Get(Language.HomePage.ClearHistoryConfirmation),
+                Strings.Get(Language.Common.Yes),
                 new RelayCommand(() =>
                 {
                     DownloadManager.Clear();
                     UpdateFilter();
                 }),
-                Strings.Get("No"));
+                Strings.Get(Language.Common.No));
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("ClearDownloadTitle"),
-                Strings.Get("FailedClearDownloads"));
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get(Language.HomePage.ClearDownloadTitle),
+                Strings.Get(Language.HomePage.FailedClearDownloads));
         }
     }
 
@@ -163,21 +163,21 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            await DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get("StopAll"),
-                Strings.Get("StopAllConfirmation"),
-                Strings.Get("Yes"),
+            await DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get(Language.HomePage.StopAll),
+                Strings.Get(Language.HomePage.StopAllConfirmation),
+                Strings.Get(Language.Common.Yes),
                 new RelayCommand(() =>
                 {
                     foreach (var download in DownloadManager.Downloads)
                         DownloadManager.Stop(download);
                 }),
-                Strings.Get("No"));
+                Strings.Get(Language.Common.No));
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("StopDownloadTitle"),
-                Strings.Get("FailedStopAll"));
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get(Language.HomePage.StopDownloadTitle),
+                Strings.Get(Language.HomePage.FailedStopAll));
         }
     }
     [RelayCommand]
@@ -250,8 +250,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         Categories = new ObservableCollection<Category>(SettingsService.Settings.Categories.Values);
         Queues = new ObservableCollection<Queue>(SettingsService.Settings.Queues.Values);
-        Categories.Insert(0, new Category { Name = Strings.Get("AllCategories"), Id = "all" });
-        Queues.Insert(0, new Queue { Name = Strings.Get("AllQueues"), Id = "all" });
+        Categories.Insert(0, new Category { Name = Strings.Get(Language.HomePage.AllCategories), Id = "all" });
+        Queues.Insert(0, new Queue { Name = Strings.Get(Language.HomePage.AllQueues), Id = "all" });
         SelectedCategory = Categories.FirstOrDefault();
         SelectedQueue = Queues.FirstOrDefault();
         base.OnNavigatedTo();

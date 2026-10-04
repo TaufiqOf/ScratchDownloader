@@ -61,7 +61,7 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
         var newQueue = new Queue
         {
             Id = newId,
-            Name = Strings.Format("NewQueueName", Queues.Count + 1),
+            Name = Strings.Format(Language.QueuePage.NewQueueName, Queues.Count + 1),
             IsExpanded = true // Automatically expands the new queue (which collapses others)
         };
         foreach (var queue in Queues) queue.IsExpanded = false;
@@ -82,15 +82,15 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
             return;
         if (queue.Id == "Main")
         {
-            DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("Error"), Strings.Get("CannotDeleteMainQueue"));
+            DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get(Language.Common.Error), Strings.Get(Language.QueuePage.CannotDeleteMainQueue));
             return;
         }
 
-        DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get("DeleteQueue"),
-            Strings.Format("DeleteQueueConfirmation", queue.Name),
-            Strings.Get("Yes"),
+        DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get(Language.QueuePage.DeleteQueue),
+            Strings.Format(Language.QueuePage.DeleteQueueConfirmation, queue.Name),
+            Strings.Get(Language.Common.Yes),
             new RelayCommand(() => ConfirmDeleteQueue(queue)),
-            Strings.Get("No"));
+            Strings.Get(Language.Common.No));
     }
 
     private void ConfirmDeleteQueue(Queue? queue)

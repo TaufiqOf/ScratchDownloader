@@ -22,12 +22,12 @@
         <!-- HEADER WITH ADD QUEUE BUTTON -->
         <Grid ColumnDefinitions="*,Auto">
             <StackPanel Grid.Column="0" Spacing="5">
-                <TextBlock Text="{loc:Loc Queue}"
+                <TextBlock Text="{loc:Loc {x:Static loc:Language+Common.Queue}}"
                            FontSize="30"
                            FontWeight="Bold" />
 
                 <TextBlock
-                    Text="{loc:Loc QueueDescription}"
+                    Text="{loc:Loc {x:Static loc:Language+QueuePage.QueueDescription}}"
                     Opacity="0.6" />
             </StackPanel>
 
@@ -47,7 +47,7 @@
                 Padding="12,8">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <fluent:FluentIcon Icon="Add" FontSize="16" />
-                    <TextBlock Text="{loc:Loc NewQueue}" VerticalAlignment="Center" />
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+QueuePage.NewQueue}}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
@@ -93,7 +93,7 @@
                                                 Margin="8,0,0,0"
                                                 Command="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).DeleteQueueCommand}"
                                                 CommandParameter="{Binding}"
-                                                ToolTip.Tip="{loc:Loc DeleteQueue}">
+                                                ToolTip.Tip="{loc:Loc {x:Static loc:Language+QueuePage.DeleteQueue}}">
                                             <fluent:FluentIcon Icon="Delete" FontSize="18" Foreground="#E53935" />
                                         </Button>
                                     </Grid>
@@ -105,7 +105,7 @@
                                     <!-- MAX CONCURRENT DOWNLOADS & SPEED LIMIT -->
                                     <Grid ColumnDefinitions="*,16,*,16,*">
                                         <StackPanel Grid.Column="0" Spacing="6">
-                                            <TextBlock Text="{loc:Loc Segments}"
+                                            <TextBlock Text="{loc:Loc {x:Static loc:Language+Common.Segments}}"
                                                        FontSize="11"
                                                        FontWeight="SemiBold"
                                                        Opacity="0.5" />
@@ -116,7 +116,7 @@
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="2" Spacing="6">
-                                            <TextBlock Text="{loc:Loc MaxSpeedLimit}"
+                                            <TextBlock Text="{loc:Loc {x:Static loc:Language+QueuePage.MaxSpeedLimit}}"
                                                        FontSize="11"
                                                        FontWeight="SemiBold"
                                                        Opacity="0.5" />
@@ -126,7 +126,7 @@
                                                            FormatString="0 KB/s" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="4" Spacing="6">
-                                            <TextBlock Text="{loc:Loc MaxConcurrentDownloads}"
+                                            <TextBlock Text="{loc:Loc {x:Static loc:Language+QueuePage.MaxConcurrentDownloads}}"
                                                        FontSize="11"
                                                        FontWeight="SemiBold"
                                                        Opacity="0.5" />
@@ -137,7 +137,7 @@
 
                                     <!-- START TIME -->
                                     <StackPanel Spacing="6">
-                                        <TextBlock Text="{loc:Loc StartTime}"
+                                        <TextBlock Text="{loc:Loc {x:Static loc:Language+QueuePage.StartTime}}"
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
                                                    Opacity="0.5" />
@@ -147,7 +147,7 @@
 
                                     <!-- SCHEDULE DAYS -->
                                     <StackPanel Spacing="6">
-                                        <TextBlock Text="{loc:Loc ScheduleDays}"
+                                        <TextBlock Text="{loc:Loc {x:Static loc:Language+QueuePage.ScheduleDays}}"
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
                                                    Opacity="0.5" />
@@ -194,7 +194,7 @@
 
                                     <!-- AFTER COMPLETE -->
                                     <StackPanel Spacing="6">
-                                        <TextBlock Text="{loc:Loc OnCompletionAction}"
+                                        <TextBlock Text="{loc:Loc {x:Static loc:Language+QueuePage.OnCompletionAction}}"
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
                                                    Opacity="0.5" />
@@ -212,7 +212,7 @@
                                     <!-- FOOTER ACTIONS -->
                                     <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
                                         <Button Grid.Column="1"
-                                                Content="{loc:Loc ResetParameters}"
+                                                Content="{loc:Loc {x:Static loc:Language+QueuePage.ResetParameters}}"
                                                 BorderThickness="0"
                                                 Command="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).ResetQueueCommand}"
                                                 CommandParameter="{Binding}" />

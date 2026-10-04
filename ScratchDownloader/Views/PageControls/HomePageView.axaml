@@ -35,7 +35,7 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0"
-                    ToolTip.Tip="{loc:Loc New}"
+                    ToolTip.Tip="{loc:Loc {x:Static loc:Language+HomePage.New}}"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Background="{DynamicResource AccentButtonBackground}"
@@ -46,7 +46,7 @@
                             VerticalAlignment="Center">
                     <fluent:FluentIcon Icon="AddCircle"
                                        VerticalAlignment="Center" />
-                    <TextBlock Text="{loc:Loc NewDownload}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+HomePage.NewDownload}}"
                                VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
@@ -57,7 +57,7 @@
                     Margin="5,5" />
 
             <Button Grid.Column="2"
-                    ToolTip.Tip="{loc:Loc Resume}"
+                    ToolTip.Tip="{loc:Loc {x:Static loc:Language+HomePage.Resume}}"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Command="{Binding ResumeAllCommand}">
@@ -67,14 +67,14 @@
                             VerticalAlignment="Center">
                     <fluent:FluentIcon Icon="Play"
                                        VerticalAlignment="Center" />
-                    <TextBlock Text="{loc:Loc ResumeAll}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+HomePage.ResumeAll}}"
                                IsVisible="False"
                                VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
             <Button Grid.Column="3"
-                    ToolTip.Tip="{loc:Loc PauseAll}"
+                    ToolTip.Tip="{loc:Loc {x:Static loc:Language+HomePage.PauseAll}}"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Command="{Binding PauseAllCommand}">
@@ -84,14 +84,14 @@
                             VerticalAlignment="Center">
                     <fluent:FluentIcon Icon="Pause"
                                        VerticalAlignment="Center" />
-                    <TextBlock Text="{loc:Loc PauseAll}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+HomePage.PauseAll}}"
                                IsVisible="False"
                                VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
             <Button Grid.Column="4"
-                    ToolTip.Tip="{loc:Loc StopAll}"
+                    ToolTip.Tip="{loc:Loc {x:Static loc:Language+HomePage.StopAll}}"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Command="{Binding StopAllCommand}">
@@ -101,7 +101,7 @@
                             VerticalAlignment="Center">
                     <fluent:FluentIcon Icon="Stop"
                                        VerticalAlignment="Center" />
-                    <TextBlock Text="{loc:Loc StopAll}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+HomePage.StopAll}}"
                                IsVisible="False"
                                VerticalAlignment="Center" />
                 </StackPanel>
@@ -112,7 +112,7 @@
                     Margin="5,5" />
 
             <Button Grid.Column="6"
-                    ToolTip.Tip="{loc:Loc ClearDownloadHistory}"
+                    ToolTip.Tip="{loc:Loc {x:Static loc:Language+HomePage.ClearDownloadHistory}}"
                     VerticalContentAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Command="{Binding ClearAllCommand}">
@@ -122,7 +122,7 @@
                             VerticalAlignment="Center">
                     <fluent:FluentIcon Icon="Delete"
                                        VerticalAlignment="Center" />
-                    <TextBlock Text="{loc:Loc ClearDownloadHistory}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+HomePage.ClearDownloadHistory}}"
                                IsVisible="False"
                                VerticalAlignment="Center" />
                 </StackPanel>
@@ -190,7 +190,7 @@
                      Width="250"
                      HorizontalAlignment="Right"
                      VerticalAlignment="Center"
-                     PlaceholderText="{loc:Loc Search}"
+                     PlaceholderText="{loc:Loc {x:Static loc:Language+HomePage.Search}}"
                      Text="{Binding SearchText, Mode=TwoWay}" />
         </Grid>
         <Border Grid.Row="1"
@@ -218,7 +218,7 @@
                                 <ContextMenu x:DataType="models1:DownloadItemViewModel">
 
                                     <!-- Resume when paused -->
-                                    <MenuItem Header="{loc:Loc Resume}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.Resume}}"
                                               Command="{Binding ResumeCommand}"
                                               IsVisible="{Binding Status,
                                   Converter={StaticResource StatusEqualsConverter},
@@ -229,7 +229,7 @@
                                     </MenuItem>
 
                                     <!-- Start when queued -->
-                                    <MenuItem Header="{loc:Loc Start}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.Start}}"
                                               Command="{Binding StartCommand}"
                                               IsVisible="{Binding Status,
                                   Converter={StaticResource StatusEqualsConverter},
@@ -240,7 +240,7 @@
                                     </MenuItem>
 
                                     <!-- Stop when downloading -->
-                                    <MenuItem Header="{loc:Loc Pause}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.Pause}}"
                                               Command="{Binding PauseCommand}"
                                               IsVisible="{Binding Status,
                                   Converter={StaticResource StatusEqualsConverter},
@@ -251,7 +251,7 @@
                                     </MenuItem>
 
                                     <!-- RESTART -->
-                                    <MenuItem Header="{loc:Loc RestartDownload}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.RestartDownload}}"
                                               Command="{Binding RestartCommand}">
                                         <MenuItem.Icon>
                                             <fluent:FluentIcon Icon="ArrowClockwise" />
@@ -260,7 +260,7 @@
                                     <Separator />
 
                                     <!-- COPY URL -->
-                                    <MenuItem Header="{loc:Loc CopyUrl}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.CopyUrl}}"
                                               Command="{Binding CopyUrlCommand}">
                                         <MenuItem.Icon>
                                             <fluent:FluentIcon Icon="Copy" />
@@ -269,7 +269,7 @@
                                     <Separator />
 
                                     <!-- OPEN -->
-                                    <MenuItem Header="{loc:Loc Open}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.Open}}"
                                               Command="{Binding OpenCommand}"
                                               IsEnabled="{Binding CanOpen}">
                                         <MenuItem.Icon>
@@ -279,7 +279,7 @@
 
 
                                     <!-- OPEN CONTAINING FOLDER -->
-                                    <MenuItem Header="{loc:Loc OpenContainingFolder}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.OpenContainingFolder}}"
                                               Command="{Binding OpenContainingFolderCommand}">
                                         <MenuItem.Icon>
                                             <fluent:FluentIcon Icon="FolderOpen" />
@@ -288,7 +288,7 @@
                                     <Separator />
 
                                     <!-- MOVE TO QUEUE -->
-                                    <MenuItem Header="{loc:Loc MoveToQueue}">
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.MoveToQueue}}">
                                         <MenuItem.Icon>
                                             <fluent:FluentIcon Icon="Layer" />
                                         </MenuItem.Icon>
@@ -298,7 +298,7 @@
                                     </MenuItem>
 
                                     <!-- MOVE TO CATEGORY -->
-                                    <MenuItem Header="{loc:Loc MoveToCategory}">
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.MoveToCategory}}">
                                         <MenuItem.Icon>
                                             <fluent:FluentIcon Icon="Folder" />
                                         </MenuItem.Icon>
@@ -308,14 +308,14 @@
                                     <Separator />
 
                                     <!-- REMOVE -->
-                                    <MenuItem Header="{loc:Loc RemoveFromList}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.RemoveFromList}}"
                                               Command="{Binding RemoveCommand}" InputGesture="Delete">
                                         <MenuItem.Icon>
                                             <fluent:FluentIcon Icon="Delete" />
                                         </MenuItem.Icon>
                                     </MenuItem>
                                     <!-- REMOVE -->
-                                    <MenuItem Header="{loc:Loc DeleteFile}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+Common.DeleteFile}}"
                                               Command="{Binding DeleteFileCommand}">
                                         <MenuItem.Icon>
                                             <fluent:FluentIcon Icon="Delete" />
@@ -326,7 +326,7 @@
                                     <Separator />
 
                                     <!-- Show Widget -->
-                                    <MenuItem Header="{loc:Loc ShowWidget}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.ShowWidget}}"
                                               Command="{Binding ShowWidgetCommand}"
                                               IsEnabled="{Binding CanShowWidget}">
                                         <MenuItem.Icon>
@@ -337,7 +337,7 @@
                                     <Separator />
 
                                     <!-- PROPERTIES -->
-                                    <MenuItem Header="{loc:Loc ShowProperties}"
+                                    <MenuItem Header="{loc:Loc {x:Static loc:Language+HomePage.ShowProperties}}"
                                               Command="{Binding ShowPropertiesCommand}">
                                         <MenuItem.Icon>
                                             <fluent:FluentIcon Icon="Info" />
@@ -367,7 +367,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </dg:DataGridTemplateColumn>
                     <!-- FILE -->
-                    <dg:DataGridTemplateColumn Header="{loc:Loc File}"
+                    <dg:DataGridTemplateColumn Header="{loc:Loc {x:Static loc:Language+HomePage.File}}"
                                                Width="3*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -380,13 +380,13 @@
                     </dg:DataGridTemplateColumn>
 
                     <!-- STATUS -->
-                    <dg:DataGridTextColumn Header="{loc:Loc Status}"
+                    <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+HomePage.Status}}"
                                            Binding="{Binding StatusText}"
                                            SortMemberPath="Status"
                                            Width="160" />
 
                     <!-- PROGRESS -->
-                    <DataGridTemplateColumn Header="{loc:Loc Progress}" Width="250">
+                    <DataGridTemplateColumn Header="{loc:Loc {x:Static loc:Language+HomePage.Progress}}" Width="250">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid RowDefinitions="Auto,Auto,Auto"
@@ -420,7 +420,7 @@
                     </DataGridTemplateColumn>
 
                     <!-- SPEED -->
-                    <dg:DataGridTemplateColumn Header="{loc:Loc Speed}"
+                    <dg:DataGridTemplateColumn Header="{loc:Loc {x:Static loc:Language+HomePage.Speed}}"
                                                Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -436,16 +436,16 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </dg:DataGridTemplateColumn>
                     <!-- SIZE -->
-                    <dg:DataGridTextColumn Header="{loc:Loc Size}"
+                    <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+Common.Size}}"
                                            Binding="{Binding Progress.FileSizeDisplay}"
                                            Width="170" />
 
                     <!-- ETA -->
-                    <dg:DataGridTextColumn Header="{loc:Loc Eta}"
+                    <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+HomePage.Eta}}"
                                            Binding="{Binding Progress.Eta}"
                                            Width="120" />
                     <!-- DATE ADDED -->
-                    <dg:DataGridTextColumn Header="{loc:Loc Added}"
+                    <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+HomePage.Added}}"
                                            Binding="{Binding AddedDateTimeText}"
                                            Width="150" />
                 </dg:DataGrid.Columns>
@@ -460,12 +460,12 @@
                           Background="{DynamicResource SystemControlForegroundBaseLowBrush}"
                           Cursor="SizeNorthSouth" />
             <TabControl Grid.Row="2">
-                <TabItem Header="{loc:Loc FileTab}"
+                <TabItem Header="{loc:Loc {x:Static loc:Language+HomePage.FileTab}}"
                          FontSize="12"
                          FontWeight="Bold">
                     <control:FilePropertiesTabControl DataContext="{Binding }" />
                 </TabItem>
-                <TabItem Header="{loc:Loc Settings}"
+                <TabItem Header="{loc:Loc {x:Static loc:Language+Common.Settings}}"
                          FontSize="12"
                          FontWeight="Bold">
                     <control:ConfigurationPropertiesTabControl DataContext="{Binding }" />

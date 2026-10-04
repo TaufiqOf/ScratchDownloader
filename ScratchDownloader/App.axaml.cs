@@ -141,7 +141,7 @@ public class App : Application
         // --------------------------------------------------------
 
         var showItem =
-            new NativeMenuItem(Strings.Get("Show"));
+            new NativeMenuItem(Strings.Get(Language.Tray.Show));
 
         showItem.Click +=
             ShowWindow_OnClick;
@@ -161,7 +161,7 @@ public class App : Application
         // --------------------------------------------------------
 
         var exitItem =
-            new NativeMenuItem(Strings.Get("Exit"));
+            new NativeMenuItem(Strings.Get(Language.Tray.Exit));
 
         exitItem.Click +=
             Exit_OnClick;

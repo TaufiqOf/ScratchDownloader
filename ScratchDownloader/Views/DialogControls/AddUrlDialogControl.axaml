@@ -18,7 +18,7 @@
                 <StackPanel Grid.Row="0"
                             Spacing="6">
 
-                    <TextBlock Text="{loc:Loc Url}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+AddUrlDialog.Url}}"
                                FontSize="12" />
 
                     <Grid ColumnDefinitions="*,Auto"
@@ -42,7 +42,7 @@
                                                    Width="16"
                                                    Height="16" />
 
-                                <TextBlock Text="{loc:Loc Paste}"
+                                <TextBlock Text="{loc:Loc {x:Static loc:Language+AddUrlDialog.Paste}}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
@@ -81,10 +81,10 @@
                         <StackPanel Grid.Column="1"
                                     VerticalAlignment="Center">
 
-                            <TextBlock Text="{loc:Loc DetectingFileInfo}"
+                            <TextBlock Text="{loc:Loc {x:Static loc:Language+AddUrlDialog.DetectingFileInfo}}"
                                        FontSize="14" />
 
-                            <TextBlock Text="{loc:Loc ProbingLink}"
+                            <TextBlock Text="{loc:Loc {x:Static loc:Language+AddUrlDialog.ProbingLink}}"
                                        FontSize="12"
                                        Opacity="0.6" />
 
@@ -134,7 +134,7 @@
                                     FontSize="12"
                                     Opacity="0.6">
                                     <Run Text="{Binding DownloadItemInformation.FileHost}" />
-                                    <Run Text="{loc:Loc Size}" />
+                                    <Run Text="{loc:Loc {x:Static loc:Language+Common.Size}}" />
                                     <Run Text="{Binding DownloadItemInformation.FileSizeDisplay}" />
                                 </TextBlock>
                             </StackPanel>
@@ -151,7 +151,7 @@
                             Spacing="6"
                             IsVisible="{Binding HasFileInfo}">
 
-                    <TextBlock Text="{loc:Loc SaveAs}"
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+AddUrlDialog.SaveAs}}"
                                FontSize="12"
                                Opacity="0.75" />
 
@@ -192,7 +192,7 @@
                     <StackPanel Grid.Column="0"
                                 Spacing="6">
 
-                        <TextBlock Text="{loc:Loc Category}"
+                        <TextBlock Text="{loc:Loc {x:Static loc:Language+Common.Category}}"
                                    FontSize="12"
                                    Opacity="0.75" />
 
@@ -216,7 +216,7 @@
                     <StackPanel Grid.Column="1"
                                 Spacing="6">
 
-                        <TextBlock Text="{loc:Loc Queue}"
+                        <TextBlock Text="{loc:Loc {x:Static loc:Language+Common.Queue}}"
                                    FontSize="12"
                                    Opacity="0.75" />
 
@@ -239,7 +239,7 @@
                     <StackPanel Grid.Column="2"
                                 Spacing="6">
 
-                        <TextBlock Text="{loc:Loc Segments}"
+                        <TextBlock Text="{loc:Loc {x:Static loc:Language+Common.Segments}}"
                                    FontSize="12"
                                    Opacity="0.75" />
 
@@ -255,15 +255,15 @@
 
                 <Expander Grid.Row="4"
                           Margin="0,10,0,0"
-                          Header="{loc:Loc Advanced}"
+                          Header="{loc:Loc {x:Static loc:Language+AddUrlDialog.Advanced}}"
                           HorizontalAlignment="Stretch"
                           IsVisible="{Binding HasFileInfo}">
 
                     <StackPanel Spacing="10"
                                 Margin="5,8,5,5">
-                        <TextBox PlaceholderText="{loc:Loc Checksum}" Text="{Binding DownloadItemInformation.Checksum}"></TextBox>
+                        <TextBox PlaceholderText="{loc:Loc {x:Static loc:Language+AddUrlDialog.Checksum}}" Text="{Binding DownloadItemInformation.Checksum}"></TextBox>
 
-                        <CheckBox Content="{loc:Loc StartDownloadAutomatically}"
+                        <CheckBox Content="{loc:Loc {x:Static loc:Language+AddUrlDialog.StartDownloadAutomatically}}"
                                   IsChecked="{Binding DownloadItemInformation.StartImmediately, Mode=TwoWay}" />
 
                     </StackPanel>
@@ -280,7 +280,7 @@
                 Orientation="Horizontal"
                 HorizontalAlignment="Right"
                 Margin="10">
-                <Button Content="{loc:Loc Cancel}"
+                <Button Content="{loc:Loc {x:Static loc:Language+Common.Cancel}}"
                         VerticalContentAlignment="Center"
                         HorizontalContentAlignment="Center"
 
@@ -299,7 +299,7 @@
                                            HorizontalAlignment="Center" />
                         <TextBlock VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
-                                   Text="{loc:Loc Download}" />
+                                   Text="{loc:Loc {x:Static loc:Language+AddUrlDialog.Download}}" />
                     </StackPanel>
                 </Button>
             </StackPanel>

@@ -15,8 +15,8 @@ public partial class MessageDialogControlViewModel : ADialogViewModel
         bool isCancelButtonVisible = false)
     {
         Message = message;
-        NegativeButtonText = negativeButtonText ?? Strings.Get("Cancel");
-        PositiveButtonText = positiveButtonText ?? Strings.Get("Ok");
+        NegativeButtonText = negativeButtonText ?? Strings.Get(Language.Common.Cancel);
+        PositiveButtonText = positiveButtonText ?? Strings.Get(Language.Common.Ok);
         IsCancelButtonVisible = isCancelButtonVisible;
 
         switch (messageDialogType)

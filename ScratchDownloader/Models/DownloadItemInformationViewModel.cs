@@ -69,7 +69,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
             else
             {
                 FileSizeBytes = 0;
-                FileSizeDisplay = Strings.Get("UnknownSize");
+                FileSizeDisplay = Strings.Get(Language.Common.UnknownSize);
             }
 
             var settingsCategory = SettingsService.Settings.Categories["Other"];
@@ -106,7 +106,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
         if (!string.IsNullOrWhiteSpace(pathName))
             return pathName;
 
-        return Strings.Get("DownloadFileName");
+        return Strings.Get(Language.FilePropertiesTabControl.DownloadFileName);
     }
 
 
@@ -115,7 +115,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
         var extension = Path.GetExtension(fileName);
 
         if (string.IsNullOrWhiteSpace(extension))
-            return Strings.Get("FileType");
+            return Strings.Get(Language.FilePropertiesTabControl.FileType);
 
         return extension.TrimStart('.').ToUpperInvariant();
     }
