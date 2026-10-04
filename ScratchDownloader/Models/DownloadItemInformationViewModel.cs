@@ -142,7 +142,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     {
         if (Loading)
             return;
-        Segments = Queue.MaxConcurrentDownloads;
+        Segments = Queue.Segments;
     }
 
     partial void OnSavePathChanged(string? value)
