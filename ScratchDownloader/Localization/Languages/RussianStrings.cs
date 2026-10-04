@@ -196,5 +196,10 @@ internal static class RussianStrings
         ["HomePage.CompletedCount"] = "Завершено: {0}",
         ["HomePage.FailedCount"] = "С ошибкой: {0}",
         ["HomePage.ActiveCount"] = "Активные: {0}",
+        
+        ["ConfigurationPropertiesTabControl.Queue"] = "Очередь:",
+        ["ConfigurationPropertiesTabControl.Category"] = "Категория:",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Максимальная скорость:",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "Время начала:"
     };
 }

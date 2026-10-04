@@ -196,5 +196,10 @@ internal static class JapaneseStrings
         ["HomePage.CompletedCount"] = "完了: {0}",
         ["HomePage.FailedCount"] = "失敗: {0}",
         ["HomePage.ActiveCount"] = "アクティブ: {0}",
+        
+        ["ConfigurationPropertiesTabControl.Queue"] = "キュー:",
+        ["ConfigurationPropertiesTabControl.Category"] = "カテゴリ:",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "最大速度制限:",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "開始時間:"
     };
 }

@@ -196,5 +196,11 @@ internal static class KoreanStrings
         ["HomePage.CompletedCount"] = "완료: {0}",
         ["HomePage.FailedCount"] = "실패: {0}",
         ["HomePage.ActiveCount"] = "진행 중: {0}",
+        
+
+        ["ConfigurationPropertiesTabControl.Queue"] = "대기열:",
+        ["ConfigurationPropertiesTabControl.Category"] = "카테고리:",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "최대 속도 제한:",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "시작 시간:"
     };
 }

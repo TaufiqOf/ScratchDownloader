@@ -196,5 +196,10 @@ internal static class SpanishStrings
         ["HomePage.CompletedCount"] = "Completadas: {0}",
         ["HomePage.FailedCount"] = "Fallidas: {0}",
         ["HomePage.ActiveCount"] = "Activas: {0}",
+        
+        ["ConfigurationPropertiesTabControl.Queue"] = "Cola:",
+        ["ConfigurationPropertiesTabControl.Category"] = "Categoría:",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Límite máximo de velocidad:",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "Hora de inicio:"
     };
 }

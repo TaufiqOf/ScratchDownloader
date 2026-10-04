@@ -196,5 +196,10 @@ internal static class FrenchStrings
         ["HomePage.CompletedCount"] = "Terminés : {0}",
         ["HomePage.FailedCount"] = "En échec : {0}",
         ["HomePage.ActiveCount"] = "Actifs : {0}",
+
+        ["ConfigurationPropertiesTabControl.Queue"] = "File d’attente :",
+        ["ConfigurationPropertiesTabControl.Category"] = "Catégorie :",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Limite de vitesse maximale :",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "Heure de début :"
     };
 }

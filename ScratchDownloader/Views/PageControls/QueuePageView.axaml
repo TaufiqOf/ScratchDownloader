@@ -161,7 +161,7 @@
 
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <ToggleButton Content="{Binding, Converter={StaticResource LocalizedEnumConverter}}"
+                                                    <ToggleButton Content="{Binding Converter={StaticResource LocalizedEnumConverter}}"
                                                                   Padding="10,6"
                                                                   Command="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).ToggleDayCommand}">
 
@@ -203,7 +203,7 @@
                                                   SelectedItem="{Binding AfterComplete}">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding, Converter={StaticResource LocalizedEnumConverter}}" />
+                                                    <TextBlock Text="{Binding Converter={StaticResource LocalizedEnumConverter}}" />
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>

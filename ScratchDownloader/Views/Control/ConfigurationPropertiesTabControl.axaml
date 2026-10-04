@@ -1,8 +1,5 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:ScratchDownloader.Views.Control"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:localization="clr-namespace:ScratchDownloader.Localization"
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
              x:DataType="pageViewModel:HomePageViewModel"
@@ -35,24 +32,24 @@
             </Grid.Styles>
 
             <!-- File Name -->
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{localization:Loc Category}" Classes="Label" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.Category}}" Classes="Label" />
             <TextBlock Grid.Row="0" Grid.Column="1" Classes="Value"
                        FontWeight="Medium"
                        Text="{Binding SelectedDownload?.DownloadItemInformation?.Category.Name}" />
 
             <!-- File Path -->
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="{localization:Loc Queue}" Classes="Label" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.Queue}}" Classes="Label" />
             <TextBlock Grid.Row="1" Grid.Column="1" Classes="Value"
                        TextWrapping="Wrap"
                        Text="{Binding SelectedDownload?.DownloadItemInformation?.Queue.Name}" />
 
             <!-- File Size -->
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="{localization:Loc MaxSpeedLimit}" Classes="Label" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.MaxSpeedLimit}}" Classes="Label" />
             <TextBlock Grid.Row="2" Grid.Column="1" Classes="Value" 
                        TextWrapping="Wrap"
                        Text="{Binding SelectedDownload?.CapSpeedText}" />
             <!-- File Host -->
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="{localization:Loc Host}" Classes="Label" />
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.StartTime}}" Classes="Label" />
             <TextBlock Grid.Row="3" Grid.Column="1" Classes="Value"
                        Text="{Binding SelectedDownload?.DownloadItemInformation?.FileHost}" />
 

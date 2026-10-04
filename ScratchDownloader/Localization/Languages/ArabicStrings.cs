@@ -196,5 +196,10 @@ internal static class ArabicStrings
         ["HomePage.CompletedCount"] = "مكتملة: {0}",
         ["HomePage.FailedCount"] = "فاشلة: {0}",
         ["HomePage.ActiveCount"] = "نشطة: {0}",
+        
+        ["ConfigurationPropertiesTabControl.Queue"] = "قائمة الانتظار:",
+        ["ConfigurationPropertiesTabControl.Category"] = "الفئة:",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "الحد الأقصى للسرعة:",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "وقت البدء:"
     };
 }

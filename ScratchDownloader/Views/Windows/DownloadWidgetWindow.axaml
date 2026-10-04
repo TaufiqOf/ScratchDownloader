@@ -27,149 +27,162 @@
 
         <SolidColorBrush x:Key="ChartLineBrush"
                          Color="{DynamicResource SystemAccentColor}" />
+
     </Window.Resources>
     <Border
         Padding="15"
         BorderThickness="2"
-        BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
-        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+        Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+        BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
         CornerRadius="8">
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
-            <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
-                <fluent:FluentIcon
-                    Icon="{Binding Status, Converter={StaticResource StatusToIconConverter}}"
-                    Width="34"
-                    Height="34"
-                    FontSize="34"
-                    Margin="0,0,5,0" />
-                <TextBlock Grid.Column="1" FontSize="20" Text="{Binding DownloadItemInformation.SavedFileName}" TextTrimming="CharacterEllipsis"/>
-     
-            </Grid>
-            <Border Grid.Row="1"
-                    BorderThickness="1"
-                    BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                    Margin="5,5" />
-
-            <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto">
-                <Grid Grid.Row="0" ColumnDefinitions="70,100,*,*">
-                    <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="4">
-                        <TextBlock Grid.Row="0"
-                                   Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetProgress}}"
-                                   FontSize="10" />
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding Progress.ProgressText}"
-                                   FontSize="15" />
-                    </Grid>
-                    <Grid Grid.Column="1" RowDefinitions="Auto,*" Margin="4">
-                        <TextBlock Grid.Row="0"
-                                   Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetSpeed}}"
-                                   FontSize="10" />
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding Progress.Speed}"
-                                   FontSize="15" />
-                    </Grid>
-                    <Grid Grid.Column="2" RowDefinitions="Auto,*" Margin="4">
-                        <TextBlock Grid.Row="0"
-                                   Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetEta}}"
-                                   FontSize="10" />
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding Progress.Eta}"
-                                   FontSize="15" />
-                    </Grid>
-                    <Grid Grid.Column="3" RowDefinitions="Auto,*" Margin="4">
-                        <TextBlock Grid.Row="0"
-                                   Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetSize}}"
-                                   FontSize="10" />
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding Progress.FileSizeDisplay}"
-                                   FontSize="15" />
-                    </Grid>
+        <Grid>
+            <control:SnakeArrowBackground 
+                x:Name="SnakeBackground"
+                AccentBrush="{DynamicResource SystemAccentColor}"
+                AnimationCompleted="OnSnakeAnimationCompleted"
+                IsHitTestVisible="False" />
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+                    <fluent:FluentIcon
+                        Icon="{Binding Status, Converter={StaticResource StatusToIconConverter}}"
+                        Width="34"
+                        Height="34"
+                        FontSize="34"
+                        Margin="0,0,5,0" />
+                    <TextBlock Grid.Column="1" FontSize="20" Text="{Binding DownloadItemInformation.SavedFileName}"
+                               TextTrimming="CharacterEllipsis" />
 
                 </Grid>
                 <Border Grid.Row="1"
                         BorderThickness="1"
-                        BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                        BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                         Margin="5,5" />
-                <Grid Grid.Row="2" RowDefinitions="Auto,Auto"
-                      Margin="4">
 
-                    <!-- Overall Progress -->
-                    <ProgressBar Grid.Row="0"
-                                 Minimum="0"
-                                 Maximum="100"
-                                 Height="6"
-                                 IsIndeterminate="{Binding Status, Converter={StaticResource StatusToIndeterminateConverter}}"
-                                 Value="{Binding Progress.Progress}" />
+                <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto">
+                    <Grid Grid.Row="0" ColumnDefinitions="70,100,*,*">
+                        <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="4">
+                            <TextBlock Grid.Row="0"
+                                       Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetProgress}}"
+                                       FontSize="10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="{Binding Progress.ProgressText}"
+                                       FontSize="15" />
+                        </Grid>
+                        <Grid Grid.Column="1" RowDefinitions="Auto,*" Margin="4">
+                            <TextBlock Grid.Row="0"
+                                       Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetSpeed}}"
+                                       FontSize="10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="{Binding Progress.Speed}"
+                                       FontSize="15" />
+                        </Grid>
+                        <Grid Grid.Column="2" RowDefinitions="Auto,*" Margin="4">
+                            <TextBlock Grid.Row="0"
+                                       Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetEta}}"
+                                       FontSize="10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="{Binding Progress.Eta}"
+                                       FontSize="15" />
+                        </Grid>
+                        <Grid Grid.Column="3" RowDefinitions="Auto,*" Margin="4">
+                            <TextBlock Grid.Row="0"
+                                       Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetSize}}"
+                                       FontSize="10" />
+                            <TextBlock Grid.Row="1"
+                                       Text="{Binding Progress.FileSizeDisplay}"
+                                       FontSize="15" />
+                        </Grid>
 
-                    <!-- Segment Progress -->
-                    <control:SegmentProgressControl Grid.Row="1"
-                                                    Margin="0,6,0,0"
-                                                    Segments="{Binding Progress.SegmentProgress}" />
+                    </Grid>
+                    <Border Grid.Row="1"
+                            BorderThickness="1"
+                            BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                            Margin="5,5" />
+                    <Grid Grid.Row="2" RowDefinitions="Auto,Auto"
+                          Margin="4">
 
-                </Grid>
-                <Grid Grid.Row="2"
-                      Margin="4,20,4,0"
-                      Height="130">
+                        <!-- Overall Progress -->
+                        <ProgressBar Grid.Row="0"
+                                     Minimum="0"
+                                     Maximum="100"
+                                     Height="6"
+                                     IsIndeterminate="{Binding Status, Converter={StaticResource StatusToIndeterminateConverter}}"
+                                     Value="{Binding Progress.Progress}" />
 
-                    <lvc:CartesianChart
-                        Background="Transparent"
-                        ZoomMode="None"
-                        TooltipPosition="Hidden"
-                        LegendPosition="Hidden">
+                        <!-- Segment Progress -->
+                        <control:SegmentProgressControl Grid.Row="1"
+                                                        Margin="0,6,0,0"
+                                                        Segments="{Binding Progress.SegmentProgress}" />
 
-                        <lvc:CartesianChart.Series>
-                            <lvc:XamlLineSeries
-                                Values="{Binding SpeedHistory}"
-                                Stroke="{Binding SpeedChartStroke}"
-                                Fill="{Binding SpeedChartFill}"
-                                GeometryFill="{x:Null}"
-                                GeometryStroke="{x:Null}"
-                                DataPadding="{lvc:Point '0,0'}" 
-                                LineSmoothness="0.4" />
-                        </lvc:CartesianChart.Series>
+                    </Grid>
+                    <Grid Grid.Row="2"
+                          Margin="4,20,4,0"
+                          Height="130">
 
-                        <lvc:CartesianChart.XAxes>
-                            <lvc:XamlAxis
-                                IsVisible="False" />
-                        </lvc:CartesianChart.XAxes>
+                        <lvc:CartesianChart
+                            Background="Transparent"
+                            ZoomMode="None"
+                            TooltipPosition="Hidden"
+                            LegendPosition="Hidden">
 
-                        <lvc:CartesianChart.YAxes>
-                            <lvc:XamlAxis
-                                MinLimit="0"
-                                TextSize="9"
-                                Labeler="{Binding SpeedAxisLabeler}"
-                                SeparatorsPaint="{lvc:SolidColorPaint
+                            <lvc:CartesianChart.Series>
+                                <lvc:XamlLineSeries
+                                    Values="{Binding SpeedHistory}"
+                                    Stroke="{Binding SpeedChartStroke}"
+                                    Fill="{Binding SpeedChartFill}"
+                                    GeometryFill="{x:Null}"
+                                    GeometryStroke="{x:Null}"
+                                    DataPadding="{lvc:Point '0,0'}"
+                                    LineSmoothness="0.4" />
+                            </lvc:CartesianChart.Series>
+
+                            <lvc:CartesianChart.XAxes>
+                                <lvc:XamlAxis
+                                    IsVisible="False" />
+                            </lvc:CartesianChart.XAxes>
+
+                            <lvc:CartesianChart.YAxes>
+                                <lvc:XamlAxis
+                                    MinLimit="0"
+                                    TextSize="9"
+                                    Labeler="{Binding SpeedAxisLabeler}"
+                                    SeparatorsPaint="{lvc:SolidColorPaint
                     Color='#404040',
                     StrokeWidth=1,
                     PathEffect={lvc:Dashed Array='3,3'}}" />
-                        </lvc:CartesianChart.YAxes>
+                            </lvc:CartesianChart.YAxes>
 
-                    </lvc:CartesianChart>
+                        </lvc:CartesianChart>
 
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Border Grid.Row="3"
-                    BorderThickness="1"
-                    BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                    Margin="5,5" />
-            <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right" Spacing="5">
-                <Button  x:Name="PlayPauseButton" Click="OnPlayPauseButtonClick" ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.PlayPause}}">
-                    <fluent:FluentIcon x:Name="PlayPauseButtonIcon" Icon="Play"></fluent:FluentIcon>
-                </Button>
-                <Button Click="OnOpenFolderClick" ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.OpenFolder}}">
-                    <fluent:FluentIcon Icon="OpenFolder"></fluent:FluentIcon>
-                </Button>
-                <Border BorderThickness="1"
-                        BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                <Border Grid.Row="3"
+                        BorderThickness="1"
+                        BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                         Margin="5,5" />
-                <ToggleButton ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.TopMost}}" IsChecked="{Binding IsTopMost}">
-                    <fluent:FluentIcon Icon="Pin"/>
-                </ToggleButton>
-                <Button  Click="OnCloseButtonClick" ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.Close}}">
-                    <fluent:FluentIcon Icon="Dismiss"></fluent:FluentIcon>
-                </Button>
-            </StackPanel>
-           
+                <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right" Spacing="5">
+                    <Button x:Name="PlayPauseButton" Click="OnPlayPauseButtonClick"
+                            ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.PlayPause}}">
+                        <fluent:FluentIcon x:Name="PlayPauseButtonIcon" Icon="Play"></fluent:FluentIcon>
+                    </Button>
+                    <Button Click="OnOpenFolderClick"
+                            ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.OpenFolder}}">
+                        <fluent:FluentIcon Icon="OpenFolder"></fluent:FluentIcon>
+                    </Button>
+                    <Border BorderThickness="1"
+                            BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                            Margin="5,5" />
+                    <ToggleButton ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.TopMost}}"
+                                  IsChecked="{Binding IsTopMost}">
+                        <fluent:FluentIcon Icon="Pin" />
+                    </ToggleButton>
+                    <Button Click="OnCloseButtonClick"
+                            ToolTip.Tip="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.Close}}">
+                        <fluent:FluentIcon Icon="Dismiss"></fluent:FluentIcon>
+                    </Button>
+                </StackPanel>
+
+            </Grid>
         </Grid>
     </Border>
 </Window>

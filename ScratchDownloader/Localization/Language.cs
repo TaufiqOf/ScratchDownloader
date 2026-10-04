@@ -130,17 +130,8 @@ public static class Language
         public const string ChecksumFailed = "DownloadStatus.ChecksumFailed";
     }
 
-    public static class FilePropertiesTabControl
-    {
-        public const string Name = "FilePropertiesTabControl.Name";
-        public const string Path = "FilePropertiesTabControl.Path";
-        public const string Host = "FilePropertiesTabControl.Host";
-        public const string BytesSuffix = "FilePropertiesTabControl.BytesSuffix";
-        public const string SizeProperty = "FilePropertiesTabControl.SizeProperty";
-        public const string AddedProperty = "FilePropertiesTabControl.AddedProperty";
-        public const string DownloadFileName = "FilePropertiesTabControl.DownloadFileName";
-        public const string FileType = "FilePropertiesTabControl.FileType";
-    }
+
+
 
     public static class CategoryPage
     {
@@ -263,5 +254,25 @@ public static class Language
         public const string DaysAgo = "Time.DaysAgo";
         public const string Yesterday = "Time.Yesterday";
         public const string LessThanOneSecond = "Time.LessThanOneSecond";
+    }
+    
+    public static class ConfigurationPropertiesTabControl
+    {
+        public const string Queue = "ConfigurationPropertiesTabControl.Queue";
+        public const string Category = "ConfigurationPropertiesTabControl.Category";
+        public const string MaxSpeedLimit = "ConfigurationPropertiesTabControl.MaxSpeedLimit";
+        public const string StartTime = "ConfigurationPropertiesTabControl.StartTime";
+    }
+    
+    public static class FilePropertiesTabControl
+    {
+        public const string Name = "FilePropertiesTabControl.Name";
+        public const string Path = "FilePropertiesTabControl.Path";
+        public const string Host = "FilePropertiesTabControl.Host";
+        public const string BytesSuffix = "FilePropertiesTabControl.BytesSuffix";
+        public const string SizeProperty = "FilePropertiesTabControl.SizeProperty";
+        public const string AddedProperty = "FilePropertiesTabControl.AddedProperty";
+        public const string DownloadFileName = "FilePropertiesTabControl.DownloadFileName";
+        public const string FileType = "FilePropertiesTabControl.FileType";
     }
 }

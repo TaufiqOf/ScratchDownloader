@@ -196,5 +196,10 @@ internal static class HebrewStrings
         ["HomePage.CompletedCount"] = "הושלמו: {0}",
         ["HomePage.FailedCount"] = "נכשלו: {0}",
         ["HomePage.ActiveCount"] = "פעילות: {0}",
+        
+        ["ConfigurationPropertiesTabControl.Queue"] = "תור:",
+        ["ConfigurationPropertiesTabControl.Category"] = "קטגוריה:",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "מגבלת מהירות מרבית:",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "שעת התחלה:"
     };
 }

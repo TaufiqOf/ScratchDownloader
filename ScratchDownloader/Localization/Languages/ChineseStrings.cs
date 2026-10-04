@@ -196,5 +196,10 @@ internal static class ChineseStrings
         ["HomePage.CompletedCount"] = "已完成:{0}",
         ["HomePage.FailedCount"] = "失败:{0}",
         ["HomePage.ActiveCount"] = "进行中:{0}",
+
+        ["ConfigurationPropertiesTabControl.Queue"] = "队列：",
+        ["ConfigurationPropertiesTabControl.Category"] = "类别：",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "最大速度限制：",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "开始时间："
     };
 }

@@ -196,5 +196,10 @@ internal static class HindiStrings
         ["HomePage.CompletedCount"] = "पूर्ण: {0}",
         ["HomePage.FailedCount"] = "विफल: {0}",
         ["HomePage.ActiveCount"] = "सक्रिय: {0}",
+        
+        ["ConfigurationPropertiesTabControl.Queue"] = "कतार:",
+        ["ConfigurationPropertiesTabControl.Category"] = "श्रेणी:",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "अधिकतम गति सीमा:",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "प्रारंभ समय:"
     };
 }

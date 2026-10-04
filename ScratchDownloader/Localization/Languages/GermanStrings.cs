@@ -196,5 +196,10 @@ internal static class GermanStrings
         ["HomePage.CompletedCount"] = "Abgeschlossen: {0}",
         ["HomePage.FailedCount"] = "Fehlgeschlagen: {0}",
         ["HomePage.ActiveCount"] = "Aktiv: {0}",
+        
+        ["ConfigurationPropertiesTabControl.Queue"] = "Queue :",
+        ["ConfigurationPropertiesTabControl.Category"] = "Catégorie :",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Limite de vitesse maximale :",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "Heure de début :"
     };
 }

@@ -196,5 +196,11 @@ internal static class BanglaStrings
         ["HomePage.CompletedCount"] = "সম্পন্ন: {0}",
         ["HomePage.FailedCount"] = "ব্যর্থ: {0}",
         ["HomePage.ActiveCount"] = "সক্রিয়: {0}",
+        
+
+        ["ConfigurationPropertiesTabControl.Queue"] = "সারি:",
+        ["ConfigurationPropertiesTabControl.Category"] = "বিভাগ:",
+        ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "সর্বোচ্চ গতিসীমা:",
+        ["ConfigurationPropertiesTabControl.StartTime"] = "শুরুর সময়:"
     };
 }
