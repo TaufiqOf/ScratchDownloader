@@ -13,7 +13,7 @@
         <converter:StatusToIndeterminateConverter x:Key="StatusToIndeterminateConverter" />
         <converter:StatusEqualsConverter x:Key="StatusEqualsConverter" />
     </UserControl.Resources>
-    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
 
         <!-- TOOLBAR -->
         <Grid Grid.Row="0">
@@ -198,257 +198,277 @@
                 Margin="0,5,0,0" />
 
         <!-- DOWNLOAD DATA GRID -->
-        <dg:DataGrid Grid.Row="2"
-                     Margin="0,8"
-                     ItemsSource="{Binding FilteredDownloads}"
-                     SelectedItem="{Binding SelectedDownload}"
-                     AutoGenerateColumns="False"
-                     IsReadOnly="True"
-                     CanUserResizeColumns="True"
-                     CanUserSortColumns="True"
-                     DoubleTapped="DataGrid_OnDoubleTapped"
-                     GridLinesVisibility="Horizontal">
+        <Grid Grid.Row="2" RowDefinitions="*,Auto,200">
+            <dg:DataGrid Grid.Row="0"
+                         Margin="0,8"
+                         Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush }"
+                         ItemsSource="{Binding FilteredDownloads}"
+                         SelectedItem="{Binding SelectedDownload}"
+                         AutoGenerateColumns="False"
+                         IsReadOnly="True"
+                         CanUserResizeColumns="True"
+                         CanUserSortColumns="True"
+                         DoubleTapped="DataGrid_OnDoubleTapped"
+                         GridLinesVisibility="Horizontal">
 
-            <dg:DataGrid.Styles>
-                <Style Selector="DataGridRow">
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                            <ContextMenu x:DataType="models1:DownloadItemViewModel">
+                <dg:DataGrid.Styles>
+                    <Style Selector="DataGridRow">
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu x:DataType="models1:DownloadItemViewModel">
 
-                                <!-- Resume when paused -->
-                                <MenuItem Header="Resume"
-                                          Command="{Binding ResumeCommand}"
-                                          IsVisible="{Binding Status,
+                                    <!-- Resume when paused -->
+                                    <MenuItem Header="Resume"
+                                              Command="{Binding ResumeCommand}"
+                                              IsVisible="{Binding Status,
                                   Converter={StaticResource StatusEqualsConverter},
                                   ConverterParameter=Paused}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Play" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Play" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
 
-                                <!-- Start when queued -->
-                                <MenuItem Header="Start"
-                                          Command="{Binding StartCommand}"
-                                          IsVisible="{Binding Status,
+                                    <!-- Start when queued -->
+                                    <MenuItem Header="Start"
+                                              Command="{Binding StartCommand}"
+                                              IsVisible="{Binding Status,
                                   Converter={StaticResource StatusEqualsConverter},
                                   ConverterParameter=Queued}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Play" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Play" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
 
-                                <!-- Stop when downloading -->
-                                <MenuItem Header="Pause"
-                                          Command="{Binding PauseCommand}"
-                                          IsVisible="{Binding Status,
+                                    <!-- Stop when downloading -->
+                                    <MenuItem Header="Pause"
+                                              Command="{Binding PauseCommand}"
+                                              IsVisible="{Binding Status,
                                   Converter={StaticResource StatusEqualsConverter},
                                   ConverterParameter=Downloading}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Pause" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Pause" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
 
-                                <!-- RESTART -->
-                                <MenuItem Header="Restart Download"
-                                          Command="{Binding RestartCommand}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="ArrowClockwise" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator />
+                                    <!-- RESTART -->
+                                    <MenuItem Header="Restart Download"
+                                              Command="{Binding RestartCommand}">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="ArrowClockwise" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
 
-                                <!-- COPY URL -->
-                                <MenuItem Header="Copy URL"
-                                          Command="{Binding CopyUrlCommand}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Copy" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator />
+                                    <!-- COPY URL -->
+                                    <MenuItem Header="Copy URL"
+                                              Command="{Binding CopyUrlCommand}">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Copy" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
 
-                                <!-- OPEN -->
-                                <MenuItem Header="Open"
-                                          Command="{Binding OpenCommand}"
-                                          IsEnabled="{Binding CanOpen}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Document" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-
-
-                                <!-- OPEN CONTAINING FOLDER -->
-                                <MenuItem Header="Open Containing Folder"
-                                          Command="{Binding OpenContainingFolderCommand}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="FolderOpen" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator />
-
-                                <!-- MOVE TO QUEUE -->
-                                <MenuItem Header="Move to Queue...">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Layer" />
-                                    </MenuItem.Icon>
-
-                                    <!-- Queues go here -->
-
-                                </MenuItem>
-
-                                <!-- MOVE TO CATEGORY -->
-                                <MenuItem Header="Move to Category...">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Folder" />
-                                    </MenuItem.Icon>
-
-                                    <!-- Categories go here -->
-                                </MenuItem>
-                                <Separator />
-
-                                <!-- REMOVE -->
-                                <MenuItem Header="Remove from list"
-                                          Command="{Binding RemoveCommand}" InputGesture="Delete">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Delete" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <!-- REMOVE -->
-                                <MenuItem Header="Delete File"
-                                          Command="{Binding DeleteFileCommand}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Delete" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
+                                    <!-- OPEN -->
+                                    <MenuItem Header="Open"
+                                              Command="{Binding OpenCommand}"
+                                              IsEnabled="{Binding CanOpen}">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Document" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
 
 
-                                <Separator />
+                                    <!-- OPEN CONTAINING FOLDER -->
+                                    <MenuItem Header="Open Containing Folder"
+                                              Command="{Binding OpenContainingFolderCommand}">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="FolderOpen" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
 
-                                <!-- Show Widget -->
-                                <MenuItem Header="Show Widget"
-                                          Command="{Binding ShowWidgetCommand}"
-                                          IsEnabled="{Binding CanShowWidget}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Window" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
+                                    <!-- MOVE TO QUEUE -->
+                                    <MenuItem Header="Move to Queue...">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Layer" />
+                                        </MenuItem.Icon>
 
-                                <Separator />
+                                        <!-- Queues go here -->
 
-                                <!-- PROPERTIES -->
-                                <MenuItem Header="Show Properties"
-                                          Command="{Binding ShowPropertiesCommand}">
-                                    <MenuItem.Icon>
-                                        <fluent:FluentIcon Icon="Info" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
+                                    </MenuItem>
 
-            </dg:DataGrid.Styles>
-            <dg:DataGrid.Columns>
-                <!-- ICON -->
-                <dg:DataGridTemplateColumn Header=""
-                                           Width="30">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <fluent:FluentIcon
-                                    Icon="{Binding Status , Converter={StaticResource StatusToIconConverter}}"
-                                    Width="20"
-                                    Height="20"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Center" />
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </dg:DataGridTemplateColumn>
-                <!-- FILE -->
-                <dg:DataGridTemplateColumn Header="File"
-                                           Width="3*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding DownloadItemInformation.SavedFileName}"
-                                       ToolTip.Tip="{Binding DownloadItemInformation.SavedFileName}"
-                                       VerticalAlignment="Center"
-                                       TextTrimming="CharacterEllipsis" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </dg:DataGridTemplateColumn>
+                                    <!-- MOVE TO CATEGORY -->
+                                    <MenuItem Header="Move to Category...">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Folder" />
+                                        </MenuItem.Icon>
 
-                <!-- STATUS -->
-                <dg:DataGridTextColumn Header="Status"
-                                       Binding="{Binding Status}"
-                                       Width="160" />
+                                        <!-- Categories go here -->
+                                    </MenuItem>
+                                    <Separator />
 
-                <!-- PROGRESS -->
-                <DataGridTemplateColumn Header="Progress" Width="250">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid RowDefinitions="Auto,Auto,Auto"
-                                  Margin="4">
+                                    <!-- REMOVE -->
+                                    <MenuItem Header="Remove from list"
+                                              Command="{Binding RemoveCommand}" InputGesture="Delete">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Delete" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <!-- REMOVE -->
+                                    <MenuItem Header="Delete File"
+                                              Command="{Binding DeleteFileCommand}">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Delete" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
 
-                                <!-- Overall Progress -->
-                                <Grid Grid.Row="0" ColumnDefinitions="*,50">
 
-                                    <ProgressBar Grid.Column="0"
-                                                 Minimum="0"
-                                                 Maximum="100"
-                                                 Height="6"
-                                                 IsIndeterminate="{Binding Status, Converter={StaticResource StatusToIndeterminateConverter}}"
-                                                 Value="{Binding Progress.Progress}" />
-                                    <TextBlock Grid.Column="1"
-                                               Margin="5,0,0,0"
-                                               Text="{Binding Progress.ProgressText}"
-                                               FontSize="10"
-                                               FontWeight="DemiBold" />
+                                    <Separator />
+
+                                    <!-- Show Widget -->
+                                    <MenuItem Header="Show Widget"
+                                              Command="{Binding ShowWidgetCommand}"
+                                              IsEnabled="{Binding CanShowWidget}">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Window" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                    <Separator />
+
+                                    <!-- PROPERTIES -->
+                                    <MenuItem Header="Show Properties"
+                                              Command="{Binding ShowPropertiesCommand}">
+                                        <MenuItem.Icon>
+                                            <fluent:FluentIcon Icon="Info" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                </dg:DataGrid.Styles>
+                <dg:DataGrid.Columns>
+                    <!-- ICON -->
+                    <dg:DataGridTemplateColumn Header=""
+                                               Width="30">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <fluent:FluentIcon
+                                        Icon="{Binding Status , Converter={StaticResource StatusToIconConverter}}"
+                                        Width="20"
+                                        Height="20"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center" />
                                 </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </dg:DataGridTemplateColumn>
+                    <!-- FILE -->
+                    <dg:DataGridTemplateColumn Header="File"
+                                               Width="3*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DownloadItemInformation.SavedFileName}"
+                                           ToolTip.Tip="{Binding DownloadItemInformation.SavedFileName}"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </dg:DataGridTemplateColumn>
 
-                                <!-- Segment Progress -->
-                                <control:SegmentProgressControl Grid.Row="1"
-                                                                Margin="0,6,0,0"
-                                                                Segments="{Binding Progress.SegmentProgress}" />
-                                <!-- Status Text -->
+                    <!-- STATUS -->
+                    <dg:DataGridTextColumn Header="Status"
+                                           Binding="{Binding Status}"
+                                           Width="160" />
 
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    <!-- PROGRESS -->
+                    <DataGridTemplateColumn Header="Progress" Width="250">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid RowDefinitions="Auto,Auto,Auto"
+                                      Margin="4">
 
-                <!-- SPEED -->
-                <dg:DataGridTemplateColumn Header="Speed"
-                                           Width="120">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch"
-                                        Margin="7,0,0,0"
-                                        HorizontalAlignment="Stretch">
-                                <TextBlock VerticalAlignment="Center"
-                                           Text="{Binding CapSpeedText}"
-                                           FontSize="9" />
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Progress.Speed}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </dg:DataGridTemplateColumn>
-                <!-- SIZE -->
-                <dg:DataGridTextColumn Header="Size"
-                                       Binding="{Binding Progress.FileSizeDisplay}"
-                                       Width="170" />
+                                    <!-- Overall Progress -->
+                                    <Grid Grid.Row="0" ColumnDefinitions="*,50">
 
-                <!-- ETA -->
-                <dg:DataGridTextColumn Header="ETA"
-                                       Binding="{Binding Progress.Eta}"
-                                       Width="120" />
-                <!-- DATE ADDED -->
-                <dg:DataGridTextColumn Header="ADDED"
-                                       Binding="{Binding AddedDateTimeText}"
-                                       Width="150" />
-            </dg:DataGrid.Columns>
+                                        <ProgressBar Grid.Column="0"
+                                                     Minimum="0"
+                                                     Maximum="100"
+                                                     Height="6"
+                                                     IsIndeterminate="{Binding Status, Converter={StaticResource StatusToIndeterminateConverter}}"
+                                                     Value="{Binding Progress.Progress}" />
+                                        <TextBlock Grid.Column="1"
+                                                   Margin="5,0,0,0"
+                                                   Text="{Binding Progress.ProgressText}"
+                                                   FontSize="10"
+                                                   FontWeight="DemiBold" />
+                                    </Grid>
 
-        </dg:DataGrid>
+                                    <!-- Segment Progress -->
+                                    <control:SegmentProgressControl Grid.Row="1"
+                                                                    Margin="0,6,0,0"
+                                                                    Segments="{Binding Progress.SegmentProgress}" />
+                                    <!-- Status Text -->
 
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- SPEED -->
+                    <dg:DataGridTemplateColumn Header="Speed"
+                                               Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Stretch"
+                                            Margin="7,0,0,0"
+                                            HorizontalAlignment="Stretch">
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding CapSpeedText}"
+                                               FontSize="9" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Progress.Speed}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </dg:DataGridTemplateColumn>
+                    <!-- SIZE -->
+                    <dg:DataGridTextColumn Header="Size"
+                                           Binding="{Binding Progress.FileSizeDisplay}"
+                                           Width="170" />
+
+                    <!-- ETA -->
+                    <dg:DataGridTextColumn Header="ETA"
+                                           Binding="{Binding Progress.Eta}"
+                                           Width="120" />
+                    <!-- DATE ADDED -->
+                    <dg:DataGridTextColumn Header="ADDED"
+                                           Binding="{Binding AddedDateTimeText}"
+                                           Width="150" />
+                </dg:DataGrid.Columns>
+
+            </dg:DataGrid>
+            <GridSplitter Grid.Row="1"
+                          Height="5"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Center"
+                          ResizeDirection="Rows"
+                          ResizeBehavior="PreviousAndNext"
+                          Background="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                          Cursor="SizeNorthSouth" />
+            <TabControl Grid.Row="2"
+                        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush }">
+                <TabItem Header="FILE"
+                         FontSize="12"
+                         FontWeight="Bold">
+
+                    <control:FilePropertiesTabControl DataContext="{Binding }" />
+
+                </TabItem>
+            </TabControl>
+        </Grid>
         <!-- STATUS BAR -->
         <Border Grid.Row="3"
                 BorderThickness="2"

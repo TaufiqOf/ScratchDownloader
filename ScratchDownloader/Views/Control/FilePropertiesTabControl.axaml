@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
+             mc:Ignorable="d"
+             x:DataType="pageViewModel:HomePageViewModel"
+             x:Class="ScratchDownloader.Views.Control.FilePropertiesTabControl">
+    <Border
+        CornerRadius="5"
+        BorderThickness="1"
+        Padding="8"
+        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+        BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
+        <Grid RowDefinitions="Auto,Auto,Auto"
+              ColumnDefinitions="Auto,Auto,Auto" 
+              HorizontalAlignment="Stretch" 
+              VerticalAlignment="Stretch">
+
+        </Grid>
+    </Border>
+</UserControl>
