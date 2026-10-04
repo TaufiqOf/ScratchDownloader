@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Humanizer;
 using ScratchDownloader.Services;
+using ScratchDownloader.Localization;
 
 namespace ScratchDownloader.Models;
 
@@ -68,7 +69,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
             else
             {
                 FileSizeBytes = 0;
-                FileSizeDisplay = "Unknown size";
+                FileSizeDisplay = Strings.Get("UnknownSize");
             }
 
             var settingsCategory = SettingsService.Settings.Categories["Other"];
@@ -105,7 +106,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
         if (!string.IsNullOrWhiteSpace(pathName))
             return pathName;
 
-        return "download";
+        return Strings.Get("DownloadFileName");
     }
 
 
@@ -114,7 +115,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
         var extension = Path.GetExtension(fileName);
 
         if (string.IsNullOrWhiteSpace(extension))
-            return "FILE";
+            return Strings.Get("FileType");
 
         return extension.TrimStart('.').ToUpperInvariant();
     }

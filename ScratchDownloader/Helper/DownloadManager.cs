@@ -8,6 +8,7 @@ using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Humanizer;
 using ScratchDownloader.Models;
+using ScratchDownloader.Localization;
 using ScratchDownloader.Services;
 using Timer = System.Timers.Timer;
 
@@ -106,15 +107,18 @@ public partial class DownloadManager : ViewModelBase
         if (downloadItemViewModel == null) return;
         SetCapToQueueItems(downloadItemViewModel);
         if (e == DownloadStatus.Completed)
-            NotificationManager.Success($"Downloaded {e}",
-                $"Download {e}: {downloadItemViewModel.DownloadItemInformation?.FileName}");
+            NotificationManager.Success(Strings.Get("NotificationDownloadComplete"),
+                Strings.Format("NotificationDownloadCompleteMessage",
+                    downloadItemViewModel.DownloadItemInformation?.FileName ?? string.Empty));
         if (e == DownloadStatus.Failed)
-            NotificationManager.Error($"Downloaded {e}",
-                $"Download {e}: {downloadItemViewModel.DownloadItemInformation?.FileName}");
+            NotificationManager.Error(Strings.Get("NotificationDownloadFailed"),
+                Strings.Format("NotificationDownloadFailedMessage",
+                    downloadItemViewModel.DownloadItemInformation?.FileName ?? string.Empty));
         if (e == DownloadStatus.ChecksumFailed)
         {
-            NotificationManager.Error($"Downloaded Completed but Checksum Failed",
-                $"Downloaded Completed but Checksum Failed: {downloadItemViewModel.DownloadItemInformation?.FileName}");
+            NotificationManager.Error(Strings.Get("NotificationChecksumFailed"),
+                Strings.Format("NotificationChecksumFailedMessage",
+                    downloadItemViewModel.DownloadItemInformation?.FileName ?? string.Empty));
         }
 
         downloadItemViewModel.Status = e;
@@ -147,18 +151,19 @@ public partial class DownloadManager : ViewModelBase
 
     private void UpdateStatus()
     {
-        DownloadSummary = $"Downloads: {Downloads.Count} " +
-                          $"| Paused: {Downloads.Count(d => d.Status == DownloadStatus.Paused)} " +
-                          $"| Completed: {Downloads.Count(d => d.Status == DownloadStatus.Completed)} " +
-                          $"| Failed: {Downloads.Count(d => d.Status == DownloadStatus.Failed)}";
+        DownloadSummary = $"{Strings.Format("DownloadsCount", Downloads.Count)} " +
+                          $"| {Strings.Format("PausedCount", Downloads.Count(d => d.Status == DownloadStatus.Paused))} " +
+                          $"| {Strings.Format("CompletedCount", Downloads.Count(d => d.Status == DownloadStatus.Completed))} " +
+                          $"| {Strings.Format("FailedCount", Downloads.Count(d => d.Status == DownloadStatus.Failed))}";
 
         ActiveCount =
-            $"Active: {Downloads.Count(d => d.Status == DownloadStatus.Downloading || d.Status == DownloadStatus.Initializing)}";
+            Strings.Format("ActiveCount",
+                Downloads.Count(d => d.Status == DownloadStatus.Downloading || d.Status == DownloadStatus.Initializing));
         TotalSpeed =
-            $"Total Speed: {ByteSize.FromBytes(Downloads.Sum(d => d.Progress.BytesPerSecond))
+            $"{Strings.Get("TotalSpeed")} {ByteSize.FromBytes(Downloads.Sum(d => d.Progress.BytesPerSecond))
                 .Humanize("0.00")}/s";
         TotalDownloadedSize =
-            $"Total Size: {ByteSize.FromBytes(Downloads.Sum(d => d.DownloadItemInformation?.FileSizeBytes ?? 0))
+            $"{Strings.Get("TotalSize")} {ByteSize.FromBytes(Downloads.Sum(d => d.DownloadItemInformation?.FileSizeBytes ?? 0))
                 .Humanize("0.00")}";
     }
 

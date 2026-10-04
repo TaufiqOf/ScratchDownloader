@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Models;
+using ScratchDownloader.Localization;
 using ScratchDownloader.ViewModels.DialogControlViewModel;
 using ScratchDownloader.Views.Windows;
 
@@ -20,7 +21,7 @@ public static class DialogManager
         MessageDialogType type,
         string title,
         string message,
-        string positiveText = "OK",
+        string? positiveText = null,
         IRelayCommand? positiveCommand = null,
         string negativeText = "",
         IRelayCommand? negativeCommand = null,
@@ -29,7 +30,8 @@ public static class DialogManager
         if (owner is null)
             owner = MainWindow;
 
-        var dialogControlViewModel = new MessageDialogControlViewModel(type, message, positiveText, negativeText,
+        var dialogControlViewModel = new MessageDialogControlViewModel(type, message,
+            positiveText ?? Strings.Get("Ok"), negativeText,
             !string.IsNullOrWhiteSpace(negativeText));
         var dialog = new DialogWindow
         {

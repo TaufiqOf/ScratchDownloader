@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:ScratchDownloader.Localization"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:ScratchDownloader.Models"
@@ -13,6 +14,7 @@
     <UserControl.Resources>
         <converter:QueueDayToggleArgsConverter x:Key="QueueDayToggleArgsConverter" />
         <converter:DayIsCheckedConverter x:Key="DayIsCheckedConverter" />
+        <converter:LocalizedEnumConverter x:Key="LocalizedEnumConverter" />
     </UserControl.Resources>
 
     <StackPanel MaxWidth="800" Spacing="16" Margin="10">
@@ -20,12 +22,12 @@
         <!-- HEADER WITH ADD QUEUE BUTTON -->
         <Grid ColumnDefinitions="*,Auto">
             <StackPanel Grid.Column="0" Spacing="5">
-                <TextBlock Text="Queue"
+                <TextBlock Text="{loc:Loc Queue}"
                            FontSize="30"
                            FontWeight="Bold" />
 
                 <TextBlock
-                    Text="Manage how your downloads use the internet, when they start, what happens when they finish, and more."
+                    Text="{loc:Loc QueueDescription}"
                     Opacity="0.6" />
             </StackPanel>
 
@@ -45,7 +47,7 @@
                 Padding="12,8">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <fluent:FluentIcon Icon="Add" FontSize="16" />
-                    <TextBlock Text="New Queue" VerticalAlignment="Center" />
+                    <TextBlock Text="{loc:Loc NewQueue}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
@@ -91,7 +93,7 @@
                                                 Margin="8,0,0,0"
                                                 Command="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).DeleteQueueCommand}"
                                                 CommandParameter="{Binding}"
-                                                ToolTip.Tip="Delete Queue">
+                                                ToolTip.Tip="{loc:Loc DeleteQueue}">
                                             <fluent:FluentIcon Icon="Delete" FontSize="18" Foreground="#E53935" />
                                         </Button>
                                     </Grid>
@@ -103,7 +105,7 @@
                                     <!-- MAX CONCURRENT DOWNLOADS & SPEED LIMIT -->
                                     <Grid ColumnDefinitions="*,16,*,16,*">
                                         <StackPanel Grid.Column="0" Spacing="6">
-                                            <TextBlock Text="SEGMENTS"
+                                            <TextBlock Text="{loc:Loc Segments}"
                                                        FontSize="11"
                                                        FontWeight="SemiBold"
                                                        Opacity="0.5" />
@@ -114,7 +116,7 @@
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="2" Spacing="6">
-                                            <TextBlock Text="MAX SPEED LIMIT (KB/s, 0 = UNLIMITED)"
+                                            <TextBlock Text="{loc:Loc MaxSpeedLimit}"
                                                        FontSize="11"
                                                        FontWeight="SemiBold"
                                                        Opacity="0.5" />
@@ -124,7 +126,7 @@
                                                            FormatString="0 KB/s" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="4" Spacing="6">
-                                            <TextBlock Text="MAX CONCURRENT DOWNLOADS"
+                                            <TextBlock Text="{loc:Loc MaxConcurrentDownloads}"
                                                        FontSize="11"
                                                        FontWeight="SemiBold"
                                                        Opacity="0.5" />
@@ -135,7 +137,7 @@
 
                                     <!-- START TIME -->
                                     <StackPanel Spacing="6">
-                                        <TextBlock Text="START TIME"
+                                        <TextBlock Text="{loc:Loc StartTime}"
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
                                                    Opacity="0.5" />
@@ -145,7 +147,7 @@
 
                                     <!-- SCHEDULE DAYS -->
                                     <StackPanel Spacing="6">
-                                        <TextBlock Text="SCHEDULE DAYS"
+                                        <TextBlock Text="{loc:Loc ScheduleDays}"
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
                                                    Opacity="0.5" />
@@ -159,7 +161,7 @@
 
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <ToggleButton Content="{Binding}"
+                                                    <ToggleButton Content="{Binding, Converter={StaticResource LocalizedEnumConverter}}"
                                                                   Padding="10,6"
                                                                   Command="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).ToggleDayCommand}">
 
@@ -192,19 +194,25 @@
 
                                     <!-- AFTER COMPLETE -->
                                     <StackPanel Spacing="6">
-                                        <TextBlock Text="ON COMPLETION ACTION"
+                                        <TextBlock Text="{loc:Loc OnCompletionAction}"
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
                                                    Opacity="0.5" />
                                         <ComboBox HorizontalAlignment="Stretch"
                                                   ItemsSource="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).OperationModes}"
-                                                  SelectedItem="{Binding AfterComplete}" />
+                                                  SelectedItem="{Binding AfterComplete}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding, Converter={StaticResource LocalizedEnumConverter}}" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
                                     </StackPanel>
 
                                     <!-- FOOTER ACTIONS -->
                                     <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
                                         <Button Grid.Column="1"
-                                                Content="Reset Parameters"
+                                                Content="{loc:Loc ResetParameters}"
                                                 BorderThickness="0"
                                                 Command="{Binding $parent[UserControl].((pageViewModel:QueuePageViewModel)DataContext).ResetQueueCommand}"
                                                 CommandParameter="{Binding}" />

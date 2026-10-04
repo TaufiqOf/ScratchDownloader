@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:ScratchDownloader.Localization"
              xmlns:fluent="clr-namespace:FluentIcons.Avalonia.Fluent;assembly=FluentIcons.Avalonia.Fluent"
              xmlns:dialogControlViewModel="clr-namespace:ScratchDownloader.ViewModels.DialogControlViewModel"
              xmlns:models="clr-namespace:ScratchDownloader.Models"
@@ -17,7 +18,7 @@
                 <StackPanel Grid.Row="0"
                             Spacing="6">
 
-                    <TextBlock Text="URL"
+                    <TextBlock Text="{loc:Loc Url}"
                                FontSize="12" />
 
                     <Grid ColumnDefinitions="*,Auto"
@@ -41,7 +42,7 @@
                                                    Width="16"
                                                    Height="16" />
 
-                                <TextBlock Text="Paste"
+                                <TextBlock Text="{loc:Loc Paste}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
@@ -80,10 +81,10 @@
                         <StackPanel Grid.Column="1"
                                     VerticalAlignment="Center">
 
-                            <TextBlock Text="Detecting file information..."
+                            <TextBlock Text="{loc:Loc DetectingFileInfo}"
                                        FontSize="14" />
 
-                            <TextBlock Text="Probing the link for filename and size."
+                            <TextBlock Text="{loc:Loc ProbingLink}"
                                        FontSize="12"
                                        Opacity="0.6" />
 
@@ -133,7 +134,7 @@
                                     FontSize="12"
                                     Opacity="0.6">
                                     <Run Text="{Binding DownloadItemInformation.FileHost}" />
-                                    <Run> Size:</Run>
+                                    <Run Text="{loc:Loc Size}" />
                                     <Run Text="{Binding DownloadItemInformation.FileSizeDisplay}" />
                                 </TextBlock>
                             </StackPanel>
@@ -150,7 +151,7 @@
                             Spacing="6"
                             IsVisible="{Binding HasFileInfo}">
 
-                    <TextBlock Text="SAVE AS"
+                    <TextBlock Text="{loc:Loc SaveAs}"
                                FontSize="12"
                                Opacity="0.75" />
 
@@ -191,7 +192,7 @@
                     <StackPanel Grid.Column="0"
                                 Spacing="6">
 
-                        <TextBlock Text="CATEGORY"
+                        <TextBlock Text="{loc:Loc Category}"
                                    FontSize="12"
                                    Opacity="0.75" />
 
@@ -215,7 +216,7 @@
                     <StackPanel Grid.Column="1"
                                 Spacing="6">
 
-                        <TextBlock Text="QUEUE"
+                        <TextBlock Text="{loc:Loc Queue}"
                                    FontSize="12"
                                    Opacity="0.75" />
 
@@ -238,7 +239,7 @@
                     <StackPanel Grid.Column="2"
                                 Spacing="6">
 
-                        <TextBlock Text="SEGMENTS"
+                        <TextBlock Text="{loc:Loc Segments}"
                                    FontSize="12"
                                    Opacity="0.75" />
 
@@ -254,15 +255,15 @@
 
                 <Expander Grid.Row="4"
                           Margin="0,10,0,0"
-                          Header="Advanced"
+                          Header="{loc:Loc Advanced}"
                           HorizontalAlignment="Stretch"
                           IsVisible="{Binding HasFileInfo}">
 
                     <StackPanel Spacing="10"
                                 Margin="5,8,5,5">
-                        <TextBox PlaceholderText="Checksum" Text="{Binding DownloadItemInformation.Checksum}"></TextBox>
+                        <TextBox PlaceholderText="{loc:Loc Checksum}" Text="{Binding DownloadItemInformation.Checksum}"></TextBox>
 
-                        <CheckBox Content="Start download automatically"
+                        <CheckBox Content="{loc:Loc StartDownloadAutomatically}"
                                   IsChecked="{Binding DownloadItemInformation.StartImmediately, Mode=TwoWay}" />
 
                     </StackPanel>
@@ -279,7 +280,7 @@
                 Orientation="Horizontal"
                 HorizontalAlignment="Right"
                 Margin="10">
-                <Button Content="Cancel"
+                <Button Content="{loc:Loc Cancel}"
                         VerticalContentAlignment="Center"
                         HorizontalContentAlignment="Center"
 
@@ -298,7 +299,7 @@
                                            HorizontalAlignment="Center" />
                         <TextBlock VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
-                                   Text="Download" />
+                                   Text="{loc:Loc Download}" />
                     </StackPanel>
                 </Button>
             </StackPanel>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
@@ -7,6 +8,7 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
+using ScratchDownloader.Localization;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
 using ScratchDownloader.ViewModels.DialogControlViewModel;
@@ -22,6 +24,7 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     public HomePageViewModel(MainPageViewModel mainPageViewModel)
     {
         _mainPageViewModel = mainPageViewModel;
+        Strings.Instance.PropertyChanged += OnStringsChanged;
         DownloadManager = ApplicationManager.DownloadManager;
         DownloadManager.ItemUpdated += UpdateFilter;
         _loadTimer = new Timer(1000);
@@ -36,6 +39,17 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
             });
         };
         _loadTimer.Start();
+    }
+
+    private void OnStringsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != "Item[]")
+            return;
+
+        if (Categories is { Count: > 0 })
+            Categories[0].Name = Strings.Get("AllCategories");
+        if (Queues is { Count: > 0 })
+            Queues[0].Name = Strings.Get("AllQueues");
     }
 
 
@@ -68,13 +82,13 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         {
             var newDownloadDialog = new AddUrlDialogControlViewModel();
             var okCommand = new RelayCommand(() => StartDownload(newDownloadDialog));
-            await DialogManager.ShowMessage(newDownloadDialog, "New Download", okCommand);
+            await DialogManager.ShowMessage(newDownloadDialog, Strings.Get("NewDownload"), okCommand);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, "New Download",
-                "Failed to create a new download. Please try again.");
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("NewDownload"),
+                Strings.Get("FailedNewDownload"));
         }
         // Open the new download dialog.
     }
@@ -99,8 +113,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, "Resume Download",
-                "Failed to resume all downloads. Please try again.");
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("ResumeDownloadTitle"),
+                Strings.Get("FailedResumeAll"));
         }
     }
 
@@ -115,8 +129,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, "Pause Download",
-                "Failed to pause all downloads. Please try again.");
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("PauseDownloadTitle"),
+                Strings.Get("FailedPauseAll"));
         }
     }
 
@@ -125,21 +139,21 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            await DialogManager.ShowMessage(MessageDialogType.Warning, "Clear Download History",
-                "Are you sure you want to remove all completed, stopped and failed downloads? This action cannot be undone.",
-                "Yes",
+            await DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get("ClearDownloadHistory"),
+                Strings.Get("ClearHistoryConfirmation"),
+                Strings.Get("Yes"),
                 new RelayCommand(() =>
                 {
                     DownloadManager.Clear();
                     UpdateFilter();
                 }),
-                "No");
+                Strings.Get("No"));
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, "Clear Download",
-                "Failed to clear all downloads. Please try again.");
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("ClearDownloadTitle"),
+                Strings.Get("FailedClearDownloads"));
         }
     }
 
@@ -149,21 +163,21 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         try
         {
-            await DialogManager.ShowMessage(MessageDialogType.Warning, "Stop All Downloads",
-                "Are you sure you want to stop all downloads? This action cannot be undone.",
-                "Yes",
+            await DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get("StopAll"),
+                Strings.Get("StopAllConfirmation"),
+                Strings.Get("Yes"),
                 new RelayCommand(() =>
                 {
                     foreach (var download in DownloadManager.Downloads)
                         DownloadManager.Stop(download);
                 }),
-                "No");
+                Strings.Get("No"));
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            await DialogManager.ShowMessage(MessageDialogType.Error, "Stop Download",
-                "Failed to stop all downloads. Please try again.");
+            await DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("StopDownloadTitle"),
+                Strings.Get("FailedStopAll"));
         }
     }
     [RelayCommand]
@@ -236,8 +250,8 @@ public partial class HomePageViewModel : ViewModelBase, IViewModel
     {
         Categories = new ObservableCollection<Category>(SettingsService.Settings.Categories.Values);
         Queues = new ObservableCollection<Queue>(SettingsService.Settings.Queues.Values);
-        Categories.Insert(0, new Category { Name = "All Category", Id = "all" });
-        Queues.Insert(0, new Queue { Name = "All Queue", Id = "all" });
+        Categories.Insert(0, new Category { Name = Strings.Get("AllCategories"), Id = "all" });
+        Queues.Insert(0, new Queue { Name = Strings.Get("AllQueues"), Id = "all" });
         SelectedCategory = Categories.FirstOrDefault();
         SelectedQueue = Queues.FirstOrDefault();
         base.OnNavigatedTo();

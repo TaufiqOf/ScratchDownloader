@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using ScratchDownloader.Helper;
+using ScratchDownloader.Localization;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
 using ScratchDownloader.Views.Windows;
@@ -31,6 +32,8 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        Strings.Instance.Language = SettingsService.Settings.Language;
+        ApplicationManager.LocalizeDefaults();
         ThemeManager.SetTheme(SettingsService.Settings.GetThemeVariant());
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -138,7 +141,7 @@ public class App : Application
         // --------------------------------------------------------
 
         var showItem =
-            new NativeMenuItem("Show");
+            new NativeMenuItem(Strings.Get("Show"));
 
         showItem.Click +=
             ShowWindow_OnClick;
@@ -158,7 +161,7 @@ public class App : Application
         // --------------------------------------------------------
 
         var exitItem =
-            new NativeMenuItem("Exit");
+            new NativeMenuItem(Strings.Get("Exit"));
 
         exitItem.Click +=
             Exit_OnClick;

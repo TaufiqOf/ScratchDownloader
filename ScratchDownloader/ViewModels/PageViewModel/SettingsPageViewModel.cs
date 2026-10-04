@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ScratchDownloader.Helper;
+using ScratchDownloader.Localization;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
 
@@ -30,21 +31,27 @@ public partial class SettingsPageViewModel : ViewModelBase, IViewModel
     [ObservableProperty] private double _closeWidgetInterval =
         SettingsService.Settings.AutoCloseInterval / 1000;
 
+    [ObservableProperty] private LanguageOption? _selectedLanguage;
+    [ObservableProperty] private IReadOnlyList<ThemeOption> _themes = CreateThemes();
+
     public SettingsPageViewModel()
     {
         var savedTheme = SettingsService.Settings.GetThemeVariant();
 
         SelectedTheme = Themes.FirstOrDefault(x =>
             x.Variant == savedTheme);
+        SelectedLanguage = Strings.Instance.Languages.FirstOrDefault(x =>
+            x.Code == SettingsService.Settings.Language) ?? Strings.Instance.Languages[0];
     }
 
-    public IReadOnlyList<ThemeOption> Themes { get; } =
-    [
-        new("System", ThemeVariant.Default),
-        new("Light", ThemeVariant.Light),
-        new("Dark", ThemeVariant.Dark)
-    ];
+    public IReadOnlyList<LanguageOption> Languages => Strings.Instance.Languages;
 
+    private static IReadOnlyList<ThemeOption> CreateThemes() =>
+    [
+        new ThemeOption(Strings.Get("SystemTheme"), ThemeVariant.Default),
+        new ThemeOption(Strings.Get("LightTheme"), ThemeVariant.Light),
+        new ThemeOption(Strings.Get("DarkTheme"), ThemeVariant.Dark)
+    ];
 
     partial void OnSelectedThemeChanged(ThemeOption? value)
     {
@@ -53,6 +60,22 @@ public partial class SettingsPageViewModel : ViewModelBase, IViewModel
 
         SettingsService.Settings.Theme = value.Variant;
         ThemeManager.SetTheme(value.Variant);
+        SettingsService.Save();
+    }
+
+    partial void OnSelectedLanguageChanged(LanguageOption? value)
+    {
+        if (value is null)
+            return;
+
+        SettingsService.Settings.Language = value.Code;
+        Strings.Instance.Language = value.Code;
+        ApplicationManager.LocalizeDefaults();
+        foreach (var download in ApplicationManager.DownloadManager.Downloads)
+            download.RefreshLocalizedText();
+        var selectedVariant = SelectedTheme?.Variant;
+        Themes = CreateThemes();
+        SelectedTheme = Themes.FirstOrDefault(theme => theme.Variant == selectedVariant);
         SettingsService.Save();
     }
 

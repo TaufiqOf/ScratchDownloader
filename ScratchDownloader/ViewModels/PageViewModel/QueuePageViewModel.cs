@@ -6,6 +6,7 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
+using ScratchDownloader.Localization;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
 
@@ -18,12 +19,22 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
 
     public QueuePageViewModel()
     {
+        Strings.Instance.PropertyChanged += OnStringsChanged;
         InitializeQueues();
         if (Queues.FirstOrDefault() is { } firstQueue) firstQueue.IsExpanded = true;
     }
 
-    public IReadOnlyList<QueueDaysOfWeek> QueueDays { get; } = Enum.GetValues<QueueDaysOfWeek>();
-    public IReadOnlyList<OperationMode> OperationModes { get; } = Enum.GetValues<OperationMode>();
+    private void OnStringsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != "Item[]")
+            return;
+
+        OnPropertyChanged(nameof(QueueDays));
+        OnPropertyChanged(nameof(OperationModes));
+    }
+
+    public IReadOnlyList<QueueDaysOfWeek> QueueDays => Enum.GetValues<QueueDaysOfWeek>();
+    public IReadOnlyList<OperationMode> OperationModes => Enum.GetValues<OperationMode>();
     public ObservableCollection<int> SegmentOptions { get; } = [1, 2, 4, 8, 16, 32];
 
     private void InitializeQueues()
@@ -50,7 +61,7 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
         var newQueue = new Queue
         {
             Id = newId,
-            Name = $"New Queue #{Queues.Count + 1}",
+            Name = Strings.Format("NewQueueName", Queues.Count + 1),
             IsExpanded = true // Automatically expands the new queue (which collapses others)
         };
         foreach (var queue in Queues) queue.IsExpanded = false;
@@ -71,15 +82,15 @@ public partial class QueuePageViewModel : ViewModelBase, IViewModel
             return;
         if (queue.Id == "Main")
         {
-            DialogManager.ShowMessage(MessageDialogType.Error, "Error", "The main queue cannot be deleted.");
+            DialogManager.ShowMessage(MessageDialogType.Error, Strings.Get("Error"), Strings.Get("CannotDeleteMainQueue"));
             return;
         }
 
-        DialogManager.ShowMessage(MessageDialogType.Warning, "Delete Queue",
-            $"Are you sure you want to delete the queue '{queue?.Name}'?",
-            "Yes",
+        DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get("DeleteQueue"),
+            Strings.Format("DeleteQueueConfirmation", queue.Name),
+            Strings.Get("Yes"),
             new RelayCommand(() => ConfirmDeleteQueue(queue)),
-            "No");
+            Strings.Get("No"));
     }
 
     private void ConfirmDeleteQueue(Queue? queue)

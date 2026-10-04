@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:ScratchDownloader.Localization"
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
              x:Class="ScratchDownloader.Views.PageControls.SettingsPageView"
              x:DataType="pageViewModel:SettingsPageViewModel">
@@ -11,11 +12,11 @@
 
             <!-- HEADER -->
             <StackPanel Spacing="5">
-                <TextBlock Text="Settings"
+                <TextBlock Text="{loc:Loc Settings}"
                            FontSize="30"
                            FontWeight="Bold" />
 
-                <TextBlock Text="Configure ScratchDownloader"
+                <TextBlock Text="{loc:Loc ConfigureApp}"
                            Opacity="0.6" />
             </StackPanel>
 
@@ -26,10 +27,10 @@
             <!-- APPEARANCE -->
             <StackPanel Spacing="16">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Appearance"
+                    <TextBlock Text="{loc:Loc Appearance}"
                                FontSize="18"
                                FontWeight="SemiBold" />
-                    <TextBlock Text="Change the appearance of the application, including theme and accent color."
+                    <TextBlock Text="{loc:Loc AppearanceDescription}"
                                Opacity="0.6"
                                FontSize="13" />
                 </StackPanel>
@@ -39,15 +40,28 @@
                         Padding="20">
                     <Grid ColumnDefinitions="*,Auto">
                         <Grid RowDefinitions="Auto,Auto">
-                            <TextBlock Text="Theme"
+                            <TextBlock Text="{loc:Loc Theme}"
                                        FontSize="15" />
-                            <TextBlock Grid.Row="1" Text="Select the theme for the application."
+                            <TextBlock Grid.Row="1" Text="{loc:Loc SelectTheme}"
                                        FontSize="12" />
                         </Grid>
                         <ComboBox Grid.Column="1" Width="150"
                                   HorizontalAlignment="Left"
                                   ItemsSource="{Binding Themes}"
                                   SelectedItem="{Binding SelectedTheme}" />
+                    </Grid>
+                </Border>
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                        CornerRadius="12"
+                        Padding="20">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="{loc:Loc Language}"
+                                   FontSize="15"
+                                   VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1"
+                                  Width="150"
+                                  ItemsSource="{Binding Languages}"
+                                  SelectedItem="{Binding SelectedLanguage}" />
                     </Grid>
                 </Border>
             </StackPanel>
@@ -59,10 +73,10 @@
             <!-- APPLICATION -->
             <StackPanel Spacing="16">
                 <StackPanel Spacing="4">
-                    <TextBlock Text="Application"
+                    <TextBlock Text="{loc:Loc Application}"
                                FontSize="18"
                                FontWeight="SemiBold" />
-                    <TextBlock Text="Application settings allow you to customize the behavior of the application."
+                    <TextBlock Text="{loc:Loc ApplicationDescription}"
                                Opacity="0.6"
                                FontSize="13" />
                 </StackPanel>
@@ -72,9 +86,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="Start at Login"
+                                <TextBlock Text="{loc:Loc StartAtLogin}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="Start the application when you log in."
+                                <TextBlock Grid.Row="1" Text="{loc:Loc StartAtLoginDescription}"
                                            FontSize="12" />
                             </Grid>
 
@@ -88,9 +102,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="Start Minimized"
+                                <TextBlock Text="{loc:Loc StartMinimized}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="Start the application minimized in the system tray."
+                                <TextBlock Grid.Row="1" Text="{loc:Loc StartMinimizedDescription}"
                                            FontSize="12" />
                             </Grid>
 
@@ -104,9 +118,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="Notifications"
+                                <TextBlock Text="{loc:Loc Notifications}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="Enable or disable notifications."
+                                <TextBlock Grid.Row="1" Text="{loc:Loc NotificationsDescription}"
                                            FontSize="12" />
                             </Grid>
 
@@ -119,9 +133,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="Auto Show Widget"
+                                <TextBlock Text="{loc:Loc AutoShowWidget}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="Open the download widget when a download starts."
+                                <TextBlock Grid.Row="1" Text="{loc:Loc AutoShowWidgetDescription}"
                                            FontSize="12" />
                             </Grid>
 
@@ -134,9 +148,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="Auto Close Widget"
+                                <TextBlock Text="{loc:Loc AutoCloseWidget}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="Close the download widget when a download finishes."
+                                <TextBlock Grid.Row="1" Text="{loc:Loc AutoCloseWidgetDescription}"
                                            FontSize="12" />
                             </Grid>
 
@@ -150,9 +164,9 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="Auto Close Widget Interval"
+                                <TextBlock Text="{loc:Loc AutoCloseWidgetInterval}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="Set the interval (in seconds) to automatically close the download widget after a download finishes."
+                                <TextBlock Grid.Row="1" Text="{loc:Loc AutoCloseWidgetIntervalDescription}"
                                            FontSize="12" />
                             </Grid>
 

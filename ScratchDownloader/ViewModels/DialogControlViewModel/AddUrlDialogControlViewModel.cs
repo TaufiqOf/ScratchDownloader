@@ -10,6 +10,7 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScratchDownloader.Helper;
+using ScratchDownloader.Localization;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
 
@@ -134,14 +135,14 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
     private async Task Browse()
     {
         DownloadItemInformation.SavePath = await ApplicationManager.SaveFileDialog(
-            "Select Save Location",
+            Strings.Get("SelectSaveLocation"),
             Path.GetDirectoryName(DownloadItemInformation.SavePath) ??
             Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
             DownloadItemInformation.SavePath ?? "download",
             false,
             new List<FilePickerFileType>
             {
-                new("All Files")
+                new(Strings.Get("AllFiles"))
                 {
                     Patterns = new List<string> { "*" }
                 }
@@ -153,15 +154,15 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
     {
         if (File.Exists(DownloadItemInformation.SavePath))
         {
-          await DialogManager.ShowMessage(MessageDialogType.Warning, "File Exists",
-                $"The file \"{Path.GetFileName(DownloadItemInformation.SavePath)}\" already exists. Do you want to rename it or overwrite the existing file?"
-                , "Rename and Continue",
+          await DialogManager.ShowMessage(MessageDialogType.Warning, Strings.Get("FileExists"),
+                Strings.Format("FileExistsMessage", Path.GetFileName(DownloadItemInformation.SavePath))
+                , Strings.Get("RenameAndContinue"),
                 new RelayCommand(() =>
                 {
                     RenameFile();
                     PositiveCommand?.Execute(null);
                 }),
-                "Overwrite",
+                Strings.Get("Overwrite"),
                 new RelayCommand(() =>
                 {
                     // Do nothing on overwrite

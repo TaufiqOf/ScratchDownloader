@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Humanizer;
+using ScratchDownloader.Localization;
 
 namespace ScratchDownloader.Models;
 
@@ -80,7 +81,7 @@ public partial class DownloadProgress : ViewModelBase
 
         if (secondsRemaining < 1)
         {
-            Eta = "< 1 second";
+            Eta = Strings.Get("LessThanOneSecond");
             return;
         }
 

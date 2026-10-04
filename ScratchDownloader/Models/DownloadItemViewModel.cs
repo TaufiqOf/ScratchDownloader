@@ -12,6 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 using Humanizer;
 using LiveChartsCore.SkiaSharpView.Painting;
 using ScratchDownloader.Helper;
+using ScratchDownloader.Localization;
 using ScratchDownloader.Services;
 using ScratchDownloader.Views.Windows;
 
@@ -108,6 +109,7 @@ public partial class DownloadItemViewModel : ObservableObject
     [ObservableProperty] public partial DateTime? AddedDateTime { get; set; }
     [JsonIgnore][ObservableProperty] public partial string AddedDateTimeText { get; set; }
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
+    [JsonIgnore] public string StatusText => Strings.Get($"Status{Status}");
     [ObservableProperty] public partial DownloadProgress Progress { get; set; } = new();
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
     [ObservableProperty] private bool _isTopMost;
@@ -130,24 +132,24 @@ public partial class DownloadItemViewModel : ObservableObject
 
         if (age < TimeSpan.FromMinutes(1))
         {
-            AddedDateTimeText = "Now";
+            AddedDateTimeText = Strings.Get("Now");
         }
         else if (age < TimeSpan.FromHours(1))
         {
             // Humanizer: "10 minutes ago" -> "10m ago"
-            AddedDateTimeText = $"{Math.Max(1, (int)age.TotalMinutes)}m ago";
+            AddedDateTimeText = Strings.Format("MinutesAgo", Math.Max(1, (int)age.TotalMinutes));
         }
         else if (age < TimeSpan.FromHours(24))
         {
-            AddedDateTimeText = $"{(int)age.TotalHours}h ago";
+            AddedDateTimeText = Strings.Format("HoursAgo", (int)age.TotalHours);
         }
         else if (localDate.Date == DateTime.Now.Date.AddDays(-1))
         {
-            AddedDateTimeText = $"Yesterday {localDate:HH:mm}";
+            AddedDateTimeText = Strings.Format("Yesterday", localDate.ToString("HH:mm"));
         }
         else if (age < TimeSpan.FromDays(7))
         {
-            AddedDateTimeText = $"{(int)age.TotalDays}d ago";
+            AddedDateTimeText = Strings.Format("DaysAgo", (int)age.TotalDays);
         }
         else
         {
@@ -155,6 +157,17 @@ public partial class DownloadItemViewModel : ObservableObject
                 ? localDate.ToString("MMM d HH:mm")
                 : localDate.ToString("MMM d, yyyy");
         }
+    }
+
+    partial void OnStatusChanged(DownloadStatus value)
+    {
+        OnPropertyChanged(nameof(StatusText));
+    }
+
+    public void RefreshLocalizedText()
+    {
+        OnPropertyChanged(nameof(StatusText));
+        OnAddedDateTimeChanged(AddedDateTime);
     }
 
     private void DownloadServiceOnErrorOccurred(object? sender, string e)
@@ -278,9 +291,9 @@ public partial class DownloadItemViewModel : ObservableObject
     private void DeleteFile()
     {
         DialogManager.ShowMessage(MessageDialogType.Warning,
-            "Delete File",
-            "Are you sure you want to delete the downloaded file?",
-            "Yes",
+            Strings.Get("DeleteFile"),
+            Strings.Get("DeleteDownloadedFile"),
+            Strings.Get("Yes"),
             new RelayCommand(() =>
             {
                 ApplicationManager.DownloadManager.Remove(this);
@@ -298,7 +311,7 @@ public partial class DownloadItemViewModel : ObservableObject
                 });
 
                 _widgetWindow?.Close();
-            }), "No");
+            }), Strings.Get("No"));
     }
 
     [RelayCommand]

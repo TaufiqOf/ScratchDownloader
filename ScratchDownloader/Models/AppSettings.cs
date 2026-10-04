@@ -14,6 +14,7 @@ public class AppSettings
     public bool CloseWidgetEnabled { get; set; } = true;
 
     public ThemeVariant Theme { get; set; } = ThemeVariant.Default;
+    public string Language { get; set; } = "en";
     public Dictionary<string, Category> Categories { get; set; } = ApplicationManager.Categories;
     public Dictionary<string, Queue> Queues { get; set; } = ApplicationManager.Queues;
     public double AutoCloseInterval { get; set; } = 1000;

@@ -1,5 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:ScratchDownloader.Localization"
              xmlns:local="using:ScratchDownloader"
              x:Class="ScratchDownloader.App">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
@@ -18,12 +19,12 @@
                 <TrayIcon.Menu>
                     <NativeMenu>
 
-                        <NativeMenuItem Header="Show"
+                        <NativeMenuItem Header="{loc:Loc Show}"
                                         Click="ShowWindow_OnClick" />
 
                         <NativeMenuItemSeparator />
 
-                        <NativeMenuItem Header="Exit"
+                        <NativeMenuItem Header="{loc:Loc Exit}"
                                         Click="Exit_OnClick" />
 
                     </NativeMenu>

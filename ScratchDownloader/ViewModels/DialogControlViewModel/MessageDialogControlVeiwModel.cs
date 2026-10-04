@@ -1,6 +1,7 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FluentIcons.Common;
+using ScratchDownloader.Localization;
 using ScratchDownloader.Models;
 
 namespace ScratchDownloader.ViewModels.DialogControlViewModel;
@@ -9,13 +10,13 @@ public partial class MessageDialogControlViewModel : ADialogViewModel
 {
     public MessageDialogControlViewModel(MessageDialogType messageDialogType,
         string? message,
-        string? positiveButtonText = "OK",
-        string? negativeButtonText = "Cancel",
+        string? positiveButtonText = null,
+        string? negativeButtonText = null,
         bool isCancelButtonVisible = false)
     {
         Message = message;
-        NegativeButtonText = negativeButtonText;
-        PositiveButtonText = positiveButtonText;
+        NegativeButtonText = negativeButtonText ?? Strings.Get("Cancel");
+        PositiveButtonText = positiveButtonText ?? Strings.Get("Ok");
         IsCancelButtonVisible = isCancelButtonVisible;
 
         switch (messageDialogType)
