@@ -198,10 +198,9 @@
                 Margin="0,5,0,0" />
 
         <!-- DOWNLOAD DATA GRID -->
-        <Grid Grid.Row="2" RowDefinitions="*,Auto,200">
+        <Grid Grid.Row="2" RowDefinitions="*,Auto,300">
             <dg:DataGrid Grid.Row="0"
                          Margin="0,8"
-                         Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush }"
                          ItemsSource="{Binding FilteredDownloads}"
                          SelectedItem="{Binding SelectedDownload}"
                          AutoGenerateColumns="False"
@@ -458,8 +457,7 @@
                           ResizeBehavior="PreviousAndNext"
                           Background="{DynamicResource SystemControlForegroundBaseLowBrush}"
                           Cursor="SizeNorthSouth" />
-            <TabControl Grid.Row="2"
-                        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush }">
+            <TabControl Grid.Row="2">
                 <TabItem Header="FILE"
                          FontSize="12"
                          FontWeight="Bold">

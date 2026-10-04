@@ -6,18 +6,63 @@
              mc:Ignorable="d"
              x:DataType="pageViewModel:HomePageViewModel"
              x:Class="ScratchDownloader.Views.Control.FilePropertiesTabControl">
-    <Border
-        CornerRadius="5"
+   <Border CornerRadius="8"
         BorderThickness="1"
-        Padding="8"
-        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-        BorderBrush="{DynamicResource SystemControlBackgroundAltHighBrush}"
-        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
-        <Grid RowDefinitions="Auto,Auto,Auto"
-              ColumnDefinitions="Auto,Auto,Auto" 
-              HorizontalAlignment="Stretch" 
-              VerticalAlignment="Stretch">
+        Padding="16"
+        Margin="0,8"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Top"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+        BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+    <Grid ColumnDefinitions="Auto, *"
+          RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+        <Grid.Styles>
+            <!-- Label Style -->
+            <Style Selector="TextBlock.Label">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                <Setter Property="Margin" Value="0,0,16,12"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <!-- Value Style -->
+            <Style Selector="TextBlock.Value">
+                <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                <Setter Property="Margin" Value="0,0,0,12"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            </Style>
+        </Grid.Styles>
 
-        </Grid>
-    </Border>
+        <!-- File Name -->
+        <TextBlock Grid.Row="0" Grid.Column="0" Text=" Name:" Classes="Label"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Classes="Value"
+                   FontWeight="Medium"
+                   Text="{Binding SelectedDownload?.DownloadItemInformation?.SavedFileName}"/>
+
+        <!-- File Path -->
+        <TextBlock Grid.Row="1" Grid.Column="0" Text=" Path:" Classes="Label"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Classes="Value"
+                   TextWrapping="Wrap"
+                   Text="{Binding SelectedDownload?.DownloadItemInformation?.SavePath}"/>
+
+        <!-- File Size -->
+        <TextBlock Grid.Row="2" Grid.Column="0" Text=" Size:" Classes="Label"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Classes="Value">
+            <Run Text="{Binding SelectedDownload?.Progress.FileSizeDisplay}"></Run>
+            <Run FontSize="10" Text=" ("></Run>
+            <Run FontSize="10" Text="{Binding SelectedDownload?.DownloadItemInformation?.FileSizeBytes}"></Run>
+            <Run FontSize="10" Text=" bytes )"></Run>
+        </TextBlock>
+
+        <!-- File Host -->
+        <TextBlock Grid.Row="3" Grid.Column="0" Text=" Host:" Classes="Label"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Classes="Value"
+                   Text="{Binding SelectedDownload?.DownloadItemInformation?.FileHost}"/>
+
+        <!-- File Added -->
+        <TextBlock Grid.Row="4" Grid.Column="0" Text=" Added:" Classes="Label" Margin="0,0,16,0"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" Classes="Value" Margin="0"
+                   Text="{Binding SelectedDownload?.AddedDateTime}"/>
+    </Grid>
+</Border>
 </UserControl>

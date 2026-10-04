@@ -23,9 +23,8 @@ public partial class DownloadItemViewModel : ObservableObject
     private ICheckSumService _checkSumService;
     private IDownloadService _downloadService;
     private DownloadWidgetWindow? _widgetWindow;
-
     private const int MaxSpeedSamples = 60;
-
+    private readonly System.Timers.Timer _updateTimer = new(1000);
     private readonly DispatcherTimer _speedChartTimer = new()
     {
         Interval = TimeSpan.FromSeconds(1)
@@ -52,6 +51,16 @@ public partial class DownloadItemViewModel : ObservableObject
 
     public DownloadItemViewModel()
     {
+        _updateTimer.Elapsed += (sender, args) =>
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                OnAddedDateTimeChanged(AddedDateTime);
+                OnPropertyChanged(nameof(AddedDateTime));
+                OnPropertyChanged(nameof(AddedDateTimeText));
+            });
+        };
+        _updateTimer.Start();
     }
 
     private void SpeedChartTimerOnTick(object? sender, EventArgs e)
@@ -97,7 +106,7 @@ public partial class DownloadItemViewModel : ObservableObject
                                   Status == DownloadStatus.CheckingChecksum);
 
     [ObservableProperty] public partial DateTime? AddedDateTime { get; set; }
-    [ObservableProperty] public partial string AddedDateTimeText { get; set; }
+    [JsonIgnore][ObservableProperty] public partial string AddedDateTimeText { get; set; }
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
     [ObservableProperty] public partial DownloadProgress Progress { get; set; } = new();
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
