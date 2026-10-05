@@ -41,6 +41,7 @@ public static class Language
         public const string DarkTheme = "SettingsPage.DarkTheme";
         public const string ConfigureApp = "SettingsPage.ConfigureApp";
         public const string Appearance = "SettingsPage.Appearance";
+
         public const string AppearanceDescription = "SettingsPage.AppearanceDescription";
         public const string Theme = "SettingsPage.Theme";
         public const string SelectTheme = "SettingsPage.SelectTheme";
@@ -58,6 +59,9 @@ public static class Language
         public const string AutoCloseWidgetDescription = "SettingsPage.AutoCloseWidgetDescription";
         public const string AutoCloseWidgetInterval = "SettingsPage.AutoCloseWidgetInterval";
         public const string AutoCloseWidgetIntervalDescription = "SettingsPage.AutoCloseWidgetIntervalDescription";
+        
+        public const string Widget = "SettingsPage.Widget";
+        public const string WidgetDescription = "SettingsPage.WidgetDescription";
     }
 
     public static class MainPage
@@ -261,7 +265,9 @@ public static class Language
         public const string Queue = "ConfigurationPropertiesTabControl.Queue";
         public const string Category = "ConfigurationPropertiesTabControl.Category";
         public const string MaxSpeedLimit = "ConfigurationPropertiesTabControl.MaxSpeedLimit";
-        public const string StartTime = "ConfigurationPropertiesTabControl.StartTime";
+        public const string DownloadStatusLabel = "ConfigurationPropertiesTabControl.DownloadStatusLabel";
+        public const string DownloadCompletedAt = "ConfigurationPropertiesTabControl.DownloadCompletedAt";
+        public const string TimeTaken = "ConfigurationPropertiesTabControl.TimeTaken";
     }
     
     public static class FilePropertiesTabControl

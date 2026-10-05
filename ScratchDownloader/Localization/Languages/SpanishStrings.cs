@@ -168,6 +168,9 @@ internal static class SpanishStrings
         ["DownloadWidgetWindow.WidgetSpeed"] = "VELOCIDAD",
         ["DownloadWidgetWindow.WidgetEta"] = "RESTANTE",
         ["DownloadWidgetWindow.WidgetSize"] = "TAMAÑO",
+        ["SettingsPage.Widget"] = "Widget",
+        ["SettingsPage.WidgetDescription"] = "Configura el widget de descargas, incluidos su apariencia y comportamiento.",
+
         ["DefaultCategory.Documents"] = "Documentos",
         ["DefaultCategory.DocumentsDescription"] = "Documentos de texto, hojas de cálculo y presentaciones",
         ["DefaultCategory.Videos"] = "Vídeos",
@@ -200,6 +203,8 @@ internal static class SpanishStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "Cola:",
         ["ConfigurationPropertiesTabControl.Category"] = "Categoría:",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Límite máximo de velocidad:",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "Hora de inicio:"
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "Completado el:",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "Estado:",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Tiempo transcurrido:"
     };
 }

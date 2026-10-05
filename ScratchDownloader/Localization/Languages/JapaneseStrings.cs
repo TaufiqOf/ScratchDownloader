@@ -168,6 +168,9 @@ internal static class JapaneseStrings
         ["DownloadWidgetWindow.WidgetSpeed"] = "速度",
         ["DownloadWidgetWindow.WidgetEta"] = "残り時間",
         ["DownloadWidgetWindow.WidgetSize"] = "サイズ",
+        ["SettingsPage.Widget"] = "ウィジェット",
+        ["SettingsPage.WidgetDescription"] = "外観や動作など、ダウンロードウィジェットを設定します。",
+
         ["DefaultCategory.Documents"] = "ドキュメント",
         ["DefaultCategory.DocumentsDescription"] = "テキスト文書、スプレッドシート、プレゼンテーション",
         ["DefaultCategory.Videos"] = "ビデオ",
@@ -200,6 +203,8 @@ internal static class JapaneseStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "キュー:",
         ["ConfigurationPropertiesTabControl.Category"] = "カテゴリ:",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "最大速度制限:",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "開始時間:"
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "完了日時:",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "状態:",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "所要時間:"
     };
 }

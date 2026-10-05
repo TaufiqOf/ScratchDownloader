@@ -13,7 +13,7 @@
             Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
             BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
         <Grid ColumnDefinitions="Auto, *"
-              RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
             <Grid.Styles>
                 <!-- Label Style -->
                 <Style Selector="TextBlock.Label">
@@ -31,32 +31,37 @@
                 </Style>
             </Grid.Styles>
 
-            <!-- File Name -->
+            <!-- Category -->
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.Category}}" Classes="Label" />
             <TextBlock Grid.Row="0" Grid.Column="1" Classes="Value"
                        FontWeight="Medium"
                        Text="{Binding SelectedDownload?.DownloadItemInformation?.Category.Name}" />
 
-            <!-- File Path -->
+            <!-- Queue -->
             <TextBlock Grid.Row="1" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.Queue}}" Classes="Label" />
             <TextBlock Grid.Row="1" Grid.Column="1" Classes="Value"
                        TextWrapping="Wrap"
                        Text="{Binding SelectedDownload?.DownloadItemInformation?.Queue.Name}" />
 
-            <!-- File Size -->
+            <!-- Max Speed Limit -->
             <TextBlock Grid.Row="2" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.MaxSpeedLimit}}" Classes="Label" />
             <TextBlock Grid.Row="2" Grid.Column="1" Classes="Value" 
                        TextWrapping="Wrap"
                        Text="{Binding SelectedDownload?.CapSpeedText}" />
-            <!-- File Host -->
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.StartTime}}" Classes="Label" />
-            <TextBlock Grid.Row="3" Grid.Column="1" Classes="Value"
-                       Text="{Binding SelectedDownload?.DownloadItemInformation?.FileHost}" />
 
-            <!-- File Added -->
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="{localization:Loc AddedProperty}" Classes="Label" Margin="0,0,16,0" />
-            <TextBlock Grid.Row="4" Grid.Column="1" Classes="Value" Margin="0"
-                       Text="{Binding SelectedDownload?.AddedDateTimeText}" />
+            <!-- Download Status -->
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.DownloadStatusLabel}}" Classes="Label" />
+            <TextBlock Grid.Row="3" Grid.Column="1" Classes="Value"
+                       Text="{Binding SelectedDownload?.StatusText}" />
+            
+            <!-- Download Completed At -->
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.DownloadCompletedAt}}" Classes="Label" />
+            <TextBlock Grid.Row="4" Grid.Column="1" Classes="Value"
+                       Text="{Binding SelectedDownload?.DownloadCompletedAt}" />
+            <!-- Time Taken -->
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="{localization:Loc {x:Static localization:Language+ConfigurationPropertiesTabControl.TimeTaken}}" Classes="Label" />
+            <TextBlock Grid.Row="5" Grid.Column="1" Classes="Value"
+                       Text="{Binding SelectedDownload?.TimeTakenText}" />
         </Grid>
     </Border>
 </UserControl>

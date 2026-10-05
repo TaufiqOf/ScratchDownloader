@@ -168,6 +168,9 @@ internal static class ChineseStrings
         ["DownloadWidgetWindow.WidgetSpeed"] = "速度",
         ["DownloadWidgetWindow.WidgetEta"] = "剩余时间",
         ["DownloadWidgetWindow.WidgetSize"] = "大小",
+        ["SettingsPage.Widget"] = "小部件",
+        ["SettingsPage.WidgetDescription"] = "配置下载小部件，包括其外观和行为。",
+
         ["DefaultCategory.Documents"] = "文档",
         ["DefaultCategory.DocumentsDescription"] = "文本文档、电子表格和演示文稿",
         ["DefaultCategory.Videos"] = "视频",
@@ -200,6 +203,8 @@ internal static class ChineseStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "队列：",
         ["ConfigurationPropertiesTabControl.Category"] = "类别：",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "最大速度限制：",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "开始时间："
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "完成时间：",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "状态：",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "耗时："
     };
 }

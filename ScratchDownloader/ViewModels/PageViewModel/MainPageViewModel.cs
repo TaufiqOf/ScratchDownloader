@@ -9,7 +9,7 @@ namespace ScratchDownloader.ViewModels.PageViewModel;
 
 public partial class MainPageViewModel : ViewModelBase
 {
-    private readonly Dictionary<string, IViewModel> _views = new();
+    [ObservableProperty] private Dictionary<string, IViewModel> _views = new();
 
     [ObservableProperty] private IViewModel? _currentView;
 
@@ -40,7 +40,7 @@ public partial class MainPageViewModel : ViewModelBase
 
     private void UpdateSelectedView(string viewName)
     {
-        if (_views.TryGetValue(viewName, out var view))
+        if (Views.TryGetValue(viewName, out var view))
         {
             if (CurrentView is ViewModelBase viewModel) viewModel.OnNavigatedFrom();
             if (view is ViewModelBase newViewModel) newViewModel.OnNavigatedTo();

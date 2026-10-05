@@ -47,19 +47,18 @@ public partial class DownloadWidgetWindow : Window
 
         InitializeComponent();
         var csvdata0 = GetData($"avares://ScratchDownloader/Assets/Ani1.csv");
+        SnakeBackground.CsvPaths= new List<string>();
 
         AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani1.csv"));
         AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani2.csv"));
         AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani3.csv"));
         AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani4.csv"));
-
-        SnakeBackground.CsvData = csvdata0;
         UpdatePlayPauseButton();
     }
 
-    private static string GetData(string avaresScratchdownloaderAssetsAni1Csv)
+    private static string GetData(string csv)
     {
-        using var stream0 = AssetLoader.Open(new Uri(avaresScratchdownloaderAssetsAni1Csv));
+        using var stream0 = AssetLoader.Open(new Uri(csv));
         using var reader0 = new StreamReader(stream0);
         var csvdata0 = reader0.ReadToEnd();
         return csvdata0;
@@ -133,27 +132,9 @@ public partial class DownloadWidgetWindow : Window
 
     public void AddCsvToLoop(string csvData)
     {
-        if (string.IsNullOrWhiteSpace(csvData)) return;
+        SnakeBackground.CsvPaths.Add(csvData);
 
-        _csvList.Add(csvData);
-
-        if (_currentCsvIndex == -1)
-        {
-            PlayNextInLoop();
-        }
     }
     
-
-
-    private void OnSnakeAnimationCompleted(object? sender, EventArgs e)
-    {
-        Dispatcher.UIThread.Post(PlayNextInLoop, DispatcherPriority.Normal);
-    }
-
-    private void PlayNextInLoop()
-    {
-        if (_csvList.Count == 0) return;
-        _currentCsvIndex = (_currentCsvIndex + 1) % _csvList.Count;
-        SnakeBackground.CsvData = _csvList[_currentCsvIndex];
-    }
+   
 }

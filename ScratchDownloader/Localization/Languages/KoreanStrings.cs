@@ -168,6 +168,9 @@ internal static class KoreanStrings
         ["DownloadWidgetWindow.WidgetSpeed"] = "속도",
         ["DownloadWidgetWindow.WidgetEta"] = "남은 시간",
         ["DownloadWidgetWindow.WidgetSize"] = "크기",
+        ["SettingsPage.Widget"] = "위젯",
+        ["SettingsPage.WidgetDescription"] = "모양과 동작을 포함하여 다운로드 위젯을 구성합니다.",
+
         ["DefaultCategory.Documents"] = "문서",
         ["DefaultCategory.DocumentsDescription"] = "텍스트 문서, 스프레드시트, 프레젠테이션",
         ["DefaultCategory.Videos"] = "동영상",
@@ -201,6 +204,8 @@ internal static class KoreanStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "대기열:",
         ["ConfigurationPropertiesTabControl.Category"] = "카테고리:",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "최대 속도 제한:",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "시작 시간:"
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "완료 시간:",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "상태:",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "소요 시간:"
     };
 }

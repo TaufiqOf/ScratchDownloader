@@ -168,6 +168,9 @@ internal static class BanglaStrings
         ["DownloadWidgetWindow.WidgetSpeed"] = "গতি",
         ["DownloadWidgetWindow.WidgetEta"] = "আনুমানিক সময়",
         ["DownloadWidgetWindow.WidgetSize"] = "আকার",
+        ["SettingsPage.Widget"] = "উইজেট",
+        ["SettingsPage.WidgetDescription"] = "ডাউনলোড উইজেটের চেহারা ও আচরণসহ কনফিগার করুন।",
+
         ["DefaultCategory.Documents"] = "ডকুমেন্ট",
         ["DefaultCategory.DocumentsDescription"] = "টেক্সট ডকুমেন্ট, স্প্রেডশিট এবং প্রেজেন্টেশন",
         ["DefaultCategory.Videos"] = "ভিডিও",
@@ -201,6 +204,8 @@ internal static class BanglaStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "সারি:",
         ["ConfigurationPropertiesTabControl.Category"] = "বিভাগ:",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "সর্বোচ্চ গতিসীমা:",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "শুরুর সময়:"
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "সম্পন্ন হয়েছে:",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "অবস্থা:",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "সময় লেগেছে:"
     };
 }

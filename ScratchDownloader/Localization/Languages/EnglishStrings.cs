@@ -189,6 +189,9 @@ internal static class EnglishStrings
         ["SettingsPage.AutoCloseWidgetInterval"] = "Auto Close Widget Interval",
         ["SettingsPage.AutoCloseWidgetIntervalDescription"] = "Set the interval (in seconds) to automatically close the download widget after a download finishes.",
         
+        ["SettingsPage.Widget"] ="Widget",
+        ["SettingsPage.WidgetDescription"] ="Configure the download widget, including its appearance and behavior.",
+        
         ["DefaultCategory.Documents"] = "Documents",
         ["DefaultCategory.DocumentsDescription"] = "Text documents, spreadsheets, and presentations",
         ["DefaultCategory.Videos"] = "Videos",
@@ -219,6 +222,10 @@ internal static class EnglishStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "Queue:",
         ["ConfigurationPropertiesTabControl.Category"] = "Category:",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Max Speed Limit:",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "Start Time:"
+        
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "Completed On:",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "Status:",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Time Taken:",
+
     };
 }

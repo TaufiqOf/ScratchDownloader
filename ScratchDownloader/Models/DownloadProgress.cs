@@ -17,7 +17,7 @@ public partial class DownloadProgress : ViewModelBase
     [ObservableProperty] public partial string Speed { get; set; } = "0.00 B/s";
     [JsonIgnore][ObservableProperty] public partial string FileSizeDisplay { get; set; } = "0/0 MB";
     [ObservableProperty] public partial string Eta { get; set; }
-
+    
     [ObservableProperty]
     public partial ConcurrentDictionary<int, SegmentProgress> SegmentProgress { get; set; } = new();
 

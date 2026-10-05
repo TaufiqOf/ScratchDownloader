@@ -26,6 +26,9 @@ public partial class DownloadItemViewModel : ObservableObject
     private DownloadWidgetWindow? _widgetWindow;
     private const int MaxSpeedSamples = 60;
     private readonly System.Timers.Timer _updateTimer = new(1000);
+    private readonly Stopwatch _timeTakenStopwatch = new();
+    private TimeSpan _timeTaken = TimeSpan.Zero;
+
     private readonly DispatcherTimer _speedChartTimer = new()
     {
         Interval = TimeSpan.FromSeconds(1)
@@ -107,15 +110,27 @@ public partial class DownloadItemViewModel : ObservableObject
                                   Status == DownloadStatus.CheckingChecksum);
 
     [ObservableProperty] public partial DateTime? AddedDateTime { get; set; }
-    [JsonIgnore][ObservableProperty] public partial string AddedDateTimeText { get; set; }
+    [JsonIgnore] [ObservableProperty] public partial string AddedDateTimeText { get; set; }
     [ObservableProperty] public partial DownloadStatus Status { get; set; } = DownloadStatus.Queued;
     [JsonIgnore] public string StatusText => Strings.Get($"{nameof(Language.DownloadStatus)}.{Status}");
     [ObservableProperty] public partial DownloadProgress Progress { get; set; } = new();
+    [ObservableProperty] public partial DateTime? DownloadCompletedAt { get; set; }
+    [ObservableProperty] public partial TimeSpan TimeTaken { get; set; }
+    [JsonIgnore] [ObservableProperty] public partial string TimeTakenText { get; set; }
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
     [ObservableProperty] private bool _isTopMost;
-    public string CapSpeedText => CapSpeedInKBps == 0 ? "  " : ByteSize.FromBytes(CapSpeedInKBps * 1024).Humanize("0.00") + "/s";
+
+    public string CapSpeedText =>
+        CapSpeedInKBps == 0 ? "  " : ByteSize.FromBytes(CapSpeedInKBps * 1024).Humanize("0.00") + "/s";
+
     public event EventHandler<DownloadStatus>? StatusChanged;
 
+    partial void OnTimeTakenChanged(TimeSpan value)
+    {
+        TimeTakenText = value.Humanize(2, minUnit: Humanizer.TimeUnit.Second);
+    }
+
+    
     partial void OnAddedDateTimeChanged(DateTime? value)
     {
         if (value is null)
@@ -159,16 +174,43 @@ public partial class DownloadItemViewModel : ObservableObject
         }
     }
 
-    partial void OnStatusChanged(DownloadStatus value)
+
+    partial void OnStatusChanged(DownloadStatus oldValue, DownloadStatus newValue)
     {
         OnPropertyChanged(nameof(StatusText));
+        if(oldValue == newValue)
+            return;
+        if(newValue == DownloadStatus.Initializing || newValue == DownloadStatus.Queued)
+        {
+            _timeTakenStopwatch.Reset();
+            TimeTaken = TimeSpan.Zero;
+        }
+        if (newValue == DownloadStatus.Downloading)
+        {
+            _timeTakenStopwatch.Start();
+        }
+
+        if (newValue == DownloadStatus.Paused)  
+        {
+            _timeTakenStopwatch.Stop();
+            TimeTaken += _timeTakenStopwatch.Elapsed;
+        }
+
+        if (newValue == DownloadStatus.Completed || newValue == DownloadStatus.Failed ||
+            newValue == DownloadStatus.ChecksumFailed || newValue == DownloadStatus.Stopped)
+        {
+            _timeTakenStopwatch.Stop();
+            TimeTaken += _timeTakenStopwatch.Elapsed;
+        }
     }
+
 
     public void RefreshLocalizedText()
     {
         OnPropertyChanged(nameof(StatusText));
         OnAddedDateTimeChanged(AddedDateTime);
     }
+    
 
     private void DownloadServiceOnErrorOccurred(object? sender, string e)
     {
@@ -208,13 +250,16 @@ public partial class DownloadItemViewModel : ObservableObject
             {
                 Status = DownloadStatus.ChecksumFailed;
                 StatusChanged?.Invoke(this, DownloadStatus.ChecksumFailed);
+                DownloadCompletedAt = DateTime.Now;
                 return;
             }
         }
 
         Status = DownloadStatus.Completed;
+        DownloadCompletedAt = DateTime.Now;
         StatusChanged?.Invoke(this, DownloadStatus.Completed);
     }
+
 
     [RelayCommand]
     public void ShowWidget()
@@ -426,5 +471,14 @@ public partial class DownloadItemViewModel : ObservableObject
     private void ShowProperties()
     {
         // Show properties
+    }
+
+    public void Closing()
+    {
+        if (Status == DownloadStatus.Downloading)
+        {
+           TimeTaken = _timeTakenStopwatch.Elapsed;
+        }
+
     }
 }

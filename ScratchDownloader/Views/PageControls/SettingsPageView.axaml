@@ -88,7 +88,8 @@
                             <Grid RowDefinitions="Auto,Auto">
                                 <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartAtLogin}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartAtLoginDescription}}"
+                                <TextBlock Grid.Row="1"
+                                           Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartAtLoginDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -104,7 +105,8 @@
                             <Grid RowDefinitions="Auto,Auto">
                                 <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartMinimized}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartMinimizedDescription}}"
+                                <TextBlock Grid.Row="1"
+                                           Text="{loc:Loc {x:Static loc:Language+SettingsPage.StartMinimizedDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -120,7 +122,8 @@
                             <Grid RowDefinitions="Auto,Auto">
                                 <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.Notifications}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.NotificationsDescription}}"
+                                <TextBlock Grid.Row="1"
+                                           Text="{loc:Loc {x:Static loc:Language+SettingsPage.NotificationsDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -128,6 +131,24 @@
                                           HorizontalAlignment="Left" />
                         </Grid>
                     </Border>
+
+                </StackPanel>
+            </StackPanel>
+
+            <Border BorderThickness="2"
+                    BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Margin="5,5" />
+            <!-- Widget -->
+            <StackPanel Spacing="16">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.Widget}}"
+                               FontSize="18"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.WidgetDescription}}"
+                               Opacity="0.6"
+                               FontSize="13" />
+                </StackPanel>
+                <StackPanel Spacing="8">
                     <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                             CornerRadius="12"
                             Padding="20">
@@ -135,7 +156,8 @@
                             <Grid RowDefinitions="Auto,Auto">
                                 <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoShowWidget}}"
                                            FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoShowWidgetDescription}}"
+                                <TextBlock Grid.Row="1"
+                                           Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoShowWidgetDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -148,9 +170,11 @@
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidget}}"
-                                           FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidgetDescription}}"
+                                <TextBlock
+                                    Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidget}}"
+                                    FontSize="15" />
+                                <TextBlock Grid.Row="1"
+                                           Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidgetDescription}}"
                                            FontSize="12" />
                             </Grid>
 
@@ -158,27 +182,27 @@
                                           HorizontalAlignment="Left" />
                         </Grid>
                     </Border>
-                    
+
                     <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
                             CornerRadius="12"
                             Padding="20">
                         <Grid ColumnDefinitions="*,Auto">
                             <Grid RowDefinitions="Auto,Auto">
-                                <TextBlock Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidgetInterval}}"
-                                           FontSize="15" />
-                                <TextBlock Grid.Row="1" Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidgetIntervalDescription}}"
+                                <TextBlock
+                                    Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidgetInterval}}"
+                                    FontSize="15" />
+                                <TextBlock Grid.Row="1"
+                                           Text="{loc:Loc {x:Static loc:Language+SettingsPage.AutoCloseWidgetIntervalDescription}}"
                                            FontSize="12" />
                             </Grid>
 
                             <NumericUpDown Width="150" Grid.Column="1" Value="{Binding CloseWidgetInterval}"
-                                          HorizontalAlignment="Left" />
+                                           HorizontalAlignment="Left" />
                         </Grid>
                     </Border>
                 </StackPanel>
             </StackPanel>
-
         </StackPanel>
-
     </ScrollViewer>
 
 </UserControl>

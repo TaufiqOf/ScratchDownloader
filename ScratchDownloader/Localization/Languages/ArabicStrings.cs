@@ -37,6 +37,8 @@ internal static class ArabicStrings
         ["SettingsPage.AutoCloseWidgetDescription"] = "إغلاق أداة التنزيل عند انتهاء التنزيل.",
         ["SettingsPage.AutoCloseWidgetInterval"] = "مهلة الإغلاق التلقائي للأداة",
         ["SettingsPage.AutoCloseWidgetIntervalDescription"] = "المدة بالثواني لإغلاق الأداة تلقائيًا بعد انتهاء التنزيل.",
+        
+        
         ["MainPage.Dashboard"] = "لوحة التحكم",
         ["Common.Category"] = "الفئة",
         ["Common.Queue"] = "قائمة الانتظار",
@@ -168,6 +170,9 @@ internal static class ArabicStrings
         ["DownloadWidgetWindow.WidgetSpeed"] = "السرعة",
         ["DownloadWidgetWindow.WidgetEta"] = "المتبقي",
         ["DownloadWidgetWindow.WidgetSize"] = "الحجم",
+        ["SettingsPage.Widget"] = "الأداة",
+        ["SettingsPage.WidgetDescription"] = "إعداد أداة التنزيل، بما في ذلك مظهرها وسلوكها.",
+
         ["DefaultCategory.Documents"] = "المستندات",
         ["DefaultCategory.DocumentsDescription"] = "المستندات النصية وجداول البيانات والعروض التقديمية",
         ["DefaultCategory.Videos"] = "الفيديو",
@@ -200,6 +205,8 @@ internal static class ArabicStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "قائمة الانتظار:",
         ["ConfigurationPropertiesTabControl.Category"] = "الفئة:",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "الحد الأقصى للسرعة:",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "وقت البدء:"
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "تاريخ الإكمال:",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "الحالة:",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "الوقت المستغرق:"
     };
 }

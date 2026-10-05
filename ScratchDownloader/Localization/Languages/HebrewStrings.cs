@@ -168,6 +168,9 @@ internal static class HebrewStrings
         ["DownloadWidgetWindow.WidgetSpeed"] = "מהירות",
         ["DownloadWidgetWindow.WidgetEta"] = "זמן משוער",
         ["DownloadWidgetWindow.WidgetSize"] = "גודל",
+        ["SettingsPage.Widget"] = "ווידג'ט",
+        ["SettingsPage.WidgetDescription"] = "הגדר את ווידג'ט ההורדה, כולל המראה וההתנהגות שלו.",
+
         ["DefaultCategory.Documents"] = "מסמכים",
         ["DefaultCategory.DocumentsDescription"] = "מסמכי טקסט, גיליונות אלקטרוניים ומצגות",
         ["DefaultCategory.Videos"] = "סרטונים",
@@ -200,6 +203,8 @@ internal static class HebrewStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "תור:",
         ["ConfigurationPropertiesTabControl.Category"] = "קטגוריה:",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "מגבלת מהירות מרבית:",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "שעת התחלה:"
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "הושלם בתאריך:",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "מצב:",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "משך הזמן:"
     };
 }

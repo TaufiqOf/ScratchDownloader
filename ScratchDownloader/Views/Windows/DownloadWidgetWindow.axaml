@@ -36,10 +36,9 @@
         BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
         CornerRadius="8">
         <Grid>
-            <control:SnakeArrowBackground 
+            <control:CsvDrawBackground 
                 x:Name="SnakeBackground"
                 AccentBrush="{DynamicResource SystemAccentColor}"
-                AnimationCompleted="OnSnakeAnimationCompleted"
                 IsHitTestVisible="False" />
             <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                 <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">

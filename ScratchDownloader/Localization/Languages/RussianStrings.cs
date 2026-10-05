@@ -168,6 +168,9 @@ internal static class RussianStrings
         ["DownloadWidgetWindow.WidgetSpeed"] = "СКОРОСТЬ",
         ["DownloadWidgetWindow.WidgetEta"] = "ОСТАЛОСЬ",
         ["DownloadWidgetWindow.WidgetSize"] = "РАЗМЕР",
+        ["SettingsPage.Widget"] = "Виджет",
+        ["SettingsPage.WidgetDescription"] = "Настройте виджет загрузок, включая его внешний вид и поведение.",
+
         ["DefaultCategory.Documents"] = "Документы",
         ["DefaultCategory.DocumentsDescription"] = "Текстовые документы, таблицы и презентации",
         ["DefaultCategory.Videos"] = "Видео",
@@ -200,6 +203,8 @@ internal static class RussianStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "Очередь:",
         ["ConfigurationPropertiesTabControl.Category"] = "Категория:",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Максимальная скорость:",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "Время начала:"
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "Завершено:",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "Статус:",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Затраченное время:"
     };
 }

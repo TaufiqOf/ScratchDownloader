@@ -168,6 +168,9 @@ internal static class HindiStrings
         ["DownloadWidgetWindow.WidgetSpeed"] = "गति",
         ["DownloadWidgetWindow.WidgetEta"] = "अनुमानित समय",
         ["DownloadWidgetWindow.WidgetSize"] = "आकार",
+        ["SettingsPage.Widget"] = "विजेट",
+        ["SettingsPage.WidgetDescription"] = "डाउनलोड विजेट के रूप-रंग और व्यवहार सहित उसे कॉन्फ़िगर करें।",
+
         ["DefaultCategory.Documents"] = "दस्तावेज़",
         ["DefaultCategory.DocumentsDescription"] = "टेक्स्ट दस्तावेज़, स्प्रेडशीट और प्रस्तुतियाँ",
         ["DefaultCategory.Videos"] = "वीडियो",
@@ -200,6 +203,8 @@ internal static class HindiStrings
         ["ConfigurationPropertiesTabControl.Queue"] = "कतार:",
         ["ConfigurationPropertiesTabControl.Category"] = "श्रेणी:",
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "अधिकतम गति सीमा:",
-        ["ConfigurationPropertiesTabControl.StartTime"] = "प्रारंभ समय:"
+        ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "पूरा होने का समय:",
+        ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "स्थिति:",
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "लगा हुआ समय:"
     };
 }
