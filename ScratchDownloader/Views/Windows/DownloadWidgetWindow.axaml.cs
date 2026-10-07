@@ -46,23 +46,16 @@ public partial class DownloadWidgetWindow : Window
             Application.Current?.Dispatcher.Post(() => Close());
 
         InitializeComponent();
-        var csvdata0 = GetData($"avares://ScratchDownloader/Assets/Ani1.csv");
         SnakeBackground.CsvPaths= new List<string>();
-
-        AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani1.csv"));
-        AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani2.csv"));
-        AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani3.csv"));
-        AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani4.csv"));
+        for (int i = 1; i <= 6; i++)
+        {
+            AddCsvToLoop(GetData($"avares://ScratchDownloader/Assets/Ani{i}.csv"));
+        }
+        
         UpdatePlayPauseButton();
     }
 
-    private static string GetData(string csv)
-    {
-        using var stream0 = AssetLoader.Open(new Uri(csv));
-        using var reader0 = new StreamReader(stream0);
-        var csvdata0 = reader0.ReadToEnd();
-        return csvdata0;
-    }
+
 
     private void AutoCloseIfCompleted()
     {
@@ -129,9 +122,27 @@ public partial class DownloadWidgetWindow : Window
     {
         this.Close();
     }
-
-    public void AddCsvToLoop(string csvData)
+    private static string GetData(string csv)
     {
+        try
+        {
+            using var stream0 = AssetLoader.Open(new Uri(csv));
+            using var reader0 = new StreamReader(stream0);
+            var csvdata0 = reader0.ReadToEnd();
+            return csvdata0;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return string.Empty;
+        }
+    }
+    private void AddCsvToLoop(string csvData)
+    {
+        if(string.IsNullOrEmpty(csvData))
+        {
+            return;
+        }
         SnakeBackground.CsvPaths.Add(csvData);
 
     }
