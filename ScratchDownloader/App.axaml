@@ -8,32 +8,6 @@
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
-    <!-- System tray -->
-    <TrayIcon.Icons>
-        <TrayIcons>
-
-            <TrayIcon
-                Icon="avares://ScratchDownloader/Assets/avalonia-logo.ico"
-                ToolTipText="ScratchDownloader" Clicked="TrayIconOnClicked">
-
-                <TrayIcon.Menu>
-                    <NativeMenu>
-
-                        <NativeMenuItem Header="{loc:Loc {x:Static loc:Language+Tray.Show}}"
-                                        Click="ShowWindow_OnClick" />
-
-                        <NativeMenuItemSeparator />
-
-                        <NativeMenuItem Header="{loc:Loc {x:Static loc:Language+Tray.Exit}}"
-                                        Click="Exit_OnClick" />
-
-                    </NativeMenu>
-                </TrayIcon.Menu>
-
-            </TrayIcon>
-
-        </TrayIcons>
-    </TrayIcon.Icons>
 
     <Application.Styles>
         <Style Selector="Window">

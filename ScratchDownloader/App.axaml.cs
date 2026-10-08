@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform;
 using ScratchDownloader.Helper;
 using ScratchDownloader.Localization;
 using ScratchDownloader.Models;
@@ -21,6 +23,7 @@ public class App : Application
     private MainWindow? _mainWindow;
     private bool _startedFromAutostart;
     private TrayIcon? _trayIcon;
+    private NativeMenu _rootMenu;
 
     public override void Initialize()
     {
@@ -57,6 +60,12 @@ public class App : Application
             ApplicationManager.MainWindow = desktop.MainWindow;
             _mainWindow.Closing +=
                 MainWindow_OnClosing;
+            RebuildTrayMenu();
+            Strings.Instance.PropertyChanged +=
+                (_, args) =>
+                {
+                    if (args.PropertyName == nameof(Strings.Language)) RebuildTrayMenu();
+                };
             if (SettingsService.Settings.StartMinimized)
                 _mainWindow.Loaded +=
                     (sender, args) => { _mainWindow.Hide(); };
@@ -67,6 +76,8 @@ public class App : Application
                 downloadItemViewModel.DownloadItemInformation.Loading = false;
                 ApplicationManager.DownloadManager.Add(downloadItemViewModel,false,true);
             }
+            
+            WidgetManager.OnWidgetChanged += OnWidgetChanged;  
         }
         else if (ApplicationLifetime is IActivityApplicationLifetime singleViewFactoryApplicationLifetime)
         {
@@ -84,6 +95,12 @@ public class App : Application
 
         base.OnFrameworkInitializationCompleted();
     }
+
+    private void OnWidgetChanged(List<DownloadWidgetWindow> obj)
+    {
+        PopulateTrayMenu(_rootMenu, obj);
+    }
+    
 
 
     private void OnShutdownRequested(
@@ -132,9 +149,27 @@ public class App : Application
 
     private void RebuildTrayMenu()
     {
-        if (_trayIcon == null) return;
+        if (_trayIcon == null)
+        {
+            _trayIcon = new TrayIcon
+            {
+                Icon = new WindowIcon(
+                    AssetLoader.Open(new Uri("avares://ScratchDownloader/Assets/avalonia-logo.ico"))),
+                ToolTipText = "ScratchDownloader"
+            };
+            _trayIcon.Clicked += TrayIconOnClicked;
+            TrayIcon.SetIcons(this, new TrayIcons { _trayIcon });
+        }
 
-        var rootMenu = new NativeMenu();
+        _rootMenu = new NativeMenu();
+        _rootMenu.Opening += (_, _) => PopulateTrayMenu(_rootMenu,  new List<DownloadWidgetWindow>()); 
+        PopulateTrayMenu(_rootMenu, new List<DownloadWidgetWindow>());
+        _trayIcon.Menu = _rootMenu;
+    }
+
+    private void PopulateTrayMenu(NativeMenu rootMenu, List<DownloadWidgetWindow> downloadWidgetWindows)
+    {
+        rootMenu.Items.Clear();
 
         // --------------------------------------------------------
         // Show
@@ -155,6 +190,19 @@ public class App : Application
 
         rootMenu.Items.Add(
             new NativeMenuItemSeparator());
+        
+        if(downloadWidgetWindows.Count > 0)
+        {
+            // Add download widget windows to the tray menu
+            foreach (var widget in downloadWidgetWindows)
+            {
+                if(widget.ItemViewModel.DownloadItemInformation?.SavedFileName == null)
+                    continue;
+                var widgetItem = new NativeMenuItem(widget.ItemViewModel.DownloadItemInformation.SavedFileName);
+                widgetItem.Click += (_, _) => widget.Activate();
+                rootMenu.Items.Add(widgetItem);
+            }
+        }
 
         // --------------------------------------------------------
         // Exit
@@ -167,8 +215,6 @@ public class App : Application
             Exit_OnClick;
 
         rootMenu.Items.Add(exitItem);
-
-        _trayIcon.Menu = rootMenu;
     }
 
     // ============================================================
