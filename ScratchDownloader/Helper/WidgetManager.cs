@@ -16,9 +16,10 @@ public static class WidgetManager
     private const int Margin = 10;
     private const int Spacing = 10;
     private static readonly List<DownloadWidgetWindow> _widgets = new();
-
+    
     private static Window? _mainWindow;
 
+    public static Action<List<DownloadWidgetWindow>>? OnWidgetChanged { get; set; }
     public static void Initialize(Window window)
     {
         _mainWindow = window;
@@ -41,9 +42,14 @@ public static class WidgetManager
         {
             _widgets.Remove(downloadWidgetWindow);
             RepositionNotifications();
+            OnWidgetChanged?.Invoke(_widgets);
         };
 
-        downloadWidgetWindow.Opened += (_, _) => { RepositionNotifications(); };
+        downloadWidgetWindow.Opened += (_, _) =>
+        {
+            RepositionNotifications();
+            OnWidgetChanged?.Invoke(_widgets);
+        };
 
         downloadWidgetWindow.Show();
 
