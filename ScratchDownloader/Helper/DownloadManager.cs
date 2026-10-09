@@ -48,7 +48,8 @@ public partial class DownloadManager : ViewModelBase
         CancellationToken cancellationToken)
     {
         var newDownloadItemInformationViewModel = new DownloadItemInformationViewModel();
-        await newDownloadItemInformationViewModel.GetDataFromUrl(url, cancellationToken);
+        var service = new DirectDownloadService();
+        await newDownloadItemInformationViewModel.GetDataFromUrl(url, service, cancellationToken);
         return newDownloadItemInformationViewModel;
     }
 
@@ -93,7 +94,7 @@ public partial class DownloadManager : ViewModelBase
         downloadItemViewModel.AddedDateTime ??= DateTime.UtcNow;
         downloadItemViewModel.StatusChanged += DownloadItemViewModelOnStatusChanged;
         SettingsService.Settings.Categories[downloadItemInformationViewModel.Category.Id].ApplicationCount++;
-        SettingsService.Settings.Queues[ downloadItemInformationViewModel.Queue.Id].ApplicationCount++;
+        SettingsService.Settings.Queues[downloadItemInformationViewModel.Queue.Id].ApplicationCount++;
 
         UpdateStatus();
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
@@ -158,7 +159,8 @@ public partial class DownloadManager : ViewModelBase
 
         ActiveCount =
             Strings.Format(Language.HomePage.ActiveCount,
-                Downloads.Count(d => d.Status == DownloadStatus.Downloading || d.Status == DownloadStatus.Initializing));
+                Downloads.Count(d =>
+                    d.Status == DownloadStatus.Downloading || d.Status == DownloadStatus.Initializing));
         TotalSpeed =
             $"{Strings.Get(Language.HomePage.TotalSpeed)} {ByteSize.FromBytes(Downloads.Sum(d => d.Progress.BytesPerSecond))
                 .Humanize("0.00")}/s";
@@ -200,7 +202,8 @@ public partial class DownloadManager : ViewModelBase
         downloadItemViewModel.Stop();
         downloadItemViewModel.StatusChanged -= DownloadItemViewModelOnStatusChanged;
         Downloads.Remove(downloadItemViewModel);
-        SettingsService.Settings.Categories[downloadItemViewModel.DownloadItemInformation.Category.Id].ApplicationCount--;
+        SettingsService.Settings.Categories[downloadItemViewModel.DownloadItemInformation.Category.Id]
+            .ApplicationCount--;
         SettingsService.Settings.Queues[downloadItemViewModel.DownloadItemInformation.Queue.Id].ApplicationCount--;
         SettingsService.HistorySettings.DownloadItems = Downloads.ToList();
         SettingsService.Save();

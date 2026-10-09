@@ -20,7 +20,6 @@ public partial class DownloadItemInformationViewModel : ObservableObject
         Loading = true;
     }
 
-    private readonly HttpClient _httpClient = new();
     [ObservableProperty] public partial string FileName { get; set; } = string.Empty;
     [ObservableProperty] public partial string SavedFileName { get; set; } = string.Empty;
     [ObservableProperty] public partial string FileExtension { get; set; } = string.Empty;
@@ -35,50 +34,30 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     [ObservableProperty] public partial bool StartImmediately { get; set; } = true;
     public Uri Uri { get; set; }
 
-    public async Task GetDataFromUrl(string uri, CancellationToken cancellationToken = default)
+    public async Task GetDataFromUrl(string uri, IDownloadService downloadService,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            Loading = false;
-            using var request = new HttpRequestMessage(
-                HttpMethod.Head,
-                uri);
-
-            using var response = await _httpClient.SendAsync(
-                request,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken);
-
-            response.EnsureSuccessStatusCode();
-
-            var finalUri = response.RequestMessage?.RequestUri ?? new Uri(uri);
-            Uri = finalUri;
-            var fileName = GetFileName(response, finalUri);
-
-            FileName = fileName;
-            FileExtension = GetExtension(fileName);
-            FileHost = finalUri.Host;
-
-            // Extract content length header
-            if (response.Content.Headers.ContentLength.HasValue)
-            {
-                var bytes = response.Content.Headers.ContentLength.Value;
-                FileSizeBytes = bytes;
-                FileSizeDisplay = FormatFileSize(bytes);
-            }
-            else
-            {
-                FileSizeBytes = 0;
-                FileSizeDisplay = Strings.Get(Language.Common.UnknownSize);
-            }
+            Loading = true;
+            var data = await downloadService.GetFileDataInformation(uri, cancellationToken);
 
             var settingsCategory = SettingsService.Settings.Categories["Other"];
 
             var category = SettingsService.Settings.Categories.Values.FirstOrDefault(q =>
                 q.Extension.Contains(FileExtension, StringComparison.OrdinalIgnoreCase));
-            Category = category ?? settingsCategory;
 
+            Uri = data.FinalUri;
+            FileName = data.FileName;
+            FileExtension = data.FileExtension;
+            FileHost = data.FinalUri.Host;
+            FileSizeBytes = data.FileSizeBytes;
+            FileSizeDisplay = data.FileSizeBytes == 0
+                ? FormatFileSize(data.FileSizeBytes)
+                : Strings.Get(Language.Common.UnknownSize);
+            Category = category ?? settingsCategory;
             SavePath = Path.Combine(Category.Folder, FileName);
+            Loading = false;
         }
         catch (Exception e)
         {
@@ -86,40 +65,6 @@ public partial class DownloadItemInformationViewModel : ObservableObject
             throw;
         }
     }
-
-
-    private static string GetFileName(
-        HttpResponseMessage response,
-        Uri uri)
-    {
-        var contentDisposition =
-            response.Content.Headers.ContentDisposition;
-
-        var name = contentDisposition?.FileNameStar ??
-                   contentDisposition?.FileName;
-
-        if (!string.IsNullOrWhiteSpace(name))
-            return name.Trim('"');
-
-        var pathName = Path.GetFileName(uri.LocalPath);
-
-        if (!string.IsNullOrWhiteSpace(pathName))
-            return pathName;
-
-        return Strings.Get(Language.FilePropertiesTabControl.DownloadFileName);
-    }
-
-
-    private static string GetExtension(string fileName)
-    {
-        var extension = Path.GetExtension(fileName);
-
-        if (string.IsNullOrWhiteSpace(extension))
-            return Strings.Get(Language.FilePropertiesTabControl.FileType);
-
-        return extension.TrimStart('.').ToUpperInvariant();
-    }
-
 
     private static string FormatFileSize(long bytes)
     {
@@ -134,7 +79,6 @@ public partial class DownloadItemInformationViewModel : ObservableObject
         var settingsQueue = SettingsService.Settings.Queues["Main"];
         Queue = Category.QueueId is not null ? SettingsService.Settings.Queues[Category.QueueId] : settingsQueue;
         Segments = Queue.Segments;
-
     }
 
 

@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using ScratchDownloader.Localization;
 using ScratchDownloader.Models;
 using Timer = System.Timers.Timer;
 
@@ -17,15 +18,15 @@ public class DirectDownloadService : IDownloadService
 {
     private readonly HttpClient _httpClient;
     private CancellationTokenSource? _cts;
-
     private double _lastProgressReported;
     private const int BufferSize = 81920; // 80 KB buffer size for reading/writing
+    readonly Timer _progressTimer = new Timer(1000); // 1 second interval
 
     public double CapSpeed { get; set; } = 0; // 0 means no cap
     private string MetadataFilePath => $"{DestinationFilePath}.meta.json";
     public DownloadProgress Progress { get; set; } = new();
-    public event EventHandler<string>? ErrorOccurred;
 
+    public event EventHandler<string>? ErrorOccurred;
     public event EventHandler? Completed;
     public event EventHandler? Initializing;
     public event EventHandler? Downloading;
@@ -33,8 +34,8 @@ public class DirectDownloadService : IDownloadService
     public int SegmentCount { get; set; } = 4;
     public Uri? Uri { get; set; }
     public string? DestinationFilePath { get; set; }
-    Timer _progressTimer = new Timer(1000); // 1 second interval
-
+    
+    
     public DirectDownloadService(HttpClient? httpClient = null)
     {
         _httpClient = httpClient ?? new HttpClient();
@@ -58,6 +59,48 @@ public class DirectDownloadService : IDownloadService
             _progressTimer.Start();
         };
         _progressTimer.Start();
+    }
+
+    public async Task<FileDataInformation> GetFileDataInformation(string uri,
+        CancellationToken cancellationToken = default)
+    {
+        var data = new FileDataInformation();
+        using var request = new HttpRequestMessage(
+            HttpMethod.Head,
+            uri);
+        HttpClient _httpClient = new();
+
+        using var response = await _httpClient.SendAsync(
+            request,
+            HttpCompletionOption.ResponseHeadersRead,
+            cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        var finalUri = response.RequestMessage?.RequestUri ?? new Uri(uri);
+        var fileName = GetFileName(response, finalUri);
+        var fileExtension = GetExtension(fileName);
+
+        long fileSizeBytes = 0;
+
+        // Extract content length header
+        if (response.Content.Headers.ContentLength.HasValue)
+        {
+            var bytes = response.Content.Headers.ContentLength.Value;
+            fileSizeBytes = bytes;
+        }
+        else
+        {
+            fileSizeBytes = 0;
+        }
+
+        data.Uri = finalUri;
+        data.FinalUri = finalUri;
+        data.FileName = fileName;
+        data.FileSizeBytes = fileSizeBytes;
+        data.FileExtension = fileExtension;
+
+        return data;
     }
 
     public void Start(CancellationToken cancellationToken = default)
@@ -400,5 +443,37 @@ public class DirectDownloadService : IDownloadService
         if (Uri == null) throw new InvalidOperationException("Uri must be set before starting.");
         if (string.IsNullOrWhiteSpace(DestinationFilePath))
             throw new InvalidOperationException("DestinationFilePath must be set.");
+    }
+
+    private static string GetFileName(
+        HttpResponseMessage response,
+        Uri uri)
+    {
+        var contentDisposition =
+            response.Content.Headers.ContentDisposition;
+
+        var name = contentDisposition?.FileNameStar ??
+                   contentDisposition?.FileName;
+
+        if (!string.IsNullOrWhiteSpace(name))
+            return name.Trim('"');
+
+        var pathName = Path.GetFileName(uri.LocalPath);
+
+        if (!string.IsNullOrWhiteSpace(pathName))
+            return pathName;
+
+        return Strings.Get(Language.FilePropertiesTabControl.DownloadFileName);
+    }
+
+
+    private static string GetExtension(string fileName)
+    {
+        var extension = Path.GetExtension(fileName);
+
+        if (string.IsNullOrWhiteSpace(extension))
+            return Strings.Get(Language.FilePropertiesTabControl.FileType);
+
+        return extension.TrimStart('.').ToUpperInvariant();
     }
 }

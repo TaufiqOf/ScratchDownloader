@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ScratchDownloader.Models;
 
@@ -14,6 +15,10 @@ public interface IDownloadService
     event EventHandler Completed;
     event EventHandler Initializing;
     event EventHandler? Downloading;
+
+    Task<FileDataInformation> GetFileDataInformation(string uri,
+        CancellationToken cancellationToken = default);
+    
     void Start(CancellationToken cancellationToken = default);
     void Resume(CancellationToken cancellationToken = default);
     void Pause();
