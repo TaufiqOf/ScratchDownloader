@@ -12,22 +12,32 @@ public static class ServiceFactory
     {
         _downloadServices = new List<Type>
         {
+            typeof(YoutubeDownloadService),
             typeof(DirectDownloadService),
             typeof(BitTorrentDownloadService),
         };
     }
     public static IDownloadService CreateDownloadService(string url)
     {
-        foreach (var serviceType in _downloadServices)
+        try
         {
-            if (Activator.CreateInstance(serviceType) is IDownloadService service)
+            foreach (var serviceType in _downloadServices)
             {
-                if (service.CanHandle(url))
+                if (Activator.CreateInstance(serviceType) is IDownloadService service)
                 {
-                    return service;
+                    if (service.CanHandle(url))
+                    {
+                        return service;
+                    }
                 }
             }
+            throw new NotSupportedException($"No download service available for URL: {url}");
         }
-        throw new NotSupportedException($"No download service available for URL: {url}");
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+       
     }
 }

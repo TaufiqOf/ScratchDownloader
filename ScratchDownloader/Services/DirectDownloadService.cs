@@ -32,11 +32,11 @@ public class DirectDownloadService : IDownloadService
     public event EventHandler? Completed;
     public event EventHandler? Initializing;
     public event EventHandler? Downloading;
-    
-    
-    public DirectDownloadService(HttpClient? httpClient = null)
+
+
+    public DirectDownloadService()
     {
-        _httpClient = httpClient ?? new HttpClient();
+        _httpClient = new HttpClient();
         _progressTimer.Elapsed += (sender, args) =>
         {
             _progressTimer.Stop();
@@ -54,6 +54,7 @@ public class DirectDownloadService : IDownloadService
             {
                 Progress.BytesPerSecond = Progress.SegmentProgress.Values.Sum(s => s.BytesPerSecond);
             }
+
             _progressTimer.Start();
         };
         _progressTimer.Start();
@@ -105,7 +106,8 @@ public class DirectDownloadService : IDownloadService
     {
         if (string.IsNullOrWhiteSpace(url))
             return false;
-
+        if(url.Contains("youtube.com") || url.Contains("youtu.be"))
+            return false;
         return Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri)
                && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)
                && !uri.AbsolutePath.EndsWith(".torrent", StringComparison.OrdinalIgnoreCase);

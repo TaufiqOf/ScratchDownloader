@@ -25,6 +25,7 @@
         <PackageReference Include="FluentIcons.Common"/>
         <PackageReference Include="Humanizer.Core"/>
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" />
+        <PackageReference Include="YoutubeExplode" />
     </ItemGroup>
 
     <ItemGroup>

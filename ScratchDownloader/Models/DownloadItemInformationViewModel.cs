@@ -39,7 +39,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     {
         try
         {
-            Loading = true;
+            Loading = false;
             var data = await downloadService.GetFileDataInformation(uri, cancellationToken);
 
             var settingsCategory = SettingsService.Settings.Categories["Other"];
@@ -52,12 +52,11 @@ public partial class DownloadItemInformationViewModel : ObservableObject
             FileExtension = data.FileExtension;
             FileHost = data.FinalUri.Host;
             FileSizeBytes = data.FileSizeBytes;
-            FileSizeDisplay = data.FileSizeBytes == 0
+            FileSizeDisplay = data.FileSizeBytes != 0
                 ? FormatFileSize(data.FileSizeBytes)
                 : Strings.Get(Language.Common.UnknownSize);
             Category = category ?? settingsCategory;
             SavePath = Path.Combine(Category.Folder, FileName);
-            Loading = false;
         }
         catch (Exception e)
         {

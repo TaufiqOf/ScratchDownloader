@@ -6,11 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using bzTorrent;
 using bzTorrent.Data;
+using bzTorrent.DHT;
 using bzTorrent.IO;
 using ScratchDownloader.Models;
 
@@ -120,7 +122,8 @@ public class BitTorrentDownloadService : IDownloadService, IDisposable
             return true;
 
         return Uri.TryCreate(url, UriKind.Absolute, out var uri)
-               && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeFile)
+               && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps ||
+                   uri.Scheme == Uri.UriSchemeFile)
                && uri.AbsolutePath.EndsWith(".torrent", StringComparison.OrdinalIgnoreCase);
     }
 
@@ -293,61 +296,318 @@ public class BitTorrentDownloadService : IDownloadService, IDisposable
     private async Task DownloadFromTrackersAsync(CancellationToken token)
     {
         var trackerUrls = new List<string>();
-        if (!string.IsNullOrWhiteSpace(_metadata!.Announce)) trackerUrls.Add(_metadata.Announce);
-        trackerUrls.AddRange(_metadata.AnnounceList);
-        trackerUrls = trackerUrls.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct(StringComparer.OrdinalIgnoreCase)
+
+        if (!string.IsNullOrWhiteSpace(_metadata!.Announce))
+            trackerUrls.Add(_metadata.Announce);
+
+        if (_metadata.AnnounceList != null)
+            trackerUrls.AddRange(_metadata.AnnounceList);
+
+        trackerUrls = trackerUrls
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Select(s => s.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList();
+
         if (trackerUrls.Count == 0)
-            throw new InvalidOperationException("Torrent has no trackers and all available web seeds failed.");
+        {
+            throw new InvalidOperationException(
+                "The torrent contains no tracker URLs. " +
+                "This service currently does not implement DHT peer discovery.");
+        }
 
         var peers = new List<IPEndPoint>();
+        var dhtPeers = new ConcurrentDictionary<string, IPEndPoint>(StringComparer.Ordinal);
+
+        // DHT is independent of trackers and can find peers when a tracker returns
+        // only a small peer list. Keep it alive while connecting to discovered peers.
+        using var dht = new DHTClient();
+        dht.PeerFound += endpoint =>
+        {
+            if (endpoint != null)
+                dhtPeers.TryAdd(endpoint.ToString(), endpoint);
+        };
+
+        try
+        {
+            var bootstrapNodes = new List<IPEndPoint>();
+            foreach (var host in new[]
+                     {
+                         "router.bittorrent.com",
+                         "router.utorrent.com",
+                         "dht.transmissionbt.com"
+                     })
+            {
+                token.ThrowIfCancellationRequested();
+                try
+                {
+                    var address = Dns.GetHostAddresses(host)
+                        .FirstOrDefault(a => a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+                    if (address != null)
+                        bootstrapNodes.Add(new IPEndPoint(address, 6881));
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"DHT bootstrap DNS lookup failed ({host}): {ex.Message}");
+                }
+            }
+
+            if (bootstrapNodes.Count > 0)
+            {
+                await dht.BootstrapAsync(bootstrapNodes).ConfigureAwait(false);
+                dht.StartSearch(_metadata.Hash);
+                Debug.WriteLine($"DHT search started with {bootstrapNodes.Count} bootstrap nodes.");
+            }
+            else
+            {
+                Debug.WriteLine("DHT search not started: no bootstrap nodes resolved.");
+            }
+        }
+        catch (OperationCanceledException) when (token.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"DHT startup failed; continuing with trackers: {ex.Message}");
+        }
+
         foreach (var trackerUrl in trackerUrls)
         {
             token.ThrowIfCancellationRequested();
-            try
-            {
-                if (!trackerUrl.StartsWith("udp://", StringComparison.OrdinalIgnoreCase) &&
-                    !trackerUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
-                    !trackerUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                    continue;
 
-                ITrackerClient tracker = trackerUrl.StartsWith("udp://", StringComparison.OrdinalIgnoreCase)
-                    ? new UDPTrackerClient()
-                    : new HTTPTrackerClient();
-                // Use the long-standing three-argument API for compatibility with
-                // published bzTorrent versions that predate AnnounceRequest.
-                var peerId = CreatePeerId();
-                var announce = await Task.Run<BaseScraper.AnnounceInfo>(
-                    (Func<BaseScraper.AnnounceInfo>)(() => tracker.Announce(trackerUrl, _metadata.HashString, peerId)),
-                    token).ConfigureAwait(false);
-                if (announce?.Peers != null) peers.AddRange(announce.Peers);
-            }
-            catch (Exception ex) when (!token.IsCancellationRequested)
+            if (!trackerUrl.StartsWith("udp://", StringComparison.OrdinalIgnoreCase) &&
+                !trackerUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
+                !trackerUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
             {
-                // Continue through tracker tiers: failures of one tracker are not fatal.
-                Debug.WriteLine($"Tracker announce failed ({trackerUrl}): {ex.Message}");
+                Debug.WriteLine($"Skipping unsupported tracker URL: {trackerUrl}");
+                continue;
+            }
+
+            Debug.WriteLine($"Announcing to tracker: {trackerUrl}");
+
+            var trackerSucceeded = false;
+
+            for (var attempt = 1; attempt <= 3; attempt++)
+            {
+                token.ThrowIfCancellationRequested();
+
+                try
+                {
+                    ITrackerClient tracker =
+                        trackerUrl.StartsWith(
+                            "udp://",
+                            StringComparison.OrdinalIgnoreCase)
+                            ? new UDPTrackerClient()
+                            : new HTTPTrackerClient();
+
+                    var peerId = CreatePeerId();
+
+                    // Prefer the extended announce overload when this installed
+                    // bzTorrent version exposes it; otherwise fall back to the
+                    // stable three-argument API.
+                    var announceResult = await Task.Run(
+                        () => InvokeTrackerAnnounce(
+                            tracker,
+                            trackerUrl,
+                            _metadata.HashString,
+                            peerId,
+                            Math.Max(0L, _totalBytes - Progress.BytesDownloaded)),
+                        token
+                    ).ConfigureAwait(false);
+
+                    var peersProperty = announceResult?.GetType().GetProperty("Peers");
+                    var returnedPeers = (peersProperty?.GetValue(announceResult) as IEnumerable<IPEndPoint>)?
+                        .Where(p => p != null)
+                        .ToList() ?? new List<IPEndPoint>();
+
+                    Debug.WriteLine(
+                        $"Tracker {trackerUrl}, attempt {attempt}: " +
+                        $"returned {returnedPeers.Count} peers.");
+
+                    peers.AddRange(returnedPeers);
+                    trackerSucceeded = true;
+
+                    // A successful response with zero peers is still a successful
+                    // announce. Retry only if you want to query the tracker again
+                    // for a fresh peer list.
+                    if (returnedPeers.Count > 0)
+                        break;
+
+                    if (attempt < 3)
+                    {
+                        await Task.Delay(
+                            TimeSpan.FromSeconds(2 * attempt),
+                            token
+                        ).ConfigureAwait(false);
+                    }
+                }
+                catch (OperationCanceledException) when (token.IsCancellationRequested)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(
+                        $"Tracker {trackerUrl}, attempt {attempt} failed: " +
+                        $"{ex.GetType().Name}: {ex.Message}");
+
+                    if (attempt < 3)
+                    {
+                        await Task.Delay(
+                            TimeSpan.FromSeconds(2 * attempt),
+                            token
+                        ).ConfigureAwait(false);
+                    }
+                }
+            }
+
+            if (!trackerSucceeded)
+            {
+                Debug.WriteLine(
+                    $"Tracker failed after retries: {trackerUrl}");
             }
         }
 
-        peers = peers.Where(p => p != null).Distinct(new IpEndPointComparer()).Take(PeerLimit).ToList();
-        if (peers.Count == 0)
-            throw new IOException("No peers were returned by the torrent trackers.");
+        // Give DHT a short window to discover peers. DHT remains alive for the
+        // rest of this method, so new endpoints can also be collected meanwhile.
+        var dhtCollectionWindow = TimeSpan.FromSeconds(12);
+        var dhtWatch = Stopwatch.StartNew();
+        while (dhtWatch.Elapsed < dhtCollectionWindow)
+        {
+            token.ThrowIfCancellationRequested();
+            if (_completedPieces.Count == _metadata.PieceHashes.Count)
+                break;
 
-        var parallelism = Math.Max(1, Math.Min(Math.Max(1, SegmentCount), peers.Count));
+            await Task.Delay(250, token).ConfigureAwait(false);
+            if (dhtPeers.Count >= PeerLimit)
+                break;
+        }
+
+        peers.AddRange(dhtPeers.Values);
+
+        // Deduplicate endpoints from trackers and DHT.
+        peers = peers
+            .Where(p => p != null)
+            .Distinct(new IpEndPointComparer())
+            .Take(PeerLimit)
+            .ToList();
+
+        Debug.WriteLine(
+            $"Peer discovery complete: {peers.Count} unique peers " +
+            $"(DHT contributed {dhtPeers.Count}).");
+
+        if (peers.Count == 0)
+        {
+            throw new IOException(
+                "No peers were discovered by trackers or DHT. Check tracker diagnostics, " +
+                "outbound UDP connectivity, and the torrent's DHT support.");
+        }
+
+        var parallelism = Math.Max(
+            1,
+            Math.Min(Math.Max(1, SegmentCount), peers.Count));
+
         using var semaphore = new SemaphoreSlim(parallelism);
+
         var tasks = peers.Select(async peer =>
         {
             await semaphore.WaitAsync(token).ConfigureAwait(false);
+
             try
             {
+                Debug.WriteLine($"Trying BitTorrent peer: {peer}");
+
                 await DownloadPeerAsync(peer, token).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(
+                    $"Peer {peer} failed: {ex.GetType().Name}: {ex.Message}");
             }
             finally
             {
                 semaphore.Release();
             }
         }).ToArray();
+
         await Task.WhenAll(tasks).ConfigureAwait(false);
+    }
+
+    private object? InvokeTrackerAnnounce(
+        ITrackerClient tracker,
+        string trackerUrl,
+        string infoHash,
+        string peerId,
+        long bytesLeft)
+    {
+        var methods = tracker.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
+            .Where(m => m.Name == "Announce")
+            .OrderByDescending(m => m.GetParameters().Length)
+            .ToList();
+
+        foreach (var method in methods)
+        {
+            var parameters = method.GetParameters();
+            if (parameters.Length < 3 ||
+                parameters[0].ParameterType != typeof(string) ||
+                parameters[1].ParameterType != typeof(string) ||
+                parameters[2].ParameterType != typeof(string))
+                continue;
+
+            var args = new object?[parameters.Length];
+            args[0] = trackerUrl;
+            args[1] = infoHash;
+            args[2] = peerId;
+
+            for (var i = 3; i < parameters.Length; i++)
+            {
+                var parameter = parameters[i];
+                var name = parameter.Name?.ToLowerInvariant() ?? string.Empty;
+                object? value = parameter.HasDefaultValue ? parameter.DefaultValue : null;
+
+                if (name.Contains("download")) value = Progress.BytesDownloaded;
+                else if (name == "left" || name.Contains("bytesleft")) value = bytesLeft;
+                else if (name.Contains("upload")) value = 0L;
+                else if (name.Contains("numwant")) value = 200;
+                else if (name == "port" || name.Contains("listenport")) value = TrackerPort;
+                else if (name.Contains("ipaddress")) value = 0;
+                else if (name == "key") value = 0;
+                else if (name == "compact") value = 0;
+                else if (name == "event") value = 2;
+
+                if (value == null && parameter.ParameterType.IsValueType &&
+                    Nullable.GetUnderlyingType(parameter.ParameterType) == null)
+                    value = Activator.CreateInstance(parameter.ParameterType);
+
+                if (value != null && !parameter.ParameterType.IsInstanceOfType(value))
+                {
+                    try { value = Convert.ChangeType(value, parameter.ParameterType); }
+                    catch { value = parameter.HasDefaultValue ? parameter.DefaultValue : Activator.CreateInstance(parameter.ParameterType); }
+                }
+                args[i] = value;
+            }
+
+            try
+            {
+                Debug.WriteLine(
+                    $"Using tracker overload: {method} " +
+                    $"(numWant={args.Select((value, index) => new { value, index }) .FirstOrDefault(x => parameters[x.index].Name?.Contains("numwant", StringComparison.OrdinalIgnoreCase) == true)?.value ?? "default"})");
+                return method.Invoke(tracker, args);
+            }
+            catch (TargetInvocationException ex) when (ex.InnerException != null)
+            {
+                Debug.WriteLine($"Tracker announce overload failed: {ex.InnerException.Message}");
+                // Try the next available overload, including the legacy API.
+            }
+        }
+
+        throw new MissingMethodException(
+            "No compatible bzTorrent tracker Announce overload was found.");
     }
 
     private async Task DownloadPeerAsync(IPEndPoint endpoint, CancellationToken token)
@@ -388,6 +648,7 @@ public class BitTorrentDownloadService : IDownloadService, IDisposable
                 var lengths = _blockLengths.GetOrAdd(pieceIndex, _ => new ConcurrentDictionary<int, int>());
                 lengths[begin] = data.Length;
                 pending.TryRemove(keyBlock, out byte ignoredPending);
+                _requestedBlocks.TryRemove(keyBlock, out byte ignoredRequested);
                 var wantedBlocks = (int)Math.Ceiling(GetPieceLength(pieceIndex) / (double)BlockSize);
                 if (lengths.Count == wantedBlocks && VerifyPiece(pieceIndex, buffer))
                 {
@@ -405,14 +666,26 @@ public class BitTorrentDownloadService : IDownloadService, IDisposable
         {
             await Task.Run((Action)(() =>
             {
-                client.Connect(endpoint);
-                client.Handshake(_metadata!.HashString, client.LocalPeerID);
-                var timeout = Stopwatch.StartNew();
-                while (!token.IsCancellationRequested && timeout.Elapsed < TimeSpan.FromSeconds(12))
+                try
                 {
-                    if (!client.Process()) break;
-                    if (client.ReceivedHandshake) break;
-                    Thread.Sleep(5);
+                    client.Connect(endpoint);
+                    client.Handshake(_metadata!.HashString, client.LocalPeerID);
+                    var timeout = Stopwatch.StartNew();
+                    while (!token.IsCancellationRequested && timeout.Elapsed < TimeSpan.FromSeconds(12))
+                    {
+                        if (!client.Process()) break;
+                        if (client.ReceivedHandshake) break;
+                        Thread.Sleep(5);
+                    }
+                }
+                catch (Exception e) when (!token.IsCancellationRequested)
+                {
+                    // Unreachable BitTorrent peers are common. Log the endpoint and move on.
+                    Debug.WriteLine($"Peer connection/handshake failed ({endpoint}): {e.Message}");
+                }
+                catch (OperationCanceledException)
+                {
+                    // Expected when paused or stopped.
                 }
             }), token).ConfigureAwait(false);
 
