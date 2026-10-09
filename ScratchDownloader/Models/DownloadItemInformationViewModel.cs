@@ -32,6 +32,8 @@ public partial class DownloadItemInformationViewModel : ObservableObject
     [ObservableProperty] public partial int Segments { get; set; } = 8;
     [ObservableProperty] public partial string? Checksum { get; set; } = string.Empty;
     [ObservableProperty] public partial bool StartImmediately { get; set; } = true;
+    [ObservableProperty] public partial DownloadType DownloadType { get; set; } = DownloadType.Direct;
+    
     public Uri Uri { get; set; }
 
     public async Task GetDataFromUrl(string uri, IDownloadService downloadService,
@@ -57,6 +59,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
                 : Strings.Get(Language.Common.UnknownSize);
             Category = category ?? settingsCategory;
             SavePath = Path.Combine(Category.Folder, FileName);
+            DownloadType = data.DownloadType;
         }
         catch (Exception e)
         {
@@ -64,6 +67,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
             throw;
         }
     }
+
 
     private static string FormatFileSize(long bytes)
     {

@@ -68,7 +68,10 @@ public class BitTorrentDownloadService : IDownloadService, IDisposable
         if (string.IsNullOrWhiteSpace(uri))
             throw new ArgumentException("A torrent file path or magnet URI is required.", nameof(uri));
 
-        var result = new FileDataInformation();
+        var result = new FileDataInformation
+        {
+            DownloadType = DownloadType.BitTorrent
+        };
         IMetadata metadata;
         if (uri.StartsWith("magnet:", StringComparison.OrdinalIgnoreCase))
         {

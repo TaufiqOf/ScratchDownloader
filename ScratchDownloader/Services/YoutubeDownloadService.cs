@@ -59,6 +59,7 @@ public class YoutubeDownloadService : IDownloadService
 
         return new FileDataInformation
         {
+            DownloadType = DownloadType.Youtube,
             Uri = finalUri,
             FinalUri = finalUri,
             FileName = fileName,
