@@ -139,6 +139,8 @@
                                         <Run Text="{Binding DownloadItemInformation.FileHost}" />
                                         <Run Text="{loc:Loc {x:Static loc:Language+Common.Size}}" />
                                         <Run Text="{Binding DownloadItemInformation.FileSizeDisplay}" />
+                                        <Run Text=" "></Run>
+                                        <Run Text="{Binding DownloadItemInformation.DownloadType}" />
                                     </TextBlock>
                                 </StackPanel>
                             </StackPanel>
