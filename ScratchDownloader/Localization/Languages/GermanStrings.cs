@@ -71,6 +71,7 @@ internal static class GermanStrings
         ["DownloadStatus.Initializing"] = "Wird vorbereitet",
         ["DownloadStatus.Queued"] = "In Warteschlange",
         ["DownloadStatus.Downloading"] = "Wird heruntergeladen",
+        ["DownloadStatus.Processing"] = "Wird verarbeitet",
         ["DownloadStatus.Paused"] = "Pausiert",
         ["DownloadStatus.Stopped"] = "Gestoppt",
         ["DownloadStatus.Completed"] = "Abgeschlossen",

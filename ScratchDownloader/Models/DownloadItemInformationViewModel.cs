@@ -45,7 +45,7 @@ public partial class DownloadItemInformationViewModel : ObservableObject
             var settingsCategory = SettingsService.Settings.Categories["Other"];
 
             var category = SettingsService.Settings.Categories.Values.FirstOrDefault(q =>
-                q.Extension.Contains(FileExtension, StringComparison.OrdinalIgnoreCase));
+                q.Extension.Contains(data.FileExtension, StringComparison.OrdinalIgnoreCase));
 
             Uri = data.FinalUri;
             FileName = data.FileName;

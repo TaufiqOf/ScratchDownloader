@@ -73,6 +73,7 @@ internal static class ArabicStrings
         ["DownloadStatus.Initializing"] = "قيد التهيئة",
         ["DownloadStatus.Queued"] = "في الانتظار",
         ["DownloadStatus.Downloading"] = "قيد التنزيل",
+        ["DownloadStatus.Processing"] = "قيد المعالجة",
         ["DownloadStatus.Paused"] = "متوقف مؤقتًا",
         ["DownloadStatus.Stopped"] = "متوقف",
         ["DownloadStatus.Completed"] = "مكتمل",

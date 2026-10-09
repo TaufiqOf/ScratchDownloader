@@ -5,6 +5,7 @@ public enum DownloadStatus
     Initializing=0,
     Queued=1,
     Downloading=2,
+    Processing=9,
     Paused=3,
     Stopped=4,
     Completed=5,

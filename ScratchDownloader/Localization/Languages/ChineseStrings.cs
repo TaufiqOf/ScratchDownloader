@@ -71,6 +71,7 @@ internal static class ChineseStrings
         ["DownloadStatus.Initializing"] = "正在初始化",
         ["DownloadStatus.Queued"] = "排队中",
         ["DownloadStatus.Downloading"] = "下载中",
+        ["DownloadStatus.Processing"] = "处理中",
         ["DownloadStatus.Paused"] = "已暂停",
         ["DownloadStatus.Stopped"] = "已停止",
         ["DownloadStatus.Completed"] = "已完成",

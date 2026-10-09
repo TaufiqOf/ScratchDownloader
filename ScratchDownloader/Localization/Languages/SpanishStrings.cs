@@ -71,6 +71,7 @@ internal static class SpanishStrings
         ["DownloadStatus.Initializing"] = "Preparando",
         ["DownloadStatus.Queued"] = "En cola",
         ["DownloadStatus.Downloading"] = "Descargando",
+        ["DownloadStatus.Processing"] = "Procesando",
         ["DownloadStatus.Paused"] = "En pausa",
         ["DownloadStatus.Stopped"] = "Detenida",
         ["DownloadStatus.Completed"] = "Completada",

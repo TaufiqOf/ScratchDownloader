@@ -20,6 +20,8 @@ public class YoutubeDownloadService : IDownloadService
     private readonly object _sync = new();
     private CancellationTokenSource? _cts;
     private Task? _worker;
+    
+    private const string FfmpegExecutableName = "./ffmpeg/ffmpeg";
 
     public DownloadProgress Progress { get; set; } = new();
     public double CapSpeed { get; set; }
@@ -30,6 +32,7 @@ public class YoutubeDownloadService : IDownloadService
     public event EventHandler? Completed;
     public event EventHandler? Initializing;
     public event EventHandler? Downloading;
+    public event EventHandler? Processing;
 
     public async Task<FileDataInformation> GetFileDataInformation(string uri,
         CancellationToken cancellationToken = default)
@@ -140,7 +143,7 @@ public class YoutubeDownloadService : IDownloadService
                 await DownloadStreamAsync(plan.Streams[i], targets[i], resumeExisting, state, token)
                     .ConfigureAwait(false);
             }
-
+            Processing?.Invoke(this, EventArgs.Empty);
             if (plan.Streams.Count > 1)
             {
                 await MuxAsync(targets[0], targets[1], destinationPath, plan.Container, token).ConfigureAwait(false);
@@ -237,7 +240,7 @@ public class YoutubeDownloadService : IDownloadService
 
         try
         {
-            using var process = Process.Start(new ProcessStartInfo("ffmpeg", "-version")
+            using var process = Process.Start(new ProcessStartInfo(FfmpegExecutableName, "-version")
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -336,7 +339,7 @@ public class YoutubeDownloadService : IDownloadService
         CancellationToken token)
     {
         var tempOutput = $"{outputPath}.muxing";
-        var startInfo = new ProcessStartInfo("ffmpeg")
+        var startInfo = new ProcessStartInfo(FfmpegExecutableName)
         {
             RedirectStandardError = true,
             RedirectStandardOutput = true,

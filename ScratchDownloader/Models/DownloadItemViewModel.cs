@@ -88,6 +88,7 @@ public partial class DownloadItemViewModel : ObservableObject
         _downloadService.Downloading += DownloadServiceOnDownloading;
         _downloadService.Completed += DownloadServiceOnCompleted;
         _downloadService.ErrorOccurred += DownloadServiceOnErrorOccurred;
+        _downloadService.Processing += DownloadServiceOnProcessing;
         _downloadService.SegmentCount = downloadItemInformationViewModel.Segments;
         _downloadService.Uri = downloadItemInformationViewModel.Uri;
         _downloadService.DestinationFilePath = downloadItemInformationViewModel.SavePath;
@@ -96,6 +97,8 @@ public partial class DownloadItemViewModel : ObservableObject
         _checkSumService = new CheckSumService();
         _speedChartTimer.Tick += SpeedChartTimerOnTick;
     }
+
+
 
 
     public bool CanOpen =>
@@ -210,7 +213,11 @@ public partial class DownloadItemViewModel : ObservableObject
         OnPropertyChanged(nameof(StatusText));
         OnAddedDateTimeChanged(AddedDateTime);
     }
-    
+    private void DownloadServiceOnProcessing(object? sender, EventArgs e)
+    {
+        StatusChanged?.Invoke(this, DownloadStatus.Processing);
+        Status = DownloadStatus.Processing;
+    }
 
     private void DownloadServiceOnErrorOccurred(object? sender, string e)
     {

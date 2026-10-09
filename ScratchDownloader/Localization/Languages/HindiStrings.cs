@@ -71,6 +71,7 @@ internal static class HindiStrings
         ["DownloadStatus.Initializing"] = "शुरू हो रहा है",
         ["DownloadStatus.Queued"] = "कतार में",
         ["DownloadStatus.Downloading"] = "डाउनलोड हो रहा है",
+        ["DownloadStatus.Processing"] = "प्रसंस्करण हो रहा है",
         ["DownloadStatus.Paused"] = "रुका हुआ",
         ["DownloadStatus.Stopped"] = "बंद",
         ["DownloadStatus.Completed"] = "पूर्ण",

@@ -98,6 +98,7 @@ internal static class EnglishStrings
         ["DownloadStatus.Initializing"] = "Initializing",
         ["DownloadStatus.Queued"] = "Queued",
         ["DownloadStatus.Downloading"] = "Downloading",
+        ["DownloadStatus.Processing"] = "Processing",
         ["DownloadStatus.Paused"] = "Paused",
         ["DownloadStatus.Stopped"] = "Stopped",
         ["DownloadStatus.Completed"] = "Completed",

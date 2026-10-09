@@ -53,4 +53,20 @@
             <SubType>Code</SubType>
         </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ffmpeg\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="ffmpeg\ffmpeg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="ffmpeg\ffplay">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="ffmpeg\ffprobe">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>

@@ -71,6 +71,7 @@ internal static class FrenchStrings
         ["DownloadStatus.Initializing"] = "Initialisation",
         ["DownloadStatus.Queued"] = "En attente",
         ["DownloadStatus.Downloading"] = "Téléchargement",
+        ["DownloadStatus.Processing"] = "Traitement",
         ["DownloadStatus.Paused"] = "En pause",
         ["DownloadStatus.Stopped"] = "Arrêté",
         ["DownloadStatus.Completed"] = "Terminé",

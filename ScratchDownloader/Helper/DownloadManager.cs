@@ -146,6 +146,7 @@ public partial class DownloadManager : ViewModelBase
         activeDownloads.ForEach(d => d.CapSpeedInKBps = capSpeed);
         var inActiveDownloads = Downloads.Where(d =>
                 !(d.Status == DownloadStatus.Downloading ||
+                  d.Status == DownloadStatus.Processing ||
                   d.Status == DownloadStatus.Initializing))
             .ToList();
         inActiveDownloads.ForEach(d => d.CapSpeedInKBps = 0);

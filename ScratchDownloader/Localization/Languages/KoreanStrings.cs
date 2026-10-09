@@ -71,6 +71,7 @@ internal static class KoreanStrings
         ["DownloadStatus.Initializing"] = "초기화 중",
         ["DownloadStatus.Queued"] = "대기 중",
         ["DownloadStatus.Downloading"] = "다운로드 중",
+        ["DownloadStatus.Processing"] = "처리 중",
         ["DownloadStatus.Paused"] = "일시 중지됨",
         ["DownloadStatus.Stopped"] = "중지됨",
         ["DownloadStatus.Completed"] = "완료",

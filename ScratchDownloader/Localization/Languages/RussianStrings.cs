@@ -71,6 +71,7 @@ internal static class RussianStrings
         ["DownloadStatus.Initializing"] = "Инициализация",
         ["DownloadStatus.Queued"] = "В очереди",
         ["DownloadStatus.Downloading"] = "Загрузка",
+        ["DownloadStatus.Processing"] = "Обработка",
         ["DownloadStatus.Paused"] = "Приостановлено",
         ["DownloadStatus.Stopped"] = "Остановлено",
         ["DownloadStatus.Completed"] = "Завершено",

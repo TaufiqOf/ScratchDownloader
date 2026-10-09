@@ -32,6 +32,7 @@ public class DirectDownloadService : IDownloadService
     public event EventHandler? Completed;
     public event EventHandler? Initializing;
     public event EventHandler? Downloading;
+    public event EventHandler? Processing;
 
 
     public DirectDownloadService()

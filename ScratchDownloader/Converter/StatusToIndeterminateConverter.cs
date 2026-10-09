@@ -11,7 +11,9 @@ public class StatusToIndeterminateConverter : IValueConverter
     {
         if(value is DownloadStatus status)
         {
-            return status == DownloadStatus.Initializing || status == DownloadStatus.CheckingChecksum;
+            return status == DownloadStatus.Initializing 
+                   || status == DownloadStatus.Processing 
+                   || status == DownloadStatus.CheckingChecksum;
         }
         return false;
     }

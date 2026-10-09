@@ -71,6 +71,7 @@ internal static class BanglaStrings
         ["DownloadStatus.Initializing"] = "প্রস্তুত হচ্ছে",
         ["DownloadStatus.Queued"] = "সারিতে আছে",
         ["DownloadStatus.Downloading"] = "ডাউনলোড হচ্ছে",
+        ["DownloadStatus.Processing"] = "প্রসেস হচ্ছে",
         ["DownloadStatus.Paused"] = "বিরতিতে",
         ["DownloadStatus.Stopped"] = "বন্ধ",
         ["DownloadStatus.Completed"] = "সম্পন্ন",

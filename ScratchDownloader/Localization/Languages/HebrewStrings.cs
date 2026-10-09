@@ -71,6 +71,7 @@ internal static class HebrewStrings
         ["DownloadStatus.Initializing"] = "מאתחל",
         ["DownloadStatus.Queued"] = "בתור",
         ["DownloadStatus.Downloading"] = "מוריד",
+        ["DownloadStatus.Processing"] = "מעבד",
         ["DownloadStatus.Paused"] = "מושהה",
         ["DownloadStatus.Stopped"] = "נעצר",
         ["DownloadStatus.Completed"] = "הושלם",

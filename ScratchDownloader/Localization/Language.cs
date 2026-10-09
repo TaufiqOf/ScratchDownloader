@@ -126,6 +126,7 @@ public static class Language
         public const string Initializing = "DownloadStatus.Initializing";
         public const string Queued = "DownloadStatus.Queued";
         public const string Downloading = "DownloadStatus.Downloading";
+        public const string Processing = "DownloadStatus.Processing";
         public const string Paused = "DownloadStatus.Paused";
         public const string Stopped = "DownloadStatus.Stopped";
         public const string Completed = "DownloadStatus.Completed";

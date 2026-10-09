@@ -56,6 +56,7 @@ public class BitTorrentDownloadService : IDownloadService, IDisposable
     public event EventHandler? Completed;
     public event EventHandler? Initializing;
     public event EventHandler? Downloading;
+    public event EventHandler? Processing;
 
     public BitTorrentDownloadService()
     {

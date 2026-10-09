@@ -71,6 +71,7 @@ internal static class JapaneseStrings
         ["DownloadStatus.Initializing"] = "初期化中",
         ["DownloadStatus.Queued"] = "待機中",
         ["DownloadStatus.Downloading"] = "ダウンロード中",
+        ["DownloadStatus.Processing"] = "処理中",
         ["DownloadStatus.Paused"] = "一時停止中",
         ["DownloadStatus.Stopped"] = "停止",
         ["DownloadStatus.Completed"] = "完了",

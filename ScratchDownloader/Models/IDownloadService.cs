@@ -15,6 +15,7 @@ public interface IDownloadService
     event EventHandler Completed;
     event EventHandler Initializing;
     event EventHandler? Downloading;
+    event EventHandler? Processing;
 
     Task<FileDataInformation> GetFileDataInformation(string uri,
         CancellationToken cancellationToken = default);
