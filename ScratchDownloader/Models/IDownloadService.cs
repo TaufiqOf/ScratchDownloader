@@ -19,6 +19,7 @@ public interface IDownloadService
     Task<FileDataInformation> GetFileDataInformation(string uri,
         CancellationToken cancellationToken = default);
     
+    bool CanHandle(string url);
     void Start(CancellationToken cancellationToken = default);
     void Resume(CancellationToken cancellationToken = default);
     void Pause();

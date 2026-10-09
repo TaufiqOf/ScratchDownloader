@@ -21,19 +21,17 @@ public class DirectDownloadService : IDownloadService
     private double _lastProgressReported;
     private const int BufferSize = 81920; // 80 KB buffer size for reading/writing
     readonly Timer _progressTimer = new Timer(1000); // 1 second interval
+    private string MetadataFilePath => $"{DestinationFilePath}.meta.json";
 
     public double CapSpeed { get; set; } = 0; // 0 means no cap
-    private string MetadataFilePath => $"{DestinationFilePath}.meta.json";
     public DownloadProgress Progress { get; set; } = new();
-
+    public int SegmentCount { get; set; } = 4;
+    public Uri? Uri { get; set; }
+    public string? DestinationFilePath { get; set; }
     public event EventHandler<string>? ErrorOccurred;
     public event EventHandler? Completed;
     public event EventHandler? Initializing;
     public event EventHandler? Downloading;
-
-    public int SegmentCount { get; set; } = 4;
-    public Uri? Uri { get; set; }
-    public string? DestinationFilePath { get; set; }
     
     
     public DirectDownloadService(HttpClient? httpClient = null)
@@ -103,20 +101,30 @@ public class DirectDownloadService : IDownloadService
         return data;
     }
 
+    public bool CanHandle(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+            return false;
+
+        return Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri)
+               && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)
+               && !uri.AbsolutePath.EndsWith(".torrent", StringComparison.OrdinalIgnoreCase);
+    }
+
     public void Start(CancellationToken cancellationToken = default)
     {
         Task.Factory.StartNew(() => StartAsync(cancellationToken), cancellationToken, TaskCreationOptions.LongRunning,
             TaskScheduler.Default);
     }
 
-    public void Pause()
-    {
-        _cts?.Cancel();
-    }
-
     public void Resume(CancellationToken cancellationToken = default)
     {
         _ = ResumeAsync(cancellationToken);
+    }
+
+    public void Pause()
+    {
+        _cts?.Cancel();
     }
 
     public void Stop()
@@ -465,7 +473,6 @@ public class DirectDownloadService : IDownloadService
 
         return Strings.Get(Language.FilePropertiesTabControl.DownloadFileName);
     }
-
 
     private static string GetExtension(string fileName)
     {

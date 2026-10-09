@@ -48,7 +48,7 @@ public partial class DownloadManager : ViewModelBase
         CancellationToken cancellationToken)
     {
         var newDownloadItemInformationViewModel = new DownloadItemInformationViewModel();
-        var service = new DirectDownloadService();
+        var service = ServiceFactory.CreateDownloadService(url);
         await newDownloadItemInformationViewModel.GetDataFromUrl(url, service, cancellationToken);
         return newDownloadItemInformationViewModel;
     }
@@ -82,7 +82,8 @@ public partial class DownloadManager : ViewModelBase
         DownloadItemInformationViewModel downloadItemInformationViewModel,
         bool startImmediately)
     {
-        downloadItemViewModel.Initialize(downloadItemInformationViewModel, new DirectDownloadService());
+        var service = ServiceFactory.CreateDownloadService(downloadItemInformationViewModel.Uri.ToString());
+        downloadItemViewModel.Initialize(downloadItemInformationViewModel, service);
         Downloads.Add(downloadItemViewModel);
 
         if (startImmediately)
