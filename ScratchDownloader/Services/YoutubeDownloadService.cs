@@ -20,9 +20,7 @@ public class YoutubeDownloadService : IDownloadService
     private readonly object _sync = new();
     private CancellationTokenSource? _cts;
     private Task? _worker;
-    
-    private const string FfmpegExecutableName = "./ffmpeg/ffmpeg";
-
+    private static string FfmpegExecutableName = "./ffmpeg/{0}/ffmpeg";
     public DownloadProgress Progress { get; set; } = new();
     public double CapSpeed { get; set; }
     public int SegmentCount { get; set; } = 1;
@@ -34,6 +32,15 @@ public class YoutubeDownloadService : IDownloadService
     public event EventHandler? Downloading;
     public event EventHandler? Processing;
 
+    public YoutubeDownloadService()
+    {
+        if (OperatingSystem.IsWindows())
+            FfmpegExecutableName = "./ffmpeg/windows/ffmpeg.exe";
+        else if (OperatingSystem.IsLinux())
+            FfmpegExecutableName = "./ffmpeg/linux/ffmpeg";
+        else if (OperatingSystem.IsMacOS())
+            FfmpegExecutableName = "./ffmpeg/macos/ffmpeg";
+    }
     public async Task<FileDataInformation> GetFileDataInformation(string uri,
         CancellationToken cancellationToken = default)
     {
