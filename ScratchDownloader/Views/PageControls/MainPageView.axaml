@@ -197,13 +197,9 @@
 
                 <!-- PAGE -->
 
-                <ScrollViewer Grid.Row="0"
-                              HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Auto">
 
                     <ContentControl Margin="2" Content="{Binding CurrentView}" />
 
-                </ScrollViewer>
 
             </Grid>
 

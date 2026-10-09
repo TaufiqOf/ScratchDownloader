@@ -78,6 +78,7 @@ public class App : Application
             }
             
             WidgetManager.OnWidgetChanged += OnWidgetChanged;  
+            BrowserIntegrationService.Start();
         }
         else if (ApplicationLifetime is IActivityApplicationLifetime singleViewFactoryApplicationLifetime)
         {
@@ -116,6 +117,7 @@ public class App : Application
         // terminate.
 
         _isExiting = true;
+        BrowserIntegrationService.Stop();
     }
 
     // ============================================================

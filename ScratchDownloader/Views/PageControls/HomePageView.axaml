@@ -13,6 +13,7 @@
         <converter:StatusToIconConverter x:Key="StatusToIconConverter" />
         <converter:StatusToIndeterminateConverter x:Key="StatusToIndeterminateConverter" />
         <converter:StatusEqualsConverter x:Key="StatusEqualsConverter" />
+        <converter:StatusToColorConverter x:Key="StatusToColorConverter" />
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
@@ -363,6 +364,7 @@
                                     <Grid>
                                         <fluent:FluentIcon
                                             Icon="{Binding Status , Converter={StaticResource StatusToIconConverter}}"
+                                            Foreground="{Binding Status , Converter={StaticResource StatusToColorConverter}, ConverterParameter=Foreground}"
                                             Width="20"
                                             Height="20"
                                             VerticalAlignment="Center"

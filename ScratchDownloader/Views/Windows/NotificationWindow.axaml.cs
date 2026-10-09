@@ -22,7 +22,7 @@ public partial class NotificationWindow : Window
         var (icon, color) = messageType switch
         {
             NotificationType.Error =>
-                (FluentIcons.Common.Icon.ErrorCircle, Colors.Red),
+                (FluentIcons.Common.Icon.ErrorCircle, Colors.IndianRed),
 
             NotificationType.Warning =>
                 (FluentIcons.Common.Icon.Warning, Colors.Orange),
