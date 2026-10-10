@@ -24,6 +24,7 @@
     <Window.Resources>
         <converter:StatusToIndeterminateConverter x:Key="StatusToIndeterminateConverter" />
         <converter:StatusToIconConverter x:Key="StatusToIconConverter" />
+        <converter:ToUpperConverter x:Key="ToUpperConverter" />
 
         <SolidColorBrush x:Key="ChartLineBrush"
                          Color="{DynamicResource SystemAccentColor}" />
@@ -36,7 +37,7 @@
         BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
         CornerRadius="8">
         <Grid>
-            <control:CsvDrawBackground 
+            <control:CsvDrawBackground
                 x:Name="SnakeBackground"
                 AccentBrush="{DynamicResource SystemAccentColor}"
                 IsHitTestVisible="False" />
@@ -48,8 +49,13 @@
                         Height="34"
                         FontSize="34"
                         Margin="0,0,5,0" />
-                    <TextBlock Grid.Column="1" FontSize="20" Text="{Binding DownloadItemInformation.SavedFileName}"
-                               TextTrimming="CharacterEllipsis" />
+                    <Grid Grid.Column="1" RowDefinitions="Auto,Auto">
+                        <TextBlock Grid.Row="0" FontSize="20" Text="{Binding DownloadItemInformation.SavedFileName}"
+                                   TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding DownloadItemInformation.SavedFileName}" />
+                        <TextBlock Grid.Row="1" FontSize="10" FontWeight="SemiBold"
+                                   Text="{Binding DownloadItemInformation.DownloadType, Converter={StaticResource ToUpperConverter}}">
+                        </TextBlock>
+                    </Grid>
 
                 </Grid>
                 <Border Grid.Row="1"
@@ -58,7 +64,7 @@
                         Margin="5,5" />
 
                 <Grid Grid.Row="2" RowDefinitions="Auto,Auto,Auto">
-                    <Grid Grid.Row="0" ColumnDefinitions="70,100,*,*">
+                    <Grid Grid.Row="0" ColumnDefinitions="70,100,120,*">
                         <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="4">
                             <TextBlock Grid.Row="0"
                                        Text="{loc:Loc {x:Static loc:Language+DownloadWidgetWindow.WidgetProgress}}"

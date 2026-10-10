@@ -133,6 +133,9 @@ internal static class ChineseStrings
         ["AddUrlDialog.Advanced"] = "高级",
         ["AddUrlDialog.Checksum"] = "校验和",
         ["AddUrlDialog.StartDownloadAutomatically"] = "自动开始下载",
+        ["AddUrlDialog.DetectUrlError"] = "检测 URL 时出错。请检查 URL 并重试。\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "URL 检测错误",
+        
         ["Common.Cancel"] = "取消",
         ["AddUrlDialog.Download"] = "下载",
         ["AddUrlDialog.SelectSaveLocation"] = "选择保存位置",

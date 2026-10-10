@@ -65,6 +65,9 @@ internal static class EnglishStrings
         ["AddUrlDialog.FileExistsMessage"] = "The file \"{0}\" already exists. Do you want to rename it or overwrite the existing file?",
         ["AddUrlDialog.RenameAndContinue"] = "Rename and Continue",
         ["AddUrlDialog.Overwrite"] = "Overwrite",
+        ["AddUrlDialog.DetectUrlError"] = "An error occurred while detecting the URL. Please check the URL and try again.\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "URL Detection Error",
+        
 
         ["QueuePage.NewQueueName"] = "New Queue #{0}",
         ["QueuePage.DeleteQueueConfirmation"] = "Are you sure you want to delete the queue '{0}'?",

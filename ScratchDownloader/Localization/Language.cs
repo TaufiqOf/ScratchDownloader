@@ -200,6 +200,8 @@ public static class Language
         public const string FileExistsMessage = "AddUrlDialog.FileExistsMessage";
         public const string RenameAndContinue = "AddUrlDialog.RenameAndContinue";
         public const string Overwrite = "AddUrlDialog.Overwrite";
+        public const string DetectUrlError = "AddUrlDialog.DetectUrlError";
+        public const string DetectUrlErrorTitle = "AddUrlDialog.DetectUrlErrorTitle";
     }
 
     public static class FileDialogs

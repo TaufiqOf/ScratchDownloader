@@ -141,6 +141,9 @@ internal static class KoreanStrings
         ["AddUrlDialog.FileExistsMessage"] = "\"{0}\" 파일이 이미 있습니다. 이름을 바꾸시겠습니까, 아니면 기존 파일을 덮어쓰시겠습니까?",
         ["AddUrlDialog.RenameAndContinue"] = "이름 바꾸고 계속",
         ["AddUrlDialog.Overwrite"] = "덮어쓰기",
+        ["AddUrlDialog.DetectUrlError"] = "URL을 감지하는 동안 오류가 발생했습니다. URL을 확인하고 다시 시도하십시오.\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "URL 감지 오류",
+        
         ["Common.Ok"] = "확인",
         ["Common.Yes"] = "예",
         ["Common.No"] = "아니요",

@@ -141,6 +141,8 @@ internal static class GermanStrings
         ["AddUrlDialog.FileExistsMessage"] = "Die Datei \"{0}\" existiert bereits. Möchten Sie sie umbenennen oder die vorhandene Datei überschreiben?",
         ["AddUrlDialog.RenameAndContinue"] = "Umbenennen und fortfahren",
         ["AddUrlDialog.Overwrite"] = "Überschreiben",
+        ["AddUrlDialog.DetectUrlError"] = "Beim Erkennen der URL ist ein Fehler aufgetreten. Bitte überprüfen Sie die URL und versuchen Sie es erneut.\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "Fehler bei der URL-Erkennung",
         ["Common.Ok"] = "OK",
         ["Common.Yes"] = "Ja",
         ["Common.No"] = "Nein",

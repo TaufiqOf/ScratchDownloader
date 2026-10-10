@@ -141,6 +141,9 @@ internal static class JapaneseStrings
         ["AddUrlDialog.FileExistsMessage"] = "ファイル \"{0}\" は既に存在します。名前を変更しますか、それとも既存のファイルを上書きしますか?",
         ["AddUrlDialog.RenameAndContinue"] = "名前を変更して続行",
         ["AddUrlDialog.Overwrite"] = "上書き",
+        ["AddUrlDialog.DetectUrlError"] = "URL の検出中にエラーが発生しました。URL を確認して再試行してください。\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "URL 検出エラー",
+        
         ["Common.Ok"] = "OK",
         ["Common.Yes"] = "はい",
         ["Common.No"] = "いいえ",

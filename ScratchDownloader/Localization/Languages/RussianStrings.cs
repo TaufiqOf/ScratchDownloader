@@ -136,6 +136,8 @@ internal static class RussianStrings
         ["Common.Cancel"] = "Отмена",
         ["AddUrlDialog.Download"] = "Скачать",
         ["AddUrlDialog.SelectSaveLocation"] = "Выберите место сохранения",
+        ["AddUrlDialog.DetectUrlError"] = "Произошла ошибка при обнаружении URL. Пожалуйста, проверьте URL и попробуйте снова.\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "Ошибка обнаружения URL",
         ["Common.AllFiles"] = "Все файлы",
         ["AddUrlDialog.FileExists"] = "Файл существует",
         ["AddUrlDialog.FileExistsMessage"] = "Файл «{0}» уже существует. Переименовать его или перезаписать существующий файл?",

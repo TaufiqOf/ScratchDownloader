@@ -102,7 +102,7 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
         }
 
         IsDetecting = true;
-        await Task.Delay(1000, cancellationToken).ConfigureAwait(false);
+        await Task.Delay(1000, cancellationToken);
         try
         {
             DownloadItemInformation =
@@ -118,8 +118,9 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
         {
             // A newer URL was entered.
         }
-        catch
+        catch(Exception ex)
         {
+            NotificationManager.Error(Strings.Get(Language.AddUrlDialog.DetectUrlErrorTitle),string.Format(Strings.Get(Language.AddUrlDialog.DetectUrlError), ex.Message));
             HasFileInfo = false;
         }
         finally

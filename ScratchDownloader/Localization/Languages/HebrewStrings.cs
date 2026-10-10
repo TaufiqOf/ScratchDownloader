@@ -141,6 +141,8 @@ internal static class HebrewStrings
         ["AddUrlDialog.FileExistsMessage"] = "הקובץ \"{0}\" כבר קיים. האם לשנות את שמו או לדרוס את הקובץ הקיים?",
         ["AddUrlDialog.RenameAndContinue"] = "שנה שם והמשך",
         ["AddUrlDialog.Overwrite"] = "דרוס",
+        ["AddUrlDialog.DetectUrlError"] = "אירעה שגיאה בעת זיהוי ה-URL. אנא בדוק את ה-URL ונסה שוב.\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "שגיאה בזיהוי ה-URL",
         ["Common.Ok"] = "אישור",
         ["Common.Yes"] = "כן",
         ["Common.No"] = "לא",

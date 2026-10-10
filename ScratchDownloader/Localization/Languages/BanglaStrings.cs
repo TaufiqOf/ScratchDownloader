@@ -133,6 +133,9 @@ internal static class BanglaStrings
         ["AddUrlDialog.Advanced"] = "উন্নত",
         ["AddUrlDialog.Checksum"] = "চেকসাম",
         ["AddUrlDialog.StartDownloadAutomatically"] = "স্বয়ংক্রিয়ভাবে ডাউনলোড শুরু করুন",
+        ["AddUrlDialog.DetectUrlError"] = "URL শনাক্তকরণের সময় একটি ত্রুটি ঘটেছে। অনুগ্রহ করে URL পরীক্ষা করুন এবং পুনরায় চেষ্টা করুন।\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "URL শনাক্তকরণের ত্রুটি",
+        
         ["Common.Cancel"] = "বাতিল",
         ["AddUrlDialog.Download"] = "ডাউনলোড",
         ["AddUrlDialog.SelectSaveLocation"] = "সংরক্ষণের স্থান নির্বাচন করুন",

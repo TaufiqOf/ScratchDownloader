@@ -136,6 +136,9 @@ internal static class HindiStrings
         ["Common.Cancel"] = "रद्द करें",
         ["AddUrlDialog.Download"] = "डाउनलोड",
         ["AddUrlDialog.SelectSaveLocation"] = "सहेजने का स्थान चुनें",
+        ["AddUrlDialog.DetectUrlError"] = "URL का पता लगाने में त्रुटि हुई। कृपया URL की जाँच करें और पुनः प्रयास करें।\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "URL पता लगाने में त्रुटि",
+        
         ["Common.AllFiles"] = "सभी फ़ाइलें",
         ["AddUrlDialog.FileExists"] = "फ़ाइल पहले से मौजूद है",
         ["AddUrlDialog.FileExistsMessage"] = "फ़ाइल \"{0}\" पहले से मौजूद है। क्या आप इसका नाम बदलना चाहते हैं या मौजूदा फ़ाइल को अधिलेखित करना चाहते हैं?",

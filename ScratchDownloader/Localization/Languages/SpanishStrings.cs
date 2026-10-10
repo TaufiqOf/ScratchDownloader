@@ -141,6 +141,8 @@ internal static class SpanishStrings
         ["AddUrlDialog.FileExistsMessage"] = "El archivo \"{0}\" ya existe. ¿Quieres cambiarle el nombre o sobrescribirlo?",
         ["AddUrlDialog.RenameAndContinue"] = "Cambiar nombre y continuar",
         ["AddUrlDialog.Overwrite"] = "Sobrescribir",
+        ["AddUrlDialog.DetectUrlError"] = "Se produjo un error al detectar la URL. Por favor, verifica la URL e inténtalo de nuevo.\n{0}",
+        ["AddUrlDialog.DetectUrlErrorTitle"] = "Error al detectar la URL",
         ["Common.Ok"] = "Aceptar",
         ["Common.Yes"] = "Sí",
         ["Common.No"] = "No",

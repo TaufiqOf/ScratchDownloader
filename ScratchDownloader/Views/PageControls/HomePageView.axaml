@@ -14,6 +14,7 @@
         <converter:StatusToIndeterminateConverter x:Key="StatusToIndeterminateConverter" />
         <converter:StatusEqualsConverter x:Key="StatusEqualsConverter" />
         <converter:StatusToColorConverter x:Key="StatusToColorConverter" />
+        <converter:ToUpperConverter x:Key="ToUpperConverter" />
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
@@ -379,7 +380,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid RowDefinitions="Auto,Auto" Margin="5,2,5,2">
-                                        <TextBlock Grid.Row="0" FontSize="10" FontWeight="SemiBold" Text="{Binding DownloadItemInformation.DownloadType}"></TextBlock>
+                                        <TextBlock Grid.Row="0" FontSize="10" FontWeight="SemiBold" Text="{Binding DownloadItemInformation.DownloadType, Converter={StaticResource ToUpperConverter}}"></TextBlock>
                                         <TextBlock Grid.Row="1" Text="{Binding DownloadItemInformation.SavedFileName}"
                                                    ToolTip.Tip="{Binding DownloadItemInformation.SavedFileName}"
                                                    VerticalAlignment="Center"
