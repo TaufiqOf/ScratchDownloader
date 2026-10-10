@@ -9,6 +9,7 @@
         <WrapPanel Grid.Row="0">
             <WrapPanel.Styles>
                 <Style Selector="Border.Chip">
+                    <Setter Property="MinWidth" Value="80" />
                     <Setter Property="Padding" Value="10,6" />
                     <Setter Property="Margin" Value="0,0,8,0" />
                     <Setter Property="CornerRadius" Value="6" />
@@ -49,8 +50,8 @@
             </Border>
             <Border Classes="Chip">
                 <StackPanel Spacing="2">
-                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Connected}}" />
-                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.ConnectedPeerCount}" />
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Discovered}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.DiscoveredPeerCount}" />
                 </StackPanel>
             </Border>
             <Border Classes="Chip">
@@ -59,6 +60,13 @@
                     <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.ConnectingPeerCount}" />
                 </StackPanel>
             </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Connected}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.ConnectedPeerCount}" />
+                </StackPanel>
+            </Border>
+
             <Border Classes="Chip">
                 <StackPanel Spacing="2">
                     <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Unreachable}}" />
@@ -71,12 +79,7 @@
                     <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.DisconnectedPeerCount}" />
                 </StackPanel>
             </Border>
-            <Border Classes="Chip">
-                <StackPanel Spacing="2">
-                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Discovered}}" />
-                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.DiscoveredPeerCount}" />
-                </StackPanel>
-            </Border>
+
             <Border Classes="Chip">
                 <StackPanel Spacing="2">
                     <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Received}}" />
