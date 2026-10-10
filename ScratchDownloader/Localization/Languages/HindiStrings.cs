@@ -102,6 +102,7 @@ internal static class HindiStrings
         ["HomePage.TotalSpeed"] = "कुल गति:",
         ["HomePage.TotalSize"] = "कुल आकार:",
         ["Common.Bytes"] = "बाइट",
+        ["Common.TorrentTrackerAndPeerDetails"] = "टॉरेंट विवरण",
         ["FilePropertiesTabControl.BytesSuffix"] = " बाइट )",
         ["FilePropertiesTabControl.SizeProperty"] = "आकार:",
         ["FilePropertiesTabControl.AddedProperty"] = "जोड़ा गया:",
@@ -209,6 +210,16 @@ internal static class HindiStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "अधिकतम गति सीमा:",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "पूरा होने का समय:",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "स्थिति:",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "लगा हुआ समय:"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "लगा हुआ समय:",
+
+        ["TrackerPeerDetails.Tracker"] = "ट्रैकर",
+        ["TrackerPeerDetails.Status"] = "स्थिति",
+        ["TrackerPeerDetails.Peers"] = "पीयर",
+        ["TrackerPeerDetails.LastAnnounce"] = "अंतिम घोषणा",
+        ["TrackerPeerDetails.Error"] = "त्रुटि",
+        ["TrackerPeerDetails.Peer"] = "पीयर",
+        ["TrackerPeerDetails.Source"] = "स्रोत",
+        ["TrackerPeerDetails.BytesReceived"] = "प्राप्त बाइट",
+        ["TrackerPeerDetails.LastUpdated"] = "अंतिम अपडेट",
     };
 }

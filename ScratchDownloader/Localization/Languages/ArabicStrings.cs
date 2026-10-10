@@ -127,7 +127,7 @@ internal static class ArabicStrings
         ["Common.Yes"] = "نعم",
         ["Common.No"] = "لا",
         ["Common.Error"] = "خطأ",
-        
+        ["Common.TorrentTrackerAndPeerDetails"] = "تفاصيل التورنت",
         ["QueuePage.MaxSpeedLimit"] = "الحد الأقصى للسرعة (كيلوبايت/ث، 0 = غير محدود)",
         ["QueuePage.MaxConcurrentDownloads"] = "الحد الأقصى للتنزيلات المتزامنة",
         ["QueuePage.StartTime"] = "وقت البدء",
@@ -212,6 +212,16 @@ internal static class ArabicStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "الحد الأقصى للسرعة:",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "تاريخ الإكمال:",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "الحالة:",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "الوقت المستغرق:"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "الوقت المستغرق:",
+
+        ["TrackerPeerDetails.Tracker"] = "المتتبع",
+        ["TrackerPeerDetails.Status"] = "الحالة",
+        ["TrackerPeerDetails.Peers"] = "الأقران",
+        ["TrackerPeerDetails.LastAnnounce"] = "آخر إعلان",
+        ["TrackerPeerDetails.Error"] = "خطأ",
+        ["TrackerPeerDetails.Peer"] = "القرين",
+        ["TrackerPeerDetails.Source"] = "المصدر",
+        ["TrackerPeerDetails.BytesReceived"] = "البايتات المستلمة",
+        ["TrackerPeerDetails.LastUpdated"] = "آخر تحديث",
     };
 }

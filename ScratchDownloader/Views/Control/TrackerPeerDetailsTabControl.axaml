@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:ScratchDownloader.Localization"
+             xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
+             xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
+             x:Class="ScratchDownloader.Views.Control.TrackerPeerDetailsTabControl"
+             x:DataType="pageViewModel:HomePageViewModel">
+    <Grid RowDefinitions="*,Auto,*" RowSpacing="8">
+        <dg:DataGrid Grid.Row="0"
+                     ItemsSource="{Binding SelectedDownload.Progress.Trackers}"
+                     AutoGenerateColumns="False"
+                     IsReadOnly="True"
+                     CanUserReorderColumns="False"
+                     CanUserResizeColumns="True"
+                     GridLinesVisibility="All">
+            <dg:DataGrid.Columns>
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Tracker}}" Binding="{Binding Url}" Width="2*" />
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Status}}" Binding="{Binding Status}" Width="*" />
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Peers}}" Binding="{Binding PeersDiscovered}" Width="Auto" />
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.LastAnnounce}}" Binding="{Binding LastAnnouncedAt}" Width="*" />
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Error}}" Binding="{Binding LastError}" Width="2*" />
+            </dg:DataGrid.Columns>
+        </dg:DataGrid>
+        <GridSplitter Grid.Row="1"
+                      Height="5"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center"
+                      ResizeDirection="Rows"
+                      ResizeBehavior="PreviousAndNext"
+                      Background="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                      Cursor="SizeNorthSouth" />
+        <dg:DataGrid Grid.Row="2"
+                     ItemsSource="{Binding SelectedDownload.Progress.Peers}"
+                     AutoGenerateColumns="False"
+                     IsReadOnly="True"
+                     CanUserReorderColumns="False"
+                     CanUserResizeColumns="True"
+                     GridLinesVisibility="All">
+            <dg:DataGrid.Columns>
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Peer}}" Binding="{Binding Endpoint}" Width="*" />
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Source}}" Binding="{Binding DiscoverySource}" Width="*" />
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Status}}" Binding="{Binding Status}" Width="*" />
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.BytesReceived}}" Binding="{Binding BytesReceived}" Width="Auto" />
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.LastUpdated}}" Binding="{Binding LastUpdatedAt}" Width="*" />
+                <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Error}}" Binding="{Binding LastError}" Width="2*" />
+            </dg:DataGrid.Columns>
+        </dg:DataGrid>
+    </Grid>
+</UserControl>

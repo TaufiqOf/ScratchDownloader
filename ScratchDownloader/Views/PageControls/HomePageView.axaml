@@ -483,6 +483,11 @@
                          FontWeight="Bold">
                     <control:ConfigurationPropertiesTabControl DataContext="{Binding }" />
                 </TabItem>
+                <TabItem Header="{loc:Loc {x:Static loc:Language+Common.TorrentTrackerAndPeerDetails}}"
+                         FontSize="12"
+                         FontWeight="Bold">
+                    <control:TrackerPeerDetailsTabControl DataContext="{Binding }" />
+                </TabItem>
             </TabControl>
         </Grid>
         <!-- STATUS BAR -->

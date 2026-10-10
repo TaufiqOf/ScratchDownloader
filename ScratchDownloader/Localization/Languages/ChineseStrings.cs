@@ -96,6 +96,7 @@ internal static class ChineseStrings
         ["HomePage.Eta"] = "剩余时间",
         ["HomePage.Added"] = "添加时间",
         ["HomePage.FileTab"] = "文件",
+        ["Common.TorrentTrackerAndPeerDetails"] = "Torrent 追踪器和对等方详细信息",
         ["FilePropertiesTabControl.Name"] = "名称:",
         ["FilePropertiesTabControl.Path"] = "路径:",
         ["FilePropertiesTabControl.Host"] = "主机:",
@@ -209,6 +210,16 @@ internal static class ChineseStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "最大速度限制：",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "完成时间：",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "状态：",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "耗时："
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "耗时：",
+
+        ["TrackerPeerDetails.Tracker"] = "Tracker",
+        ["TrackerPeerDetails.Status"] = "状态",
+        ["TrackerPeerDetails.Peers"] = "节点",
+        ["TrackerPeerDetails.LastAnnounce"] = "上次通告",
+        ["TrackerPeerDetails.Error"] = "错误",
+        ["TrackerPeerDetails.Peer"] = "节点",
+        ["TrackerPeerDetails.Source"] = "来源",
+        ["TrackerPeerDetails.BytesReceived"] = "已接收字节",
+        ["TrackerPeerDetails.LastUpdated"] = "最后更新",
     };
 }

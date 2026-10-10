@@ -19,6 +19,7 @@ public static class Language
         public const string DeleteFile = "Common.DeleteFile";
         public const string UnknownSize = "Common.UnknownSize";
         public const string Bytes = "Common.Bytes";
+        public const string TorrentTrackerAndPeerDetails = "Common.TorrentTrackerAndPeerDetails";
     }
 
     public static class LanguageNames
@@ -283,5 +284,18 @@ public static class Language
         public const string AddedProperty = "FilePropertiesTabControl.AddedProperty";
         public const string DownloadFileName = "FilePropertiesTabControl.DownloadFileName";
         public const string FileType = "FilePropertiesTabControl.FileType";
+    }
+
+    public static class TrackerPeerDetails
+    {
+        public const string Tracker = "TrackerPeerDetails.Tracker";
+        public const string Status = "TrackerPeerDetails.Status";
+        public const string Peers = "TrackerPeerDetails.Peers";
+        public const string LastAnnounce = "TrackerPeerDetails.LastAnnounce";
+        public const string Error = "TrackerPeerDetails.Error";
+        public const string Peer = "TrackerPeerDetails.Peer";
+        public const string Source = "TrackerPeerDetails.Source";
+        public const string BytesReceived = "TrackerPeerDetails.BytesReceived";
+        public const string LastUpdated = "TrackerPeerDetails.LastUpdated";
     }
 }

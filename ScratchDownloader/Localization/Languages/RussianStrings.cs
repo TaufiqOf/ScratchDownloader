@@ -147,6 +147,7 @@ internal static class RussianStrings
         ["Common.Yes"] = "Да",
         ["Common.No"] = "Нет",
         ["Common.Error"] = "Ошибка",
+        ["Common.TorrentTrackerAndPeerDetails"] = "Детали торрент-файла",
         ["QueuePage.DeleteQueueConfirmation"] = "Вы действительно хотите удалить очередь «{0}»?",
         ["QueuePage.CannotDeleteMainQueue"] = "Основную очередь удалить нельзя.",
         ["HomePage.ClearHistoryConfirmation"] = "Вы действительно хотите удалить все завершённые, остановленные и неудачные загрузки? Это действие нельзя отменить.",
@@ -208,6 +209,16 @@ internal static class RussianStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Максимальная скорость:",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "Завершено:",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "Статус:",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Затраченное время:"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Затраченное время:",
+
+        ["TrackerPeerDetails.Tracker"] = "Трекер",
+        ["TrackerPeerDetails.Status"] = "Статус",
+        ["TrackerPeerDetails.Peers"] = "Пиры",
+        ["TrackerPeerDetails.LastAnnounce"] = "Последний анонс",
+        ["TrackerPeerDetails.Error"] = "Ошибка",
+        ["TrackerPeerDetails.Peer"] = "Пир",
+        ["TrackerPeerDetails.Source"] = "Источник",
+        ["TrackerPeerDetails.BytesReceived"] = "Получено байт",
+        ["TrackerPeerDetails.LastUpdated"] = "Последнее обновление",
     };
 }

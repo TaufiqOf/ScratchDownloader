@@ -147,6 +147,7 @@ internal static class SpanishStrings
         ["Common.Yes"] = "Sí",
         ["Common.No"] = "No",
         ["Common.Error"] = "Error",
+        ["Common.TorrentTrackerAndPeerDetails"] = "Detalles del Torrent",
         ["QueuePage.DeleteQueueConfirmation"] = "¿Quieres eliminar la cola '{0}'?",
         ["QueuePage.CannotDeleteMainQueue"] = "No se puede eliminar la cola principal.",
         ["HomePage.ClearHistoryConfirmation"] = "¿Quieres quitar todas las descargas completadas, detenidas y fallidas? Esta acción no se puede deshacer.",
@@ -208,6 +209,16 @@ internal static class SpanishStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Límite máximo de velocidad:",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "Completado el:",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "Estado:",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Tiempo transcurrido:"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Tiempo transcurrido:",
+
+        ["TrackerPeerDetails.Tracker"] = "Tracker",
+        ["TrackerPeerDetails.Status"] = "Estado",
+        ["TrackerPeerDetails.Peers"] = "Pares",
+        ["TrackerPeerDetails.LastAnnounce"] = "Último anuncio",
+        ["TrackerPeerDetails.Error"] = "Error",
+        ["TrackerPeerDetails.Peer"] = "Par",
+        ["TrackerPeerDetails.Source"] = "Origen",
+        ["TrackerPeerDetails.BytesReceived"] = "Bytes recibidos",
+        ["TrackerPeerDetails.LastUpdated"] = "Última actualización",
     };
 }

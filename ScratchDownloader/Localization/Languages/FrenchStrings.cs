@@ -102,6 +102,7 @@ internal static class FrenchStrings
         ["HomePage.TotalSpeed"] = "Vitesse totale :",
         ["HomePage.TotalSize"] = "Taille totale :",
         ["Common.Bytes"] = "octets",
+        ["Common.TorrentTrackerAndPeerDetails"] = "Détails du Torrent",
         ["FilePropertiesTabControl.BytesSuffix"] = " octets )",
         ["FilePropertiesTabControl.SizeProperty"] = "Taille :",
         ["FilePropertiesTabControl.AddedProperty"] = "Ajouté :",
@@ -211,6 +212,16 @@ internal static class FrenchStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Limite de vitesse maximale :",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "Terminé le :",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "Statut :",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Durée :"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Durée :",
+
+        ["TrackerPeerDetails.Tracker"] = "Tracker",
+        ["TrackerPeerDetails.Status"] = "Statut",
+        ["TrackerPeerDetails.Peers"] = "Pairs",
+        ["TrackerPeerDetails.LastAnnounce"] = "Dernière annonce",
+        ["TrackerPeerDetails.Error"] = "Erreur",
+        ["TrackerPeerDetails.Peer"] = "Pair",
+        ["TrackerPeerDetails.Source"] = "Source",
+        ["TrackerPeerDetails.BytesReceived"] = "Octets reçus",
+        ["TrackerPeerDetails.LastUpdated"] = "Dernière mise à jour",
     };
 }

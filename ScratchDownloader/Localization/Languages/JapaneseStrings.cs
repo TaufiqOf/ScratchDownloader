@@ -96,6 +96,7 @@ internal static class JapaneseStrings
         ["HomePage.Eta"] = "残り時間",
         ["HomePage.Added"] = "追加日時",
         ["HomePage.FileTab"] = "ファイル",
+        ["Common.TorrentTrackerAndPeerDetails"] = "Torrentの詳細",
         ["FilePropertiesTabControl.Name"] = "名前:",
         ["FilePropertiesTabControl.Path"] = "パス:",
         ["FilePropertiesTabControl.Host"] = "ホスト:",
@@ -209,6 +210,16 @@ internal static class JapaneseStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "最大速度制限:",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "完了日時:",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "状態:",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "所要時間:"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "所要時間:",
+
+        ["TrackerPeerDetails.Tracker"] = "トラッカー",
+        ["TrackerPeerDetails.Status"] = "状態",
+        ["TrackerPeerDetails.Peers"] = "ピア",
+        ["TrackerPeerDetails.LastAnnounce"] = "最終アナウンス",
+        ["TrackerPeerDetails.Error"] = "エラー",
+        ["TrackerPeerDetails.Peer"] = "ピア",
+        ["TrackerPeerDetails.Source"] = "ソース",
+        ["TrackerPeerDetails.BytesReceived"] = "受信バイト数",
+        ["TrackerPeerDetails.LastUpdated"] = "最終更新",
     };
 }

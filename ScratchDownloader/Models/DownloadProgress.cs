@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Humanizer;
@@ -20,6 +21,9 @@ public partial class DownloadProgress : ViewModelBase
     
     [ObservableProperty]
     public partial ConcurrentDictionary<int, SegmentProgress> SegmentProgress { get; set; } = new();
+
+    [JsonIgnore] public ObservableCollection<TrackerStatus> Trackers { get; } = new();
+    [JsonIgnore] public ObservableCollection<PeerStatus> Peers { get; } = new();
 
     partial void OnProgressChanged(double value)
     {

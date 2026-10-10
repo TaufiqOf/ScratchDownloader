@@ -52,6 +52,9 @@
             <DependentUpon>QueuePageView.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Views\Control\TrackerPeerDetailsTabControl.axaml.cs">
+          <DependentUpon>TrackerPeerDetailsTabControl.axaml</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

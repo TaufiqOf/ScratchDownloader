@@ -148,6 +148,7 @@ internal static class KoreanStrings
         ["Common.Yes"] = "예",
         ["Common.No"] = "아니요",
         ["Common.Error"] = "오류",
+        ["Common.TorrentTrackerAndPeerDetails"] = "Torrent 세부 정보",
         ["QueuePage.DeleteQueueConfirmation"] = "'{0}' 대기열을 삭제하시겠습니까?",
         ["QueuePage.CannotDeleteMainQueue"] = "기본 대기열은 삭제할 수 없습니다.",
         ["HomePage.ClearHistoryConfirmation"] = "완료, 중지, 실패한 다운로드를 모두 제거하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
@@ -210,6 +211,16 @@ internal static class KoreanStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "최대 속도 제한:",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "완료 시간:",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "상태:",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "소요 시간:"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "소요 시간:",
+
+        ["TrackerPeerDetails.Tracker"] = "트래커",
+        ["TrackerPeerDetails.Status"] = "상태",
+        ["TrackerPeerDetails.Peers"] = "피어",
+        ["TrackerPeerDetails.LastAnnounce"] = "마지막 공지",
+        ["TrackerPeerDetails.Error"] = "오류",
+        ["TrackerPeerDetails.Peer"] = "피어",
+        ["TrackerPeerDetails.Source"] = "출처",
+        ["TrackerPeerDetails.BytesReceived"] = "수신 바이트",
+        ["TrackerPeerDetails.LastUpdated"] = "마지막 업데이트",
     };
 }

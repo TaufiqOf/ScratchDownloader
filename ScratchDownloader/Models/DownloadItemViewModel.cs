@@ -123,6 +123,13 @@ public partial class DownloadItemViewModel : ObservableObject
     [ObservableProperty] public partial DownloadItemInformationViewModel? DownloadItemInformation { get; set; }
     [ObservableProperty] private bool _isTopMost;
 
+    [JsonIgnore] public bool HasTrackerPeerDetails => DownloadItemInformation?.DownloadType == DownloadType.BitTorrent;
+
+    partial void OnDownloadItemInformationChanged(DownloadItemInformationViewModel? value)
+    {
+        OnPropertyChanged(nameof(HasTrackerPeerDetails));
+    }
+
     public string CapSpeedText =>
         CapSpeedInKBps == 0 ? "  " : ByteSize.FromBytes(CapSpeedInKBps * 1024).Humanize("0.00") + "/s";
 

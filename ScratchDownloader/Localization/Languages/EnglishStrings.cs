@@ -43,7 +43,18 @@ internal static class EnglishStrings
         ["Common.UnknownSize"] = "Unknown size",
         ["Common.Category"] = "Category",
         ["Common.Queue"] = "Queue",
+        ["Common.TorrentTrackerAndPeerDetails"] = "Torrent Details",
         
+        ["Common.Downloads"] = "Downloads",
+        ["Common.Download"] = "Download",
+        ["Common.Speed"] = "Speed",
+        ["Common.Status"] = "Status",
+        ["Common.Progress"] = "Progress",
+        ["Common.Eta"] = "ETA",
+        ["Common.StartTime"] = "Start Time",
+        ["Common.EndTime"] = "End Time",
+        ["Common.TimeTaken"] = "Time Taken",
+        ["Common.CompletedOn"] = "Completed On",
         ["CategoryPage.ResetExtensions"] = "Reset extensions",
         ["CategoryPage.Categories"] = "Categories",
         ["CategoryPage.CategoriesDescription"] = "Categories auto-sort downloads by file extension. Each one owns the folder its files land in.",
@@ -231,5 +242,14 @@ internal static class EnglishStrings
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "Status:",
         ["ConfigurationPropertiesTabControl.TimeTaken"] = "Time Taken:",
 
+        ["TrackerPeerDetails.Tracker"] = "Tracker",
+        ["TrackerPeerDetails.Status"] = "Status",
+        ["TrackerPeerDetails.Peers"] = "Peers",
+        ["TrackerPeerDetails.LastAnnounce"] = "Last Announce",
+        ["TrackerPeerDetails.Error"] = "Error",
+        ["TrackerPeerDetails.Peer"] = "Peer",
+        ["TrackerPeerDetails.Source"] = "Source",
+        ["TrackerPeerDetails.BytesReceived"] = "Bytes Received",
+        ["TrackerPeerDetails.LastUpdated"] = "Last Updated",
     };
 }

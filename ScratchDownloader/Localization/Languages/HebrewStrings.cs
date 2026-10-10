@@ -93,6 +93,7 @@ internal static class HebrewStrings
         ["HomePage.Progress"] = "התקדמות",
         ["HomePage.Speed"] = "מהירות",
         ["Common.Size"] = "גודל",
+        ["Common.TorrentTrackerAndPeerDetails"] = "פרטי טורנט",
         ["HomePage.Eta"] = "זמן משוער",
         ["HomePage.Added"] = "נוסף",
         ["HomePage.FileTab"] = "קובץ",
@@ -208,6 +209,16 @@ internal static class HebrewStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "מגבלת מהירות מרבית:",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "הושלם בתאריך:",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "מצב:",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "משך הזמן:"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "משך הזמן:",
+
+        ["TrackerPeerDetails.Tracker"] = "עוקב",
+        ["TrackerPeerDetails.Status"] = "מצב",
+        ["TrackerPeerDetails.Peers"] = "עמיתים",
+        ["TrackerPeerDetails.LastAnnounce"] = "הכרזה אחרונה",
+        ["TrackerPeerDetails.Error"] = "שגיאה",
+        ["TrackerPeerDetails.Peer"] = "עמית",
+        ["TrackerPeerDetails.Source"] = "מקור",
+        ["TrackerPeerDetails.BytesReceived"] = "בתים שהתקבלו",
+        ["TrackerPeerDetails.LastUpdated"] = "עודכן לאחרונה",
     };
 }

@@ -148,6 +148,7 @@ internal static class BanglaStrings
         ["Common.Yes"] = "হ্যাঁ",
         ["Common.No"] = "না",
         ["Common.Error"] = "ত্রুটি",
+        ["Common.TorrentTrackerAndPeerDetails"] = "টরেন্ট বিবরণ",
         ["QueuePage.DeleteQueueConfirmation"] = "আপনি কি নিশ্চিত যে '{0}' সারিটি মুছতে চান?",
         ["QueuePage.CannotDeleteMainQueue"] = "প্রধান সারি মুছে ফেলা যাবে না।",
         ["HomePage.ClearHistoryConfirmation"] = "আপনি কি নিশ্চিত যে সম্পন্ন, বন্ধ ও ব্যর্থ সব ডাউনলোড সরাতে চান? এই কাজ পূর্বাবস্থায় ফেরানো যাবে না।",
@@ -210,6 +211,16 @@ internal static class BanglaStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "সর্বোচ্চ গতিসীমা:",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "সম্পন্ন হয়েছে:",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "অবস্থা:",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "সময় লেগেছে:"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "সময় লেগেছে:",
+
+        ["TrackerPeerDetails.Tracker"] = "ট্র্যাকার",
+        ["TrackerPeerDetails.Status"] = "অবস্থা",
+        ["TrackerPeerDetails.Peers"] = "পিয়ার",
+        ["TrackerPeerDetails.LastAnnounce"] = "সর্বশেষ ঘোষণা",
+        ["TrackerPeerDetails.Error"] = "ত্রুটি",
+        ["TrackerPeerDetails.Peer"] = "পিয়ার",
+        ["TrackerPeerDetails.Source"] = "উৎস",
+        ["TrackerPeerDetails.BytesReceived"] = "প্রাপ্ত বাইট",
+        ["TrackerPeerDetails.LastUpdated"] = "সর্বশেষ আপডেট",
     };
 }

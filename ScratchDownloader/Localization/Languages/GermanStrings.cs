@@ -147,6 +147,7 @@ internal static class GermanStrings
         ["Common.Yes"] = "Ja",
         ["Common.No"] = "Nein",
         ["Common.Error"] = "Fehler",
+        ["Common.TorrentTrackerAndPeerDetails"] = "Torrent-Details",
         ["QueuePage.DeleteQueueConfirmation"] = "Möchten Sie die Warteschlange '{0}' wirklich löschen?",
         ["QueuePage.CannotDeleteMainQueue"] = "Die Hauptwarteschlange kann nicht gelöscht werden.",
         ["HomePage.ClearHistoryConfirmation"] = "Möchten Sie wirklich alle abgeschlossenen, gestoppten und fehlgeschlagenen Downloads entfernen? Dies kann nicht rückgängig gemacht werden.",
@@ -208,6 +209,16 @@ internal static class GermanStrings
         ["ConfigurationPropertiesTabControl.MaxSpeedLimit"] = "Maximale Geschwindigkeitsbegrenzung:",
         ["ConfigurationPropertiesTabControl.DownloadCompletedAt"] = "Abgeschlossen am:",
         ["ConfigurationPropertiesTabControl.DownloadStatusLabel"] = "Status:",
-        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Benötigte Zeit:"
+        ["ConfigurationPropertiesTabControl.TimeTaken"] = "Benötigte Zeit:",
+
+        ["TrackerPeerDetails.Tracker"] = "Tracker",
+        ["TrackerPeerDetails.Status"] = "Status",
+        ["TrackerPeerDetails.Peers"] = "Peers",
+        ["TrackerPeerDetails.LastAnnounce"] = "Letzte Ankündigung",
+        ["TrackerPeerDetails.Error"] = "Fehler",
+        ["TrackerPeerDetails.Peer"] = "Peer",
+        ["TrackerPeerDetails.Source"] = "Quelle",
+        ["TrackerPeerDetails.BytesReceived"] = "Empfangene Bytes",
+        ["TrackerPeerDetails.LastUpdated"] = "Zuletzt aktualisiert",
     };
 }

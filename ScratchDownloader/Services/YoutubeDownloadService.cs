@@ -140,17 +140,23 @@ public class YoutubeDownloadService : IDownloadService
             var targets = plan.Streams.Count == 1
                 ? new List<string> { destinationPath }
                 : new List<string> { $"{destinationPath}.video.part", $"{destinationPath}.audio.part" };
-            var existing = targets.Sum(t => resumeExisting && File.Exists(t) ? new FileInfo(t).Length : 0);
-
-            var state = new TransferState { TotalBytes = plan.TotalBytes, LastBytes = existing };
-            InitializeProgress(plan.TotalBytes, existing);
+            var existing = InitializeProgress(plan, targets, resumeExisting);
+            var state = new TransferState
+            {
+                TotalBytes = plan.TotalBytes,
+                Downloaded = existing,
+                LastBytes = existing
+            };
             Downloading?.Invoke(this, EventArgs.Empty);
 
-            for (var i = 0; i < plan.Streams.Count; i++)
+            using (var downloadCts = CancellationTokenSource.CreateLinkedTokenSource(token))
             {
-                await DownloadStreamAsync(plan.Streams[i], targets[i], resumeExisting, state, token)
-                    .ConfigureAwait(false);
+                var downloads = plan.Streams.Select((stream, index) =>
+                    DownloadStreamAndCancelOnFailureAsync(
+                        stream, targets[index], resumeExisting, index, state, downloadCts)).ToArray();
+                await Task.WhenAll(downloads).ConfigureAwait(false);
             }
+
             Processing?.Invoke(this, EventArgs.Empty);
             if (plan.Streams.Count > 1)
             {
@@ -167,8 +173,10 @@ public class YoutubeDownloadService : IDownloadService
             Progress.BytesPerSecond = 0;
             foreach (var segment in Progress.SegmentProgress.Values)
             {
-                segment.TotalBytes = totalBytes;
+                if (segment.TotalBytes > 0)
+                    segment.BytesDownloaded = segment.TotalBytes;
                 segment.Progress = 100;
+                segment.BytesPerSecond = 0;
             }
 
             Completed?.Invoke(this, EventArgs.Empty);
@@ -190,11 +198,33 @@ public class YoutubeDownloadService : IDownloadService
     private sealed class TransferState
     {
         public Stopwatch Watch { get; } = Stopwatch.StartNew();
+        public object Sync { get; } = new();
+        public SemaphoreSlim SpeedLimitLock { get; } = new(1, 1);
         public TimeSpan LastUpdate { get; set; }
         public long LastBytes { get; set; }
         public long TotalBytes { get; init; }
         public long Downloaded { get; set; }
         public long SessionBytes { get; set; }
+    }
+
+    private async Task DownloadStreamAndCancelOnFailureAsync(
+        IStreamInfo stream,
+        string path,
+        bool resumeExisting,
+        int segmentIndex,
+        TransferState state,
+        CancellationTokenSource downloadCts)
+    {
+        try
+        {
+            await DownloadStreamAsync(stream, path, resumeExisting, segmentIndex, state, downloadCts.Token)
+                .ConfigureAwait(false);
+        }
+        catch
+        {
+            downloadCts.Cancel();
+            throw;
+        }
     }
 
     private async Task<(Video Video, DownloadPlan Plan)> ResolveVideoAsync(
@@ -274,7 +304,7 @@ public class YoutubeDownloadService : IDownloadService
     }
 
     private async Task DownloadStreamAsync(IStreamInfo streamInfo, string path, bool resumeExisting,
-        TransferState state, CancellationToken token)
+        int segmentIndex, TransferState state, CancellationToken token)
     {
         var size = streamInfo.Size.Bytes;
         var startingOffset = resumeExisting && File.Exists(path) ? new FileInfo(path).Length : 0;
@@ -282,10 +312,7 @@ public class YoutubeDownloadService : IDownloadService
             throw new InvalidDataException("The existing partial file is larger than the YouTube stream.");
 
         if (size > 0 && startingOffset == size)
-        {
-            state.Downloaded += size;
             return;
-        }
 
         await using var input = await _youtubeClient.Videos.Streams.GetAsync(streamInfo, token)
             .ConfigureAwait(false);
@@ -309,38 +336,60 @@ public class YoutubeDownloadService : IDownloadService
                     "The YouTube stream ended before the saved partial file could be resumed.");
 
             skipped += n;
-            state.SessionBytes += n;
+            lock (state.Sync)
+                state.SessionBytes += n;
             await ApplySpeedLimitAsync(state, token).ConfigureAwait(false);
         }
 
-        state.Downloaded += startingOffset;
         var received = startingOffset;
         int read;
         while ((read = await input.ReadAsync(buffer.AsMemory(0, buffer.Length), token).ConfigureAwait(false)) > 0)
         {
             await output.WriteAsync(buffer.AsMemory(0, read), token).ConfigureAwait(false);
             received += read;
-            state.Downloaded += read;
-            state.SessionBytes += read;
+            lock (state.Sync)
+            {
+                state.Downloaded += read;
+                state.SessionBytes += read;
+            }
 
             await ApplySpeedLimitAsync(state, token).ConfigureAwait(false);
 
-            if (state.Watch.Elapsed - state.LastUpdate >= TimeSpan.FromMilliseconds(200))
-                ReportProgress(state);
+            ReportProgress(state, segmentIndex, received, size);
         }
 
         if (size > 0 && received != size)
             throw new IOException($"YouTube stream ended early: received {received} of {size} bytes.");
 
-        ReportProgress(state);
+        ReportProgress(state, segmentIndex, received, size, force: true);
     }
 
-    private void ReportProgress(TransferState state)
+    private void ReportProgress(TransferState state, int segmentIndex, long segmentBytes, long segmentTotal,
+        bool force = false)
     {
-        var elapsed = (state.Watch.Elapsed - state.LastUpdate).TotalSeconds;
-        UpdateProgress(state.Downloaded, state.TotalBytes, state.Downloaded - state.LastBytes, elapsed);
-        state.LastBytes = state.Downloaded;
-        state.LastUpdate = state.Watch.Elapsed;
+        lock (state.Sync)
+        {
+            var now = state.Watch.Elapsed;
+            if (!force && now - state.LastUpdate < TimeSpan.FromMilliseconds(200))
+                return;
+
+            var elapsed = (now - state.LastUpdate).TotalSeconds;
+            var downloaded = state.Downloaded;
+            var bytesSinceUpdate = downloaded - state.LastBytes;
+            state.LastBytes = downloaded;
+            state.LastUpdate = now;
+            UpdateProgress(downloaded, state.TotalBytes, bytesSinceUpdate, elapsed);
+            if (!Progress.SegmentProgress.TryGetValue(segmentIndex, out var segment))
+                return;
+
+            var segmentElapsed = (now - segment.LastUpdate).TotalSeconds;
+            var segmentBytesSinceUpdate = segmentBytes - segment.BytesDownloaded;
+            segment.BytesDownloaded = segmentBytes;
+            segment.TotalBytes = segmentTotal;
+            segment.Progress = segmentTotal > 0 ? Math.Min(100, segmentBytes * 100d / segmentTotal) : 0;
+            segment.BytesPerSecond = segmentElapsed > 0 ? segmentBytesSinceUpdate / segmentElapsed : 0;
+            segment.LastUpdate = now;
+        }
     }
 
     private static async Task MuxAsync(string videoPath, string audioPath, string outputPath, Container container,
@@ -387,34 +436,27 @@ public class YoutubeDownloadService : IDownloadService
         File.Move(tempOutput, outputPath, overwrite: true);
     }
 
-    private void InitializeProgress(long totalBytes, long startingOffset)
-    {
-        Progress.SegmentProgress = new ConcurrentDictionary<int, SegmentProgress>
-        {
-            [0] = new SegmentProgress
-            {
-                Index = 0,
-                BytesDownloaded = startingOffset,
-                TotalBytes = totalBytes,
-                Progress = totalBytes > 0 ? startingOffset * 100d / totalBytes : 0,
-                BytesPerSecond = 0
-            }
-        };
-        Progress.BytesDownloaded = startingOffset;
-        Progress.TotalBytes = totalBytes;
-        Progress.Progress = totalBytes > 0 ? startingOffset * 100d / totalBytes : 0;
-        Progress.BytesPerSecond = 0;
-    }
-
     private async Task ApplySpeedLimitAsync(TransferState state, CancellationToken token)
     {
         if (CapSpeed <= 0)
             return;
 
-        var targetDuration = TimeSpan.FromSeconds(state.SessionBytes / CapSpeed);
-        var remaining = targetDuration - state.Watch.Elapsed;
-        if (remaining > TimeSpan.Zero)
-            await Task.Delay(remaining, token).ConfigureAwait(false);
+        await state.SpeedLimitLock.WaitAsync(token).ConfigureAwait(false);
+        try
+        {
+            long sessionBytes;
+            lock (state.Sync)
+                sessionBytes = state.SessionBytes;
+
+            var targetDuration = TimeSpan.FromSeconds(sessionBytes / CapSpeed);
+            var remaining = targetDuration - state.Watch.Elapsed;
+            if (remaining > TimeSpan.Zero)
+                await Task.Delay(remaining, token).ConfigureAwait(false);
+        }
+        finally
+        {
+            state.SpeedLimitLock.Release();
+        }
     }
 
     private void UpdateProgress(long downloaded, long totalBytes, long bytesSinceUpdate, double elapsedSeconds)
@@ -425,13 +467,32 @@ public class YoutubeDownloadService : IDownloadService
         Progress.TotalBytes = totalBytes;
         Progress.Progress = progress;
         Progress.BytesPerSecond = speed;
-        if (!Progress.SegmentProgress.TryGetValue(0, out var segment))
-            return;
+    }
 
-        segment.BytesDownloaded = downloaded;
-        segment.TotalBytes = totalBytes;
-        segment.Progress = progress;
-        segment.BytesPerSecond = speed;
+    private long InitializeProgress(DownloadPlan plan, IReadOnlyList<string> targets, bool resumeExisting)
+    {
+        var segments = new ConcurrentDictionary<int, SegmentProgress>();
+        long startingOffset = 0;
+        for (var i = 0; i < plan.Streams.Count; i++)
+        {
+            var streamSize = plan.Streams[i].Size.Bytes;
+            var offset = resumeExisting && File.Exists(targets[i]) ? new FileInfo(targets[i]).Length : 0;
+            startingOffset += offset;
+            segments[i] = new SegmentProgress
+            {
+                Index = i,
+                BytesDownloaded = offset,
+                TotalBytes = streamSize,
+                Progress = streamSize > 0 ? Math.Min(100, offset * 100d / streamSize) : 0
+            };
+        }
+
+        Progress.SegmentProgress = segments;
+        Progress.BytesDownloaded = startingOffset;
+        Progress.TotalBytes = plan.TotalBytes;
+        Progress.Progress = plan.TotalBytes > 0 ? startingOffset * 100d / plan.TotalBytes : 0;
+        Progress.BytesPerSecond = 0;
+        return startingOffset;
     }
 
     private void ValidateInputs()
