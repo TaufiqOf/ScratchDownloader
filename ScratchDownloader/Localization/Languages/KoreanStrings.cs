@@ -222,5 +222,15 @@ internal static class KoreanStrings
         ["TrackerPeerDetails.Source"] = "출처",
         ["TrackerPeerDetails.BytesReceived"] = "수신 바이트",
         ["TrackerPeerDetails.LastUpdated"] = "마지막 업데이트",
+        ["TrackerPeerDetails.TrackerCount"] = "트래커",
+        ["TrackerPeerDetails.ActiveTrackers"] = "활성 트래커",
+        ["TrackerPeerDetails.FailedTrackers"] = "실패한 트래커",
+        ["TrackerPeerDetails.PeerCount"] = "피어",
+        ["TrackerPeerDetails.Connected"] = "연결됨",
+        ["TrackerPeerDetails.Connecting"] = "연결 중",
+        ["TrackerPeerDetails.Unreachable"] = "연결 불가",
+        ["TrackerPeerDetails.Disconnected"] = "연결 끊김",
+        ["TrackerPeerDetails.Discovered"] = "발견됨",
+        ["TrackerPeerDetails.Received"] = "수신됨",
     };
 }

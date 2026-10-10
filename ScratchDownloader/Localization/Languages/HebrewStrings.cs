@@ -220,5 +220,15 @@ internal static class HebrewStrings
         ["TrackerPeerDetails.Source"] = "מקור",
         ["TrackerPeerDetails.BytesReceived"] = "בתים שהתקבלו",
         ["TrackerPeerDetails.LastUpdated"] = "עודכן לאחרונה",
+        ["TrackerPeerDetails.TrackerCount"] = "עוקבים",
+        ["TrackerPeerDetails.ActiveTrackers"] = "עוקבים פעילים",
+        ["TrackerPeerDetails.FailedTrackers"] = "עוקבים שנכשלו",
+        ["TrackerPeerDetails.PeerCount"] = "עמיתים",
+        ["TrackerPeerDetails.Connected"] = "מחובר",
+        ["TrackerPeerDetails.Connecting"] = "מתחבר",
+        ["TrackerPeerDetails.Unreachable"] = "לא ניתן להגעה",
+        ["TrackerPeerDetails.Disconnected"] = "מנותק",
+        ["TrackerPeerDetails.Discovered"] = "התגלה",
+        ["TrackerPeerDetails.Received"] = "התקבל",
     };
 }

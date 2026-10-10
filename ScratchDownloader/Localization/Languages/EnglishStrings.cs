@@ -251,5 +251,15 @@ internal static class EnglishStrings
         ["TrackerPeerDetails.Source"] = "Source",
         ["TrackerPeerDetails.BytesReceived"] = "Bytes Received",
         ["TrackerPeerDetails.LastUpdated"] = "Last Updated",
+        ["TrackerPeerDetails.TrackerCount"] = "Trackers",
+        ["TrackerPeerDetails.ActiveTrackers"] = "Active trackers",
+        ["TrackerPeerDetails.FailedTrackers"] = "Failed trackers",
+        ["TrackerPeerDetails.PeerCount"] = "Peers",
+        ["TrackerPeerDetails.Connected"] = "Connected",
+        ["TrackerPeerDetails.Connecting"] = "Connecting",
+        ["TrackerPeerDetails.Unreachable"] = "Unreachable",
+        ["TrackerPeerDetails.Disconnected"] = "Disconnected",
+        ["TrackerPeerDetails.Discovered"] = "Discovered",
+        ["TrackerPeerDetails.Received"] = "Received",
     };
 }

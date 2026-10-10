@@ -221,5 +221,15 @@ internal static class HindiStrings
         ["TrackerPeerDetails.Source"] = "स्रोत",
         ["TrackerPeerDetails.BytesReceived"] = "प्राप्त बाइट",
         ["TrackerPeerDetails.LastUpdated"] = "अंतिम अपडेट",
+        ["TrackerPeerDetails.TrackerCount"] = "ट्रैकर",
+        ["TrackerPeerDetails.ActiveTrackers"] = "सक्रिय ट्रैकर",
+        ["TrackerPeerDetails.FailedTrackers"] = "विफल ट्रैकर",
+        ["TrackerPeerDetails.PeerCount"] = "पीयर",
+        ["TrackerPeerDetails.Connected"] = "कनेक्टेड",
+        ["TrackerPeerDetails.Connecting"] = "कनेक्ट हो रहा है",
+        ["TrackerPeerDetails.Unreachable"] = "पहुँच से बाहर",
+        ["TrackerPeerDetails.Disconnected"] = "डिस्कनेक्ट",
+        ["TrackerPeerDetails.Discovered"] = "खोजे गए",
+        ["TrackerPeerDetails.Received"] = "प्राप्त",
     };
 }

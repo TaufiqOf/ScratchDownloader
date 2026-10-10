@@ -223,5 +223,15 @@ internal static class ArabicStrings
         ["TrackerPeerDetails.Source"] = "المصدر",
         ["TrackerPeerDetails.BytesReceived"] = "البايتات المستلمة",
         ["TrackerPeerDetails.LastUpdated"] = "آخر تحديث",
+        ["TrackerPeerDetails.TrackerCount"] = "المتتبعات",
+        ["TrackerPeerDetails.ActiveTrackers"] = "المتتبعات النشطة",
+        ["TrackerPeerDetails.FailedTrackers"] = "المتتبعات الفاشلة",
+        ["TrackerPeerDetails.PeerCount"] = "الأقران",
+        ["TrackerPeerDetails.Connected"] = "متصل",
+        ["TrackerPeerDetails.Connecting"] = "جارٍ الاتصال",
+        ["TrackerPeerDetails.Unreachable"] = "غير قابل للوصول",
+        ["TrackerPeerDetails.Disconnected"] = "غير متصل",
+        ["TrackerPeerDetails.Discovered"] = "تم اكتشافه",
+        ["TrackerPeerDetails.Received"] = "المستلم",
     };
 }

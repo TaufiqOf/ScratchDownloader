@@ -220,5 +220,15 @@ internal static class GermanStrings
         ["TrackerPeerDetails.Source"] = "Quelle",
         ["TrackerPeerDetails.BytesReceived"] = "Empfangene Bytes",
         ["TrackerPeerDetails.LastUpdated"] = "Zuletzt aktualisiert",
+        ["TrackerPeerDetails.TrackerCount"] = "Tracker",
+        ["TrackerPeerDetails.ActiveTrackers"] = "Aktive Tracker",
+        ["TrackerPeerDetails.FailedTrackers"] = "Fehlgeschlagene Tracker",
+        ["TrackerPeerDetails.PeerCount"] = "Peers",
+        ["TrackerPeerDetails.Connected"] = "Verbunden",
+        ["TrackerPeerDetails.Connecting"] = "Verbinden",
+        ["TrackerPeerDetails.Unreachable"] = "Nicht erreichbar",
+        ["TrackerPeerDetails.Disconnected"] = "Getrennt",
+        ["TrackerPeerDetails.Discovered"] = "Entdeckt",
+        ["TrackerPeerDetails.Received"] = "Empfangen",
     };
 }

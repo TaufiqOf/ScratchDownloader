@@ -223,5 +223,15 @@ internal static class FrenchStrings
         ["TrackerPeerDetails.Source"] = "Source",
         ["TrackerPeerDetails.BytesReceived"] = "Octets reçus",
         ["TrackerPeerDetails.LastUpdated"] = "Dernière mise à jour",
+        ["TrackerPeerDetails.TrackerCount"] = "Trackers",
+        ["TrackerPeerDetails.ActiveTrackers"] = "Trackers actifs",
+        ["TrackerPeerDetails.FailedTrackers"] = "Trackers en échec",
+        ["TrackerPeerDetails.PeerCount"] = "Pairs",
+        ["TrackerPeerDetails.Connected"] = "Connectés",
+        ["TrackerPeerDetails.Connecting"] = "Connexion",
+        ["TrackerPeerDetails.Unreachable"] = "Injoignables",
+        ["TrackerPeerDetails.Disconnected"] = "Déconnectés",
+        ["TrackerPeerDetails.Discovered"] = "Découverts",
+        ["TrackerPeerDetails.Received"] = "Reçu",
     };
 }

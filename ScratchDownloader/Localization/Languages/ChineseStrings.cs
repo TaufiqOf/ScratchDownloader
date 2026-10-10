@@ -221,5 +221,15 @@ internal static class ChineseStrings
         ["TrackerPeerDetails.Source"] = "来源",
         ["TrackerPeerDetails.BytesReceived"] = "已接收字节",
         ["TrackerPeerDetails.LastUpdated"] = "最后更新",
+        ["TrackerPeerDetails.TrackerCount"] = "Tracker 数量",
+        ["TrackerPeerDetails.ActiveTrackers"] = "活动的 Tracker",
+        ["TrackerPeerDetails.FailedTrackers"] = "失败的 Tracker",
+        ["TrackerPeerDetails.PeerCount"] = "节点",
+        ["TrackerPeerDetails.Connected"] = "已连接",
+        ["TrackerPeerDetails.Connecting"] = "连接中",
+        ["TrackerPeerDetails.Unreachable"] = "不可达",
+        ["TrackerPeerDetails.Disconnected"] = "已断开",
+        ["TrackerPeerDetails.Discovered"] = "已发现",
+        ["TrackerPeerDetails.Received"] = "已接收",
     };
 }

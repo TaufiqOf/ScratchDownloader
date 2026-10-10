@@ -222,5 +222,15 @@ internal static class BanglaStrings
         ["TrackerPeerDetails.Source"] = "উৎস",
         ["TrackerPeerDetails.BytesReceived"] = "প্রাপ্ত বাইট",
         ["TrackerPeerDetails.LastUpdated"] = "সর্বশেষ আপডেট",
+        ["TrackerPeerDetails.TrackerCount"] = "ট্র্যাকার",
+        ["TrackerPeerDetails.ActiveTrackers"] = "সক্রিয় ট্র্যাকার",
+        ["TrackerPeerDetails.FailedTrackers"] = "ব্যর্থ ট্র্যাকার",
+        ["TrackerPeerDetails.PeerCount"] = "পিয়ার",
+        ["TrackerPeerDetails.Connected"] = "সংযুক্ত",
+        ["TrackerPeerDetails.Connecting"] = "সংযোগ হচ্ছে",
+        ["TrackerPeerDetails.Unreachable"] = "পৌঁছানো যাচ্ছে না",
+        ["TrackerPeerDetails.Disconnected"] = "সংযোগ বিচ্ছিন্ন",
+        ["TrackerPeerDetails.Discovered"] = "আবিষ্কৃত",
+        ["TrackerPeerDetails.Received"] = "প্রাপ্ত",
     };
 }

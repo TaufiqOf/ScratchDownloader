@@ -5,8 +5,86 @@
              xmlns:pageViewModel="clr-namespace:ScratchDownloader.ViewModels.PageViewModel"
              x:Class="ScratchDownloader.Views.Control.TrackerPeerDetailsTabControl"
              x:DataType="pageViewModel:HomePageViewModel">
-    <Grid RowDefinitions="*,Auto,*" RowSpacing="8">
-        <dg:DataGrid Grid.Row="0"
+    <Grid RowDefinitions="Auto,*,Auto,*" RowSpacing="8">
+        <WrapPanel Grid.Row="0">
+            <WrapPanel.Styles>
+                <Style Selector="Border.Chip">
+                    <Setter Property="Padding" Value="10,6" />
+                    <Setter Property="Margin" Value="0,0,8,0" />
+                    <Setter Property="CornerRadius" Value="6" />
+                    <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+                </Style>
+                <Style Selector="TextBlock.ChipLabel">
+                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                </Style>
+                <Style Selector="TextBlock.ChipValue">
+                    <Setter Property="FontSize" Value="15" />
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                </Style>
+            </WrapPanel.Styles>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.TrackerCount}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.TrackerCount}" />
+                </StackPanel>
+            </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.ActiveTrackers}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.ActiveTrackerCount}" />
+                </StackPanel>
+            </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.FailedTrackers}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.FailedTrackerCount}" />
+                </StackPanel>
+            </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.PeerCount}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.PeerCount}" />
+                </StackPanel>
+            </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Connected}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.ConnectedPeerCount}" />
+                </StackPanel>
+            </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Connecting}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.ConnectingPeerCount}" />
+                </StackPanel>
+            </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Unreachable}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.UnreachablePeerCount}" />
+                </StackPanel>
+            </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Disconnected}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.DisconnectedPeerCount}" />
+                </StackPanel>
+            </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Discovered}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.DiscoveredPeerCount}" />
+                </StackPanel>
+            </Border>
+            <Border Classes="Chip">
+                <StackPanel Spacing="2">
+                    <TextBlock Classes="ChipLabel" Text="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Received}}" />
+                    <TextBlock Classes="ChipValue" Text="{Binding SelectedDownload.Progress.PeerBytesReceivedDisplay}" />
+                </StackPanel>
+            </Border>
+        </WrapPanel>
+        <dg:DataGrid Grid.Row="1"
                      ItemsSource="{Binding SelectedDownload.Progress.Trackers}"
                      AutoGenerateColumns="False"
                      IsReadOnly="True"
@@ -21,7 +99,7 @@
                 <dg:DataGridTextColumn Header="{loc:Loc {x:Static loc:Language+TrackerPeerDetails.Error}}" Binding="{Binding LastError}" Width="2*" />
             </dg:DataGrid.Columns>
         </dg:DataGrid>
-        <GridSplitter Grid.Row="1"
+        <GridSplitter Grid.Row="2"
                       Height="5"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Center"
@@ -29,7 +107,7 @@
                       ResizeBehavior="PreviousAndNext"
                       Background="{DynamicResource SystemControlForegroundBaseLowBrush}"
                       Cursor="SizeNorthSouth" />
-        <dg:DataGrid Grid.Row="2"
+        <dg:DataGrid Grid.Row="3"
                      ItemsSource="{Binding SelectedDownload.Progress.Peers}"
                      AutoGenerateColumns="False"
                      IsReadOnly="True"

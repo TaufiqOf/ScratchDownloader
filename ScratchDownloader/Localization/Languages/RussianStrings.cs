@@ -220,5 +220,15 @@ internal static class RussianStrings
         ["TrackerPeerDetails.Source"] = "Источник",
         ["TrackerPeerDetails.BytesReceived"] = "Получено байт",
         ["TrackerPeerDetails.LastUpdated"] = "Последнее обновление",
+        ["TrackerPeerDetails.TrackerCount"] = "Трекеры",
+        ["TrackerPeerDetails.ActiveTrackers"] = "Активные трекеры",
+        ["TrackerPeerDetails.FailedTrackers"] = "Неудачные трекеры",
+        ["TrackerPeerDetails.PeerCount"] = "Пиры",
+        ["TrackerPeerDetails.Connected"] = "Подключено",
+        ["TrackerPeerDetails.Connecting"] = "Подключение",
+        ["TrackerPeerDetails.Unreachable"] = "Недоступно",
+        ["TrackerPeerDetails.Disconnected"] = "Отключено",
+        ["TrackerPeerDetails.Discovered"] = "Обнаружено",
+        ["TrackerPeerDetails.Received"] = "Получено",
     };
 }

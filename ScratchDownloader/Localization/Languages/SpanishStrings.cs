@@ -220,5 +220,15 @@ internal static class SpanishStrings
         ["TrackerPeerDetails.Source"] = "Origen",
         ["TrackerPeerDetails.BytesReceived"] = "Bytes recibidos",
         ["TrackerPeerDetails.LastUpdated"] = "Última actualización",
+        ["TrackerPeerDetails.TrackerCount"] = "Trackers",
+        ["TrackerPeerDetails.ActiveTrackers"] = "Trackers activos",
+        ["TrackerPeerDetails.FailedTrackers"] = "Trackers fallidos",
+        ["TrackerPeerDetails.PeerCount"] = "Pares",
+        ["TrackerPeerDetails.Connected"] = "Conectados",
+        ["TrackerPeerDetails.Connecting"] = "Conectando",
+        ["TrackerPeerDetails.Unreachable"] = "Inaccesibles",
+        ["TrackerPeerDetails.Disconnected"] = "Desconectados",
+        ["TrackerPeerDetails.Discovered"] = "Descubiertos",
+        ["TrackerPeerDetails.Received"] = "Recibido",
     };
 }

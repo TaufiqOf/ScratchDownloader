@@ -297,5 +297,15 @@ public static class Language
         public const string Source = "TrackerPeerDetails.Source";
         public const string BytesReceived = "TrackerPeerDetails.BytesReceived";
         public const string LastUpdated = "TrackerPeerDetails.LastUpdated";
+        public const string TrackerCount = "TrackerPeerDetails.TrackerCount";
+        public const string ActiveTrackers = "TrackerPeerDetails.ActiveTrackers";
+        public const string FailedTrackers = "TrackerPeerDetails.FailedTrackers";
+        public const string PeerCount = "TrackerPeerDetails.PeerCount";
+        public const string Connected = "TrackerPeerDetails.Connected";
+        public const string Connecting = "TrackerPeerDetails.Connecting";
+        public const string Unreachable = "TrackerPeerDetails.Unreachable";
+        public const string Disconnected = "TrackerPeerDetails.Disconnected";
+        public const string Discovered = "TrackerPeerDetails.Discovered";
+        public const string Received = "TrackerPeerDetails.Received";
     }
 }

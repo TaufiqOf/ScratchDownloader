@@ -221,5 +221,15 @@ internal static class JapaneseStrings
         ["TrackerPeerDetails.Source"] = "ソース",
         ["TrackerPeerDetails.BytesReceived"] = "受信バイト数",
         ["TrackerPeerDetails.LastUpdated"] = "最終更新",
+        ["TrackerPeerDetails.TrackerCount"] = "トラッカー数",
+        ["TrackerPeerDetails.ActiveTrackers"] = "アクティブなトラッカー",
+        ["TrackerPeerDetails.FailedTrackers"] = "失敗したトラッカー",
+        ["TrackerPeerDetails.PeerCount"] = "ピア",
+        ["TrackerPeerDetails.Connected"] = "接続済み",
+        ["TrackerPeerDetails.Connecting"] = "接続中",
+        ["TrackerPeerDetails.Unreachable"] = "到達不可",
+        ["TrackerPeerDetails.Disconnected"] = "切断",
+        ["TrackerPeerDetails.Discovered"] = "検出済み",
+        ["TrackerPeerDetails.Received"] = "受信済み",
     };
 }
