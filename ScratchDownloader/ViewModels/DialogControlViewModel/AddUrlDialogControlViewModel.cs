@@ -13,21 +13,30 @@ using ScratchDownloader.Helper;
 using ScratchDownloader.Localization;
 using ScratchDownloader.Models;
 using ScratchDownloader.Services;
+using Timer = System.Timers.Timer;
 
 namespace ScratchDownloader.ViewModels.DialogControlViewModel;
 
 public partial class AddUrlDialogControlViewModel : ADialogViewModel
 {
     private CancellationTokenSource? _detectCancellation;
-
+    private readonly Timer _detectingAnimationTimer = new(500);
     [ObservableProperty] private DownloadItemInformationViewModel _downloadItemInformation = new();
-
+    [ObservableProperty] private string _detectingAnimationText = "•••";
 
     public AddUrlDialogControlViewModel(Window? owner = null) : base(owner)
     {
         DownloadItemInformation.Category = SettingsService.Settings.Categories["Other"];
         DownloadItemInformation.Queue = SettingsService.Settings.Queues["Main"];
         DownloadItemInformation.Segments = 8;
+        _detectingAnimationTimer.Elapsed += (s, e) =>
+        {
+            if (DetectingAnimationText.Length >= 3)
+                DetectingAnimationText = "•";
+            else
+                DetectingAnimationText += "•";
+        };
+        _detectingAnimationTimer.Start();
     }
 
     [ObservableProperty]
@@ -93,7 +102,7 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
         }
 
         IsDetecting = true;
-
+        await Task.Delay(1000, cancellationToken).ConfigureAwait(false);
         try
         {
             DownloadItemInformation =

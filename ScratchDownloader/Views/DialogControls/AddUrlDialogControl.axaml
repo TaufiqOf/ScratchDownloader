@@ -72,9 +72,9 @@
                                 BorderThickness="1"
                                 HorizontalAlignment="Left">
 
-                            <TextBlock Text="•••"
+                            <TextBlock Text="{Binding DetectingAnimationText}"
                                        FontSize="18"
-                                       HorizontalAlignment="Center"
+                                       HorizontalAlignment="Left"
                                        VerticalAlignment="Center" />
                         </Border>
 
