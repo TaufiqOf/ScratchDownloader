@@ -20,6 +20,16 @@ public static class Language
         public const string UnknownSize = "Common.UnknownSize";
         public const string Bytes = "Common.Bytes";
         public const string TorrentTrackerAndPeerDetails = "Common.TorrentTrackerAndPeerDetails";
+        public const string Downloads = "Common.Downloads";
+        public const string Download = "Common.Download";
+        public const string Speed = "Common.Speed";
+        public const string Status = "Common.Status";
+        public const string Progress = "Common.Progress";
+        public const string Eta = "Common.Eta";
+        public const string StartTime = "Common.StartTime";
+        public const string EndTime = "Common.EndTime";
+        public const string TimeTaken = "Common.TimeTaken";
+        public const string CompletedOn = "Common.CompletedOn";
     }
 
     public static class LanguageNames
