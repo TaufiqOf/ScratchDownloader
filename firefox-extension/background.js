@@ -38,6 +38,18 @@ browser.downloads.onCreated.addListener(async (item) => {
   } catch (e) {}
 });
 
+browser.runtime.onMessage.addListener(async (message) => {
+  if (message?.type !== "capture-magnet" ||
+      typeof message.url !== "string" ||
+      !/^magnet:\?/i.test(message.url)) return;
+
+  try {
+    if (!(await send(message.url))) notifyFailure();
+  } catch (e) {
+    notifyFailure();
+  }
+});
+
 browser.contextMenus.create({
   id: "sd-link",
   title: "Download link with ScratchDownloader",

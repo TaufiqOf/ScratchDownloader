@@ -4,6 +4,7 @@ Sends download links to the running ScratchDownloader app, which listens on `127
 
 - Browser downloads are intercepted and opened in the app's "New download" dialog (toggle in the toolbar popup).
   If the app is not running, the browser downloads normally.
+- Clicking a magnet link is handed directly to ScratchDownloader.
 - Right-click a link/media > "Download link with ScratchDownloader".
 
 ## Install

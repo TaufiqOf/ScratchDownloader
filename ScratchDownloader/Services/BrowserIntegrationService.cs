@@ -92,7 +92,7 @@ public static class BrowserIntegrationService
                 using var doc = JsonDocument.Parse(await reader.ReadToEndAsync());
                 var url = doc.RootElement.TryGetProperty("url", out var u) ? u.GetString() : null;
                 if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
-                    uri.Scheme is not ("http" or "https" or "ftp"))
+                    uri.Scheme is not ("http" or "https" or "ftp" or "magnet"))
                 {
                     await WriteAsync(res, 400, "{\"ok\":false,\"error\":\"invalid url\"}");
                     return;

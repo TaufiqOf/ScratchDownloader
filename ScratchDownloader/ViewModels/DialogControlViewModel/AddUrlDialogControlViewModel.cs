@@ -95,7 +95,8 @@ public partial class AddUrlDialogControlViewModel : ADialogViewModel
         if (string.IsNullOrWhiteSpace(url) ||
             !Uri.TryCreate(url, UriKind.Absolute, out var uri) ||
             (uri.Scheme != Uri.UriSchemeHttp &&
-             uri.Scheme != Uri.UriSchemeHttps))
+             uri.Scheme != Uri.UriSchemeHttps &&
+             uri.Scheme != "magnet"))
         {
             IsDetecting = false;
             return;
