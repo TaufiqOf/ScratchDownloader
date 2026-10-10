@@ -378,10 +378,13 @@
                                                    Width="3*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding DownloadItemInformation.SavedFileName}"
-                                               ToolTip.Tip="{Binding DownloadItemInformation.SavedFileName}"
-                                               VerticalAlignment="Center"
-                                               TextTrimming="CharacterEllipsis" />
+                                    <Grid RowDefinitions="Auto,Auto" Margin="5,2,5,2">
+                                        <TextBlock Grid.Row="0" FontSize="10" FontWeight="SemiBold" Text="{Binding DownloadItemInformation.DownloadType}"></TextBlock>
+                                        <TextBlock Grid.Row="1" Text="{Binding DownloadItemInformation.SavedFileName}"
+                                                   ToolTip.Tip="{Binding DownloadItemInformation.SavedFileName}"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis" />
+                                    </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </dg:DataGridTemplateColumn>

@@ -99,7 +99,7 @@ public class DirectDownloadService : IDownloadService
         data.FileName = fileName;
         data.FileSizeBytes = fileSizeBytes;
         data.FileExtension = fileExtension;
-
+        data.DownloadType = DownloadType.Direct;
         return data;
     }
 
